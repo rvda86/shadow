@@ -100,7 +100,7 @@ def api_entries():
         data = {"type": request.args.get('type'), "id": request.args.get('id')}
     else: 
         data = request.get_json()
-    
+        
     data = validate_data(data, request.method)
 
     entry_type = data["type"]
