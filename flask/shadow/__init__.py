@@ -19,4 +19,4 @@ bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 CORS(app)
 
-from shadow import api
+from shadow import routes

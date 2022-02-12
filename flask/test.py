@@ -10,7 +10,6 @@ class TestApi(unittest.TestCase):
 
     api = API_LINK
     users_endpoint = f"{api}/users"
-    create_users_endpoint = f"{api}/users/create"
     token_endpoint = f"{api}/users/token"
     check_availability_endpoint = f"{api}/users/check_availability"
 
@@ -76,7 +75,7 @@ class TestApi(unittest.TestCase):
         self.assertEqual(409, response.status_code)
     
     def fail_create_user_invalid_data(self, data):
-        response = requests.post(self.create_users_endpoint, data=json.dumps(data), headers={'Content-type': 'application/json'})
+        response = self.create_user(data)
         self.assertEqual(422, response.status_code)
 
     def success_get_token(self, data):
@@ -137,7 +136,7 @@ class TestApi(unittest.TestCase):
         return requests.post(self.check_availability_endpoint, data=json.dumps(data), headers={'Content-type': 'application/json'})
 
     def create_user(self, data):
-        return requests.post(self.create_users_endpoint, data=json.dumps(data), headers={'Content-type': 'application/json'})
+        return requests.post(self.users_endpoint, data=json.dumps(data), headers={'Content-type': 'application/json'})
 
     def update_user(self, data, token):
         return requests.put(self.users_endpoint, data=json.dumps(data), headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})
