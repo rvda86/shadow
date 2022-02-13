@@ -2,7 +2,7 @@ from flask import jsonify
 from shadow.users import User, get_all_usernames_emails
 from shadow.validator import validate_data
 from shadow.serialize import get_serializer
-from shadow.factory import get_entry_factory
+from shadow.factory import get_entry
 
 class Controller:
 
@@ -83,20 +83,19 @@ class Controller:
     @staticmethod
     def get_entry(user_id, data):
         data = validate_data(data, "GET")
-        entry_type = data["type"]
-        entry_factory = get_entry_factory(entry_type)
-        entry = entry_factory.get_entry()
         
-        serializer = get_serializer(entry_type)
+        entry = get_entry(data["type"])
+        
+        serializer = get_serializer(data["type"])
         response = serializer(entry, data["id"], user_id)
         return jsonify({"data": response})  
     
     @staticmethod
     def create_entry(user_id, data):
         data = validate_data(data, "POST")
-        entry_type = data["type"]
-        entry_factory = get_entry_factory(entry_type)
-        entry = entry_factory.get_entry()
+        
+        entry = get_entry(data["type"])
+        
         entry.set_values(data, user_id)
         response = entry.create(user_id)      
         return jsonify({"msg": response})
@@ -104,10 +103,9 @@ class Controller:
     @staticmethod
     def update_entry(user_id, data):
         data = validate_data(data, "PUT")
+      
+        entry = get_entry(data["type"])
 
-        entry_type = data["type"]
-        entry_factory = get_entry_factory(entry_type)
-        entry = entry_factory.get_entry()
         entry.load_data(data["id"], user_id)
         entry.set_values(data, user_id)
         response = entry.update(user_id)
@@ -117,9 +115,7 @@ class Controller:
     def delete_entry(user_id, data):
         data = validate_data(data, "DELETE")
 
-        entry_type = data["type"]
-        entry_factory = get_entry_factory(entry_type)
-        entry = entry_factory.get_entry()
+        entry = get_entry(data["type"])
 
         entry.load_data(data["id"], user_id)
         response = entry.delete(user_id)

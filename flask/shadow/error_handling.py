@@ -1,4 +1,3 @@
-from flask import abort
 from functools import wraps
 
 class InvalidDataError(Exception):
@@ -16,7 +15,7 @@ class NotFoundError(Exception):
 class DatabaseError(Exception):
     pass
 
-def api_error_handler(func):
+def error_handler(func):
     @wraps(func)
     def inner(*args, **kwargs):
         try:
@@ -30,14 +29,6 @@ def api_error_handler(func):
             return {"msg": "Wrong password provided"}, 401
         except NotFoundError:
             return {"msg": "Resource not found"}, 404
-    return inner
-
-def db_error_handler(func):
-    @wraps(func)
-    def inner(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
         except DatabaseError:
             return {"msg": "Something went wrong"}, 500
     return inner
-

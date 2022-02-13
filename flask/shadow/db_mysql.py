@@ -1,8 +1,6 @@
 from mysql.connector import connect, Error
 from shadow import DB_USER, DB_PASSWORD
-
-class DatabaseError(Exception):
-    pass
+from shadow.error_handling import DatabaseError
 
 class Database:
 
