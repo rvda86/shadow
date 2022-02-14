@@ -87,37 +87,29 @@ class Controller:
         entry = get_entry(data["type"])
         
         serializer = get_serializer(data["type"])
-        response = serializer(entry, data["id"], user_id)
-        return jsonify({"data": response})  
+        result = serializer(entry, data["id"], user_id)
+        return jsonify({"data": result})  
     
     @staticmethod
-    def create_entry(user_id, data):
+    def create_entry(user_id: str, data: dict):
         data = validate_data(data, "POST")
-        
         entry = get_entry(data["type"])
-        
-        entry.set_values(data, user_id)
-        response = entry.create(user_id)      
-        return jsonify({"msg": response})
+        result = entry.create(user_id, data)      
+        return jsonify({"msg": result})
 
     @staticmethod
-    def update_entry(user_id, data):
-        data = validate_data(data, "PUT")
-      
+    def update_entry(user_id: str, data: dict):
+        data = validate_data(data, "PUT")      
         entry = get_entry(data["type"])
-
-        entry.load_data(data["id"], user_id)
-        entry.set_values(data, user_id)
-        response = entry.update(user_id)
-        return jsonify({"msg": response})
+        entry.load_by_id(data["id"], user_id)
+        result = entry.update(user_id, data)
+        return jsonify({"msg": result})
 
     @staticmethod
-    def delete_entry(user_id, data):
+    def delete_entry(user_id: str, data: dict):
         data = validate_data(data, "DELETE")
-
         entry = get_entry(data["type"])
-
-        entry.load_data(data["id"], user_id)
-        response = entry.delete(user_id)
-        return jsonify({"msg": response})
+        entry.load_by_id(data["id"], user_id)
+        result = entry.delete(user_id)
+        return jsonify({"msg": result})
     
