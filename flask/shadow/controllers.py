@@ -1,8 +1,8 @@
 from flask import jsonify
 from shadow.users import User, get_all_usernames_emails
 from shadow.validator import validate_data
-from shadow.serialize import get_serializer
 from shadow.factory import get_entry
+from shadow.entries import get_all_categories_by_user, to_dict
 
 class Controller:
 
@@ -70,25 +70,20 @@ class Controller:
         return jsonify({"username": username_available, "email": email_available})
 
     @staticmethod
-    def get_all_data_by_user(user_id):
+    def get_all_data_by_user(user_id: str):
         user = User()
         user.load_data_by_id(user_id)
         user_data = user.fetchUserData()
-
-        serializer = get_serializer("categories")
-        user_categories = serializer(user_id)
-
+        user_categories = [to_dict(category) for category in get_all_categories_by_user(user_id)]
         return jsonify({"user_data": user_data, "user_categories": user_categories})
 
     @staticmethod
-    def get_entry(user_id, data):
-        data = validate_data(data, "GET")
-        
+    def get_entry(user_id: str, data: dict):
+        data = validate_data(data, "GET")        
         entry = get_entry(data["type"])
-        
-        serializer = get_serializer(data["type"])
-        result = serializer(entry, data["id"], user_id)
-        return jsonify({"data": result})  
+        entry.load_by_id(data["id"], user_id)       
+        entry = to_dict(entry)
+        return jsonify({"data": entry})  
     
     @staticmethod
     def create_entry(user_id: str, data: dict):

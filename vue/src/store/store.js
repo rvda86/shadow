@@ -88,7 +88,7 @@ const store = createStore({
             })
         },
         async createAccountRequest(context, data) {
-            let response = await fetch(`${this.state.apiLink}/users/create`, {method: 'POST', headers: {'Content-type': 'application/json'}, body: JSON.stringify(data)})
+            let response = await fetch(`${this.state.apiLink}/users`, {method: 'POST', headers: {'Content-type': 'application/json'}, body: JSON.stringify(data)})
             response.json().then(result => {
                 if (response.ok) {
                     result.status = "success"

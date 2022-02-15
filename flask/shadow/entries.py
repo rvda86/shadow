@@ -24,6 +24,13 @@ class Entry(ABC):
     def delete(self, user_id: str, data: dict):
         pass
 
+def to_dict(obj):
+    dictionary = obj.__dict__
+    for k, v in dictionary.items():
+        if isinstance(v, list):            
+            dictionary[k] = [to_dict(item) if isinstance(item, Entry) else item for item in v]
+    return dictionary
+
 def get_all_categories_by_user(user_id: str):
     category_ids = db.retrieve_all_records_by_id(db.retrieve_all_categories_sql, (user_id, ))
     categories = []
