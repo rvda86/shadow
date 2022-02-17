@@ -25,7 +25,7 @@ export default {
     ...mapActions(["fetchDataRequest"])
   },
   created() {
-      if (!this.dataLoaded && this.authenticated) {
+      if (!this.dataIsLoaded && this.authenticated) {
           this.fetchDataRequest()
       }
     }

@@ -23,7 +23,8 @@ def error_handler(func):
         except InvalidDataError as e:
             print(e) 
             return {"msg": "Invalid data"}, 422
-        except UsernameOrEmailTakenError:
+        except UsernameOrEmailTakenError as e:
+            print(e)
             return {"msg": "Username or email already taken"}, 409
         except InvalidPasswordError:
             return {"msg": "Wrong password provided"}, 401

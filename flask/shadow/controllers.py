@@ -9,42 +9,38 @@ class Controller:
     @staticmethod
     def get_user(user_id):
         user = User()
-        user.load_data_by_id(user_id)
-        response = user.fetchUserData()
-        return jsonify(response)
+        user.load_by_id(user_id)
+        return jsonify({"username": user.get_username(), "email": user.get_email()})
 
     @staticmethod
     def create_user(data):
         if isinstance(data, dict): 
             data["type"] = "user"
         data = validate_data(data, "POST")
-
         user = User()
-        user.set_values(data)
-        response = user.create()
+        response = user.create(data)
         return jsonify(response)
     
     @staticmethod
     def update_user(user_id, data):
-        user = User()
-        user.load_data_by_id(user_id)
         if isinstance(data, dict): 
             data["type"] = "user"
         data = validate_data(data, "PUT")
+        user = User()
+        user.load_by_id(user_id)
         user.authenticate(data["currentPassword"])
-        user.set_values(data)
-        response = user.update()
+        response = user.update(user_id, data)
         return jsonify(response)
 
     @staticmethod
     def delete_user(user_id, data):
-        user = User()
-        user.load_data_by_id(user_id)
         if isinstance(data, dict): 
             data["type"] = "user"
         data = validate_data(data, "DELETE")
+        user = User()
+        user.load_by_id(user_id)        
         user.authenticate(data["password"])
-        response = user.delete()
+        response = user.delete(user_id)
         return jsonify(response)
 
     @staticmethod 
@@ -53,13 +49,13 @@ class Controller:
             data["type"] = "token"
         data = validate_data(data, "POST")
         user = User()
-        user.load_data_by_username(data["username"])
+        user.load_by_username(data["username"])
         user.authenticate(data["password"])
         response = user.get_token()
         return jsonify(response)
 
     @staticmethod
-    def check_available_username_email(data):
+    def check_available_username_email(data: dict):
         existing_usernames, existing_emails = get_all_usernames_emails()
         username_available = True
         email_available = True
@@ -72,8 +68,8 @@ class Controller:
     @staticmethod
     def get_all_data_by_user(user_id: str):
         user = User()
-        user.load_data_by_id(user_id)
-        user_data = user.fetchUserData()
+        user.load_by_id(user_id)
+        user_data = {"username": user.get_username(), "email": user.get_email()}
         user_categories = [to_dict(category) for category in get_all_categories_by_user(user_id)]
         return jsonify({"user_data": user_data, "user_categories": user_categories})
 
