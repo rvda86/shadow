@@ -2,12 +2,10 @@ import re
 from shadow.error_handling import InvalidDataError
 
 def strip_whitespace_dict(data: dict):
-    data_stripped = {}
     for k in data:
-        if not isinstance(data[k], str):
-            raise InvalidDataError("0")
-        data_stripped[k] = data[k].strip()
-    return data_stripped
+        if isinstance(data[k], str):
+            data[k] = data[k].strip()
+    return data
 
 required_keys = {
         "category":{"GET": ["type", "id"],
@@ -25,6 +23,10 @@ required_keys = {
         "todo": {   "GET": ["type", "id"],
                     "POST": ["type", "task", "due_date", "topic_id"], 
                     "PUT": ["type", "task", "due_date", "completed", "id"], 
+                    "DELETE": ["type", "id"]},
+        "habit": {  "GET": ["type", "id"],
+                    "POST": ["type", "name", "topic_id"],
+                    "PUT": ["type", "name", "days_completed", "id"],
                     "DELETE": ["type", "id"]},
         "user": {   "GET": ["type", "id"],
                     "POST": ["type", "username", "email", "password"], 
@@ -44,6 +46,7 @@ def validate_data(data, method):
     return validate_values(data, required_keys[data["type"]][method])
 
 def validate_values(data, required_keys):
+
     for k in required_keys:
         if k not in data:
             raise InvalidDataError("4")
@@ -51,7 +54,7 @@ def validate_values(data, required_keys):
     for k in data:
         if k not in required_keys:
             raise InvalidDataError("5")
-        elif k == "type":
+        elif k in ["type", "days_completed"]:
             pass
         elif k in ["name", "title", "task"]:
             if len(data[k]) < 1 or len(data[k]) > 100: 

@@ -150,87 +150,103 @@ class TestApi(unittest.TestCase):
     def get_token(self, data):
         return requests.post(self.token_endpoint, data=json.dumps(data), headers={'Content-type': 'application/json'})
 
-    def test_categories(self):
-        self.create_user({"username": "user_1", "email": "user_1@email.com", "password": "password"})
-        token = self.get_token({"username": "user_1", "password": "password"}).json()["access_token"]
-        self.create_user({"username": "user_2", "email": "user_2@email.com", "password": "password"})
-        token2 = self.get_token({"username": "user_2", "password": "password"}).json()["access_token"]
 
-        self.success_create_entry({"type": "category", "name": "category1"}, token)
-        id = self.get_data(token).json()["user_categories"][0]["id"]
-        self.success_get_entry("category", id, token)
-        self.fail_get_entry_wrong_user("category", id, token2)
-        self.success_update_entry({"type": "category", "name": "cat_1", "id": id}, token)
-        self.fail_update_entry_wrong_user({"type": "category", "name": "cat_1", "id": id}, token2)
-        self.fail_delete_entry_wrong_user({"type": "category", "id": id}, token2)
-        self.success_delete_entry({"type": "category", "id": id}, token)
-        self.fail_get_entry_unknown_entry("category", id, token)
+    def test_categories(self):
+        token1, token2 = self.set_up_tokens()
+        id = self.success_create_entry({"type": "category", "name": "category1"}, token1)
+
+        data = { 
+            "entry_type": "category",
+            "update": {"type": "category", "name": "cat_1", "id": id},
+            "delete": {"type": "category", "id": id}
+            }
+
+        self.run_test_cases(data, id, token1, token2)
 
     def test_topics(self):
-        self.create_user({"username": "user_1", "email": "user_1@email.com", "password": "password"})
-        token = self.get_token({"username": "user_1", "password": "password"}).json()["access_token"]
-        self.create_user({"username": "user_2", "email": "user_2@email.com", "password": "password"})
-        token2 = self.get_token({"username": "user_2", "password": "password"}).json()["access_token"]
-        self.create_entry({"type": "category", "name": "category1"}, token)
-        category_id = self.get_data(token).json()["user_categories"][0]["id"]
+        token1, token2 = self.set_up_tokens()
+        category_id = self.set_up_category_id(token1)
+        id = self.success_create_entry({"type": "topic", "topic_type": "journal", "name": "topic_1", "category_id": category_id}, token1)
+        self.success_create_entry({"type": "topic", "topic_type": "todo", "name": "topic_1", "category_id": category_id}, token1)
+        self.success_create_entry({"type": "topic", "topic_type": "habit", "name": "topic_1", "category_id": category_id}, token1)
+        
+        data = { 
+            "entry_type": "topic",
+            "update": {"type": "topic", "name": "top_1", "id": id},
+            "delete": {"type": "topic", "id": id}
+            }
 
-        self.success_create_entry({"type": "topic", "topic_type": "journal", "name": "topic_1", "category_id": category_id}, token)
-        id = self.get_data(token).json()["user_categories"][0]["topics"][0]["id"]
-        self.success_create_entry({"type": "topic", "topic_type": "todo", "name": "topic_1", "category_id": category_id}, token)
-        self.success_get_entry("topic", id, token)
-        self.fail_get_entry_wrong_user("topic", id, token2)
-        self.success_update_entry({"type": "topic", "name": "top_1", "id": id}, token)
-        self.fail_update_entry_wrong_user({"type": "topic", "name": "top_1", "id": id}, token2)
-        self.fail_delete_entry_wrong_user({"type": "topic", "id": id}, token2)
-        self.success_delete_entry({"type": "topic", "id": id}, token)
-        self.fail_get_entry_unknown_entry("topic", id, token)
+        self.run_test_cases(data, id, token1, token2)
 
     def test_journal(self):
-        self.create_user({"username": "user_1", "email": "user_1@email.com", "password": "password"})
-        token = self.get_token({"username": "user_1", "password": "password"}).json()["access_token"]
-        self.create_user({"username": "user_2", "email": "user_2@email.com", "password": "password"})
-        token2 = self.get_token({"username": "user_2", "password": "password"}).json()["access_token"]
-        self.create_entry({"type": "category", "name": "category1"}, token)
-        category_id = self.get_data(token).json()["user_categories"][0]["id"]
-        self.create_entry({"type": "topic", "topic_type": "journal", "name": "topic_1", "category_id": category_id}, token)
-        topic_id = self.get_data(token).json()["user_categories"][0]["topics"][0]["id"]
+        token1, token2 = self.set_up_tokens()
+        category_id = self.set_up_category_id(token1)
+        topic_id = self.set_up_topic_id("journal", category_id, token1)
+        id = self.success_create_entry({"type": "journal", "title": "My First Post", "content": "This is my first post", "topic_id": topic_id}, token1)
 
-        self.success_create_entry({"type": "journal", "title": "My First Post", "content": "This is my first post", "topic_id": topic_id}, token)
-        id = self.get_entry("topic", topic_id, token).json()["data"]["entries"][0]["id"]
-        self.success_get_entry("journal", id, token)
-        self.fail_get_entry_wrong_user("journal", id, token2)
-        self.success_update_entry({"type": "journal", "title": "My First Updated Post", "content": "This is my first updated content", "id": id}, token)
-        self.fail_update_entry_wrong_user({"type": "journal", "title": "My First Updated Post", "content": "This is my first updated content", "id": id}, token2)
-        self.fail_delete_entry_wrong_user({"type": "journal", "id": id}, token2)
-        self.success_delete_entry({"type": "journal", "id": id}, token)
-        self.fail_get_entry_unknown_entry("journal", id, token)
-    
+        data = { 
+            "entry_type": "journal",
+            "update": {"type": "journal", "title": "My First Updated Post", "content": "This is my first updated content", "id": id},
+            "delete": {"type": "journal", "id": id}
+            }
+
+        self.run_test_cases(data, id, token1, token2)
+
     def test_todo(self):
+        token1, token2 = self.set_up_tokens()
+        category_id = self.set_up_category_id(token1)
+        topic_id = self.set_up_topic_id("todo", category_id, token1)
+        id = self.success_create_entry({"type": "todo", "task": "My First Task", "due_date": "2021-12-01", "topic_id": topic_id}, token1)
+        
+        data = { 
+            "entry_type": "todo",
+            "update": {"type": "todo", "task": "My First Updated Task", "due_date": "2021-12-01", "completed": "0", "id": id},
+            "delete": {"type": "todo", "id": id}
+            }
+        
+        self.run_test_cases(data, id, token1, token2)
+
+    def test_habit(self):
+        token1, token2 = self.set_up_tokens()
+        category_id = self.set_up_category_id(token1)
+        topic_id = self.set_up_topic_id("habit", category_id, token1)
+        id = self.success_create_entry({"type": "habit", "name": "My First Habit", "topic_id": topic_id}, token1)
+        data = { 
+            "entry_type": "habit",
+            "update": {"type": "habit", "name": "My First Updated Habit", "days_completed": ["2022-03-12", "2022-03-13"], "id": id},
+            "delete": {"type": "habit", "id": id}
+            }
+        
+        self.run_test_cases(data, id, token1, token2)
+ 
+    def run_test_cases(self, data, id, token1, token2):
+        self.success_get_entry(data["entry_type"], id, token1)
+        self.fail_get_entry_wrong_user(data["entry_type"], id, token2)
+        self.success_update_entry(data["update"], token1)
+        self.fail_update_entry_wrong_user(data["update"], token2)
+        self.fail_delete_entry_wrong_user(data["delete"], token2)
+        self.success_delete_entry(data["delete"], token1)
+        self.fail_get_entry_unknown_entry(data["entry_type"], id, token1) 
+
+    def set_up_tokens(self):
         self.create_user({"username": "user_1", "email": "user_1@email.com", "password": "password"})
-        token = self.get_token({"username": "user_1", "password": "password"}).json()["access_token"]
+        token1 = self.get_token({"username": "user_1", "password": "password"}).json()["access_token"]
         self.create_user({"username": "user_2", "email": "user_2@email.com", "password": "password"})
         token2 = self.get_token({"username": "user_2", "password": "password"}).json()["access_token"]
-        self.create_entry({"type": "category", "name": "category1"}, token)
-        category_id = self.get_data(token).json()["user_categories"][0]["id"]
-        self.create_entry({"type": "topic", "topic_type": "todo", "name": "topic_1", "category_id": category_id}, token)
-        topic_id = self.get_data(token).json()["user_categories"][0]["topics"][0]["id"]
+        return token1, token2
 
-        self.success_create_entry({"type": "todo", "task": "My First Task", "due_date": "2021-12-01", "topic_id": topic_id}, token)
-        id = self.get_entry("topic", topic_id, token).json()["data"]["entries"][0]["id"]
-        self.success_get_entry("todo", id, token)
-        self.fail_get_entry_wrong_user("todo", id, token2)
-        self.success_update_entry({"type": "todo", "task": "My First Updated Task", "due_date": "2021-12-01", "completed": "0", "id": id}, token)
-        self.fail_update_entry_wrong_user({"type": "todo", "task": "My First Updated Task", "due_date": "2021-12-01", "completed": "0", "id": id}, token2)
-        self.fail_delete_entry_wrong_user({"type": "todo", "id": id}, token2)
-        self.success_delete_entry({"type": "todo", "id": id}, token)
-        self.fail_get_entry_unknown_entry("todo", id, token) 
+    def set_up_category_id(self, token):
+        response = self.create_entry({"type": "category", "name": "category1"}, token)
+        return response.json()["entry"]["id"]
+
+    def set_up_topic_id(self, type, category_id, token):
+        response = self.create_entry({"type": "topic", "topic_type": type, "name": "topic_1", "category_id": category_id}, token)
+        return response.json()["entry"]["id"]
 
     def success_create_entry(self, data, token):
         response = self.create_entry(data, token) 
         self.assertEqual(200, response.status_code)
-        if data["type"] == "journal" or data["type"] == "todo":
-            data["type"] = "entry"
-        self.assertEqual(f"{data['type']} successfully created", response.json()["msg"])
+        return response.json()["entry"]["id"]
 
     def success_get_entry(self, entry_type, id, token):
         response = self.get_entry(entry_type, id, token)
@@ -249,9 +265,6 @@ class TestApi(unittest.TestCase):
     def success_update_entry(self, data, token):
         response = self.update_entry(data, token)
         self.assertEqual(200, response.status_code)
-        if data["type"] == "journal" or data["type"] == "todo":
-            data["type"] = "entry"
-        self.assertEqual(f"{data['type']} successfully updated", response.json()["msg"])
 
     def fail_update_entry_wrong_user(self, data, token):
         response = self.update_entry(data, token)
@@ -266,9 +279,6 @@ class TestApi(unittest.TestCase):
     def success_delete_entry(self, data, token):
         response = self.delete_entry(data, token)
         self.assertEqual(200, response.status_code)
-        if data["type"] == "journal" or data["type"] == "todo":
-            data["type"] = "entry"
-        self.assertEqual(f"{data['type']} successfully deleted", response.json()["msg"])
 
     def get_data(self, token):
         return requests.get(self.data_endpoint, headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})

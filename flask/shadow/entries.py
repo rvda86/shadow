@@ -59,7 +59,7 @@ class Category(Entry):
         self.set_name(data["name"])
         self.id = uuid_generator()
         db.create_update_delete(db.create_category_sql, (self.id, user_id, self.name))
-        return "category successfully created"
+        return self, "category successfully created"
     
     def update(self, user_id: str, data: dict):
         self.set_name(data["name"])
@@ -105,7 +105,7 @@ class Topic(Entry):
         self.set_name(data["name"])
         self.set_topic_type(data["topic_type"])
         db.create_update_delete(db.create_topic_sql, (self.id, user_id, self.category_id, self.name, self.topic_type))
-        return "topic successfully created"
+        return self, "topic successfully created"
             
     def update(self, user_id: str, data: dict):
         self.set_name(data["name"])
@@ -184,7 +184,7 @@ class Journal(Entry):
         self.set_title(data["title"])
         self.set_content(data["content"])
         db.create_update_delete(db.create_journal_entry_sql, (self.id, user_id, self.topic_id, self.date_posted, self.title, self.content))
-        return "entry successfully created"
+        return self, "entry successfully created"
     
     def update(self, user_id: str, data: dict):
         self.date_edited = datetime.utcnow()
@@ -231,7 +231,7 @@ class ToDo(Entry):
         self.set_task(data["task"])
         self.set_due_date(data["due_date"])
         db.create_update_delete(db.create_todo_entry_sql, (self.id, user_id, self.topic_id, self.date_posted, self.task, self.due_date))
-        return "entry successfully created"
+        return self, "entry successfully created"
 
     def update(self, user_id: str, data: dict):
         self.date_edited = datetime.utcnow()
@@ -280,13 +280,13 @@ class Habit(Entry):
         self.date_posted = datetime.utcnow()
         self.set_topic(data["topic_id"])
         self.set_name(data["name"])
-        db.create_update_delete(db.create_todo_entry_sql, (self.id, user_id, self.topic_id, self.date_posted, self.name))
-        return "entry successfully created"
+        db.create_update_delete(db.create_habit_entry_sql, (self.id, user_id, self.topic_id, self.date_posted, self.name))
+        return self, "entry successfully created"
 
     def update(self, user_id: str, data: dict):
         self.date_edited = datetime.utcnow()
         self.set_name(data["name"])
-        db.create_update_delete(db.update_todo_entry_sql, (self.date_edited, self.name, self.id, user_id))
+        db.create_update_delete(db.update_habit_entry_sql, (self.date_edited, self.name, self.id, user_id))
         for day in data["days_completed"]:
             if day not in self.days_completed:
                 db.create_update_delete(db.create_habit_days_completed_sql, (user_id, self.id, day))
@@ -302,6 +302,8 @@ class Habit(Entry):
  
     def load_days_completed(self, user_id: str):
         days_completed = db.retrieve(db.retrieve_habit_days_completed_sql, (self.id, user_id))
+        if days_completed is None:
+            return []
         return list(days_completed)
     
     def set_days_completed(self, days_completed: list):

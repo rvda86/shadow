@@ -85,22 +85,23 @@ class Controller:
     def create_entry(user_id: str, data: dict):
         data = validate_data(data, "POST")
         entry = get_entry(data["type"])
-        result = entry.create(user_id, data)      
-        return jsonify({"msg": result})
+        created_entry, msg = entry.create(user_id, data)  
+        created_entry = to_dict(created_entry)   
+        return jsonify({"entry": created_entry, "msg": msg})
 
     @staticmethod
     def update_entry(user_id: str, data: dict):
         data = validate_data(data, "PUT")      
         entry = get_entry(data["type"])
         entry.load_by_id(data["id"], user_id)
-        result = entry.update(user_id, data)
-        return jsonify({"msg": result})
+        msg = entry.update(user_id, data)
+        return jsonify({"msg": msg})
 
     @staticmethod
     def delete_entry(user_id: str, data: dict):
         data = validate_data(data, "DELETE")
         entry = get_entry(data["type"])
         entry.load_by_id(data["id"], user_id)
-        result = entry.delete(user_id)
-        return jsonify({"msg": result})
+        msg = entry.delete(user_id)
+        return jsonify({"msg": msg})
     
