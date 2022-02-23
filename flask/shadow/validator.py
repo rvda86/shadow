@@ -32,7 +32,11 @@ required_keys = {
                     "POST": ["type", "username", "email", "password"], 
                     "PUT": ["type", "username", "email", "password", "currentPassword"], 
                     "DELETE": ["type", "password"]},
-        "token": {  "POST": ["type", "username", "password"]}             
+        "tag": {   "GET": ["type", "id"],
+                    "POST": ["type", "name"], 
+                    "PUT": ["type", "name", "id"], 
+                    "DELETE": ["type", "id"]},
+        "token": {  "POST": ["type", "username", "password"]},       
         }
 
 def validate_data(data, method):
@@ -41,7 +45,7 @@ def validate_data(data, method):
     data = strip_whitespace_dict(data)
     if "type" not in data: 
         raise InvalidDataError("2")
-    if data["type"] not in ["category", "topic", "journal", "habit", "todo", "user", "token"]:
+    if data["type"] not in ["category", "topic", "journal", "habit", "todo", "user", "token", "tag"]:
         raise InvalidDataError("3")
     return validate_values(data, required_keys[data["type"]][method])
 

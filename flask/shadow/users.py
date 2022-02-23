@@ -53,18 +53,13 @@ class User:
         db.create_update_delete(db.update_user_sql, (self.username, self.email, self.password, user_id))
         return {"msg": "account successfully updated"}
 
-    def delete(self, user_id: str):
+    def delete(self, user_id: str):       
         queries = [db.delete_all_journal_entries_user_sql, 
                     db.delete_all_todo_entries_user_sql, 
+                    db.delete_all_habit_entries_user_sql,
                     db.delete_all_topics_user_sql,
                     db.delete_all_categories_user_sql,
-                    db.delete_user_by_id_sql]        
-        # queries = [db.delete_all_journal_entries_user_sql, 
-        #             db.delete_all_todo_entries_user_sql, 
-        #             db.delete_all_habit_entries_user_sql,
-        #             db.delete_all_topics_user_sql,
-        #             db.delete_all_categories_user_sql,
-        #             db.delete_user_by_id_sql]
+                    db.delete_user_by_id_sql]
         db.create_update_delete(queries, (user_id, ))
         return {"msg": "account successfully deleted"}
 

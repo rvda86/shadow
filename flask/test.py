@@ -218,6 +218,17 @@ class TestApi(unittest.TestCase):
             }
         
         self.run_test_cases(data, id, token1, token2)
+
+    def test_tag(self):
+        token1, token2 = self.set_up_tokens()
+        id = self.success_create_entry({"type": "tag", "name": "tag1"}, token1)
+        data = { 
+            "entry_type": "tag",
+            "update": {"type": "tag", "name": "tag2", "id": id},
+            "delete": {"type": "tag", "id": id}
+            }
+            
+        self.run_test_cases(data, id, token1, token2)
  
     def run_test_cases(self, data, id, token1, token2):
         self.success_get_entry(data["entry_type"], id, token1)

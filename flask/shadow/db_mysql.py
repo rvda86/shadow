@@ -12,6 +12,7 @@ class Database:
     create_tag_sql = "INSERT INTO tags (id, user_id, tag) VALUES (%s, %s, %s)"
     retrieve_tag_sql = "SELECT id, tag FROM tags WHERE id = %s AND user_id = %s"
     retrieve_tag_ids_by_user_sql = "SELECT id FROM tags WHERE user_id = %s"
+    retrieve_tags_by_user_sql = "SELECT tag FROM tags WHERE user_id = %s"
     update_tag_sql = "UPDATE tags SET tag = %s WHERE id = %s AND user_id = %s"
     delete_tag_sql = "DELETE FROM tags WHERE id = %s AND user_id = %s"
 

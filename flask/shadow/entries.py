@@ -169,6 +169,7 @@ class Journal(Entry):
     title: str
     content: str
     entry_type: str
+    tags: list
     
     def load_by_id(self, id: str, user_id: str):
         result = db.retrieve(db.retrieve_journal_entry_sql, (id, user_id))
@@ -176,7 +177,16 @@ class Journal(Entry):
             raise NotFoundError
         self.id, self.topic_id, self.date_posted, self.date_edited, self.title, self.content = result
         self.entry_type = "journal"
-    
+        self.tags = self.load_tags(user_id)
+
+    def load_tags(self, user_id: str):
+        tag_ids = db.retrieve_all_by_id(db.retrieve_tag_ids_by_user_sql, (user_id, ))
+        tags = [] 
+        for id in tag_ids:
+            tag = Tag()
+            tag.load_by_id(id[0], user_id)
+            tags.append(tag)
+
     def create(self, user_id: str, data: dict):
         self.id = uuid_generator()
         self.date_posted = datetime.utcnow()
@@ -312,5 +322,40 @@ class Habit(Entry):
     def set_topic(self, id: str):
         self.topic_id = id
 
+    def set_name(self, name: str):
+        self.name = name
+
+class Tag(Entry):
+    id: str
+    name: str
+    
+    def load_by_id(self, id: str, user_id: str):
+        result = db.retrieve(db.retrieve_tag_sql, (id, user_id))
+        if result is None:
+            raise NotFoundError
+        self.id, self.name = result
+        self.entry_type = "tag"
+
+    def create(self, user_id: str, data: dict):
+        self.id = uuid_generator()
+        user_tags = db.retrieve(db.retrieve_tags_by_user_sql, (user_id, ))
+        if user_tags is None:
+            user_tags = []
+        if data["name"] not in user_tags:
+            self.set_name(data["name"])
+            db.create_update_delete(db.create_tag_sql, (self.id, user_id, self.name))
+        return self, "tag successfully created"
+
+    def update(self, user_id: str, data: dict):
+        user_tags = db.retrieve(db.retrieve_tags_by_user_sql, (user_id, ))
+        if user_tags is not None and data["name"] not in user_tags:
+            self.set_name(data["name"])
+            db.create_update_delete(db.update_tag_sql, (self.name, self.id, user_id))
+        return "tag successfully updated"
+
+    def delete(self, user_id: str):
+        db.create_update_delete(db.delete_tag_sql, (self.id, user_id))
+        return "tag successfully deleted"
+ 
     def set_name(self, name: str):
         self.name = name
