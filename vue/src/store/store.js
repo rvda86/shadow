@@ -154,7 +154,50 @@ const store = createStore({
                     context.commit("setFlashMessage", data)
                 }
             })
-        }
+        },
+        async sendPasswordResetLinkRequest(context, data) {
+            let response = await fetch(`${this.state.apiLink}/users/reset_password_send_link`, 
+                                        {method: 'POST', 
+                                        headers: {'Content-type': 'application/json'},
+                                        body: JSON.stringify(data)})
+            response.json().then(result => {
+                if (response.ok) {              
+                    result.status = "success"
+                    context.commit("setFlashMessage", result)
+                } else {
+                    context.commit("setFlashMessage", data)
+                }
+            })
+        },
+        async passwordResetRequest(context, data) {
+            let response = await fetch(`${this.state.apiLink}/users/reset_password`, 
+                                        {method: 'POST', 
+                                        headers: {'Content-type': 'application/json', 'Authorization': "Bearer " + data.token},
+                                        body: JSON.stringify({password: data.password})})
+            response.json().then(result => {
+                if (response.ok) {              
+                    result.status = "success"
+                    context.commit("setFlashMessage", result)
+                    router.replace("/login")    
+                } else {
+                    context.commit("setFlashMessage", data)
+                }
+            })
+        },
+        async verifyEmailRequest(context, token) {
+            let response = await fetch(`${this.state.apiLink}/users/verify_email`, 
+                                        {method: 'POST', 
+                                        headers: {'Content-Length': 0, 'Authorization': "Bearer " + token}})
+            response.json().then(result => {
+                if (response.ok) {              
+                    result.status = "success"
+                    context.commit("setFlashMessage", result)
+                    router.replace("/login")    
+                } else {
+                    context.commit("setFlashMessage", data)
+                }
+            })
+        },
 
     }
 })

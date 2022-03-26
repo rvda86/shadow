@@ -34,10 +34,12 @@ class TestApi(unittest.TestCase):
     def test_users(self):
 
         username = "user_1"
+        username2 = "user_2"
         new_username = "donald"
-        password = "password"
-        email = "user_1@email.com"
-        new_email = "user_1@hotmail.com"
+        password = "password1"
+        email = "robinvda@email.com"
+        email2 = "ruimtepiraat86@gmail.com"
+        new_email = "rvda@protonmail.com"
         wrong_password = "pa$$w0rd"
         invalid_email = "user_1email.com"
         invalid_password = "passwor"
@@ -45,8 +47,8 @@ class TestApi(unittest.TestCase):
 
         self.success_create_user({"username": username, "email": email, "password": password})
         self.fail_create_user_duplicate({"username": username, "email": email, "password": password})
-        self.fail_create_user_invalid_data({"username": username, "email": invalid_email, "password": password})
-        self.fail_create_user_invalid_data({"username": username, "email": email, "password": invalid_password})
+        self.fail_create_user_invalid_data({"username": username2, "email": invalid_email, "password": password})
+        self.fail_create_user_invalid_data({"username": username2, "email": email2, "password": invalid_password})
         self.success_get_token({"username": username, "password": password})
         self.fail_get_token_unknown_user({"username": "user_2", "password": "password"})
         self.fail_get_token_wrong_password({"username": username, "password": wrong_password} )
@@ -240,10 +242,10 @@ class TestApi(unittest.TestCase):
         self.fail_get_entry_unknown_entry(data["entry_type"], id, token1) 
 
     def set_up_tokens(self):
-        self.create_user({"username": "user_1", "email": "user_1@email.com", "password": "password"})
-        token1 = self.get_token({"username": "user_1", "password": "password"}).json()["access_token"]
-        self.create_user({"username": "user_2", "email": "user_2@email.com", "password": "password"})
-        token2 = self.get_token({"username": "user_2", "password": "password"}).json()["access_token"]
+        self.create_user({"username": "user_1", "email": "user_1@email.com", "password": "password1"})
+        token1 = self.get_token({"username": "user_1", "password": "password1"}).json()["access_token"]
+        self.create_user({"username": "user_2", "email": "user_2@email.com", "password": "password1"})
+        token2 = self.get_token({"username": "user_2", "password": "password1"}).json()["access_token"]
         return token1, token2
 
     def set_up_category_id(self, token):

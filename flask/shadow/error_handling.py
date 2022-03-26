@@ -15,6 +15,9 @@ class NotFoundError(Exception):
 class DatabaseError(Exception):
     pass
 
+class VerificationMailError(Exception):
+    pass
+
 def error_handler(func):
     @wraps(func)
     def inner(*args, **kwargs):

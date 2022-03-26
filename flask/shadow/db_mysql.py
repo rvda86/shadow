@@ -4,6 +4,17 @@ from shadow.error_handling import DatabaseError
 
 class Database:
 
+    create_user_sql = "INSERT INTO users (id, username, email, password) VALUES (%s, %s, %s, %s)"
+    retrieve_user_by_username_sql = "SELECT * FROM users WHERE username = %s"
+    retrieve_user_by_id_sql = "SELECT * FROM users WHERE id = %s"
+    retrieve_user_by_email_sql = "SELECT * FROM users WHERE email = %s"
+    retrieve_all_usernames_sql = "SELECT username FROM users"
+    retrieve_all_emails_sql = "SELECT email FROM users"
+    update_user_sql = "UPDATE users SET username = %s, email = %s, password = %s WHERE id = %s"
+    delete_user_by_id_sql = "DELETE FROM users WHERE id = %s"
+    update_email_verification_status_sql = "UPDATE users SET email_verified = %s WHERE id = %s"
+    update_password_sql = "UPDATE users SET password = %s WHERE id = %s"
+
     create_journal_tag_sql = "INSERT INTO journal_tags (id, user_id, tag_id, journal_id) VALUES (%s, %s, %s, %s)"
     retrieve_journal_tag_sql = "SELECT id, tag_id, journal_id FROM journal_tags WHERE id = %s and user_id = %s"
     retrieve_journal_tag_ids_by_journal_entry_sql = "SELECT tag_id FROM journal_tags WHERE journal_id = %s AND user_id = %s"
@@ -26,14 +37,6 @@ class Database:
     update_habit_entry_sql = "UPDATE habit_entries SET date_edited = %s, name = %s WHERE id = %s AND user_id = %s"
     delete_habit_entry_sql = "DELETE FROM habit_entries WHERE id = %s AND user_id = %s"
     delete_all_habit_entries_user_sql = "DELETE FROM habit_entries WHERE user_id = %s"
-
-    create_user_sql = "INSERT INTO users (id, username, email, password) VALUES (%s, %s, %s, %s)"
-    retrieve_user_by_username_sql = "SELECT * FROM users WHERE username = %s"
-    retrieve_user_by_id_sql = "SELECT * FROM users WHERE id = %s"
-    retrieve_all_usernames_sql = "SELECT username FROM users"
-    retrieve_all_emails_sql = "SELECT email FROM users"
-    update_user_sql = "UPDATE users SET username = %s, email = %s, password = %s WHERE id = %s"
-    delete_user_by_id_sql = "DELETE FROM users WHERE id = %s"
 
     create_category_sql = "INSERT INTO categories (id, user_id, name) VALUES (%s, %s, %s)"
     retrieve_category_sql = "SELECT id, name FROM categories WHERE id = %s AND user_id = %s"

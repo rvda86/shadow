@@ -9,6 +9,9 @@ import CreateAccount from '../components/pages/CreateAccount.vue'
 import Login from '../components/pages/Login.vue'
 import Home from '../components/pages/Home.vue'
 import NotFound from '../components/pages/NotFound.vue'
+import PasswordReset from '../components/pages/PasswordReset.vue'
+import RequestPasswordReset from '../components/pages/RequestPasswordReset.vue'
+import VerifyEmail from '../components/pages/VerifyEmail.vue'
 
 function checkExpiration(to, from, next, authRequired) {
   let expiration_time = localStorage.getItem('expires')
@@ -73,8 +76,29 @@ const routes = [
     component: ManageAccount,
     beforeEnter: (to, from, next) => {
         checkExpiration(to, from, next, true)
-  }
-},
+    }
+  },
+  { path: '/password_reset', 
+  name: 'passwordReset', 
+  component: PasswordReset,
+  beforeEnter: (to, from, next) => {
+      checkExpiration(to, from, next, false)
+    }
+  },
+  { path: '/request_password_reset', 
+  name: 'requestPasswordReset', 
+  component: RequestPasswordReset,
+  beforeEnter: (to, from, next) => {
+      checkExpiration(to, from, next, false)
+    }
+  },
+  { path: '/verify_email', 
+  name: 'verifyEmail', 
+  component: VerifyEmail,
+  beforeEnter: (to, from, next) => {
+      checkExpiration(to, from, next, false)
+    }
+  },
   { path: '/:pathMatch(.*)*', 
     name: 'notFound', 
     component: NotFound

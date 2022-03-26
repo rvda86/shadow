@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
+from shadow.validation import validate_title, validate_id, validate_date
 from shadow.utils import uuid_generator
 from shadow.db_mysql import db_pool
-from shadow.error_handling import NotFoundError
+from shadow.error_handling import InvalidDataError, NotFoundError
 
 db = db_pool.acquire()
 
@@ -71,6 +72,7 @@ class Category(Entry):
         return "category successfully deleted"
     
     def set_name(self, name: str):
+        validate_title(name)
         self.name = name
 
     def load_topics(self, user_id: str):
@@ -117,12 +119,16 @@ class Topic(Entry):
         return "topic successfully deleted"
 
     def set_name(self, name: str):
+        validate_title(name)
         self.name = name
     
     def set_topic_type(self, topic_type: str):
+        if topic_type not in ["journal", "todo", "habit"]:
+            raise InvalidDataError("invalid topic type")
         self.topic_type = topic_type
     
     def set_category(self, id: str):
+        validate_id(id)
         self.category_id = id
     
     def load_entries(self, user_id: str):
@@ -208,12 +214,16 @@ class Journal(Entry):
         return "entry successfully deleted"
 
     def set_title(self, title: str):
+        validate_title(title)
         self.title = title
 
     def set_content(self, content: str):
+        if len(content) > 65535:
+            raise InvalidDataError("post is too long")
         self.content = content
 
     def set_topic(self, id: str):
+        validate_id(id)
         self.topic_id = id
 
 class ToDo(Entry):
@@ -256,15 +266,20 @@ class ToDo(Entry):
         return "entry successfully deleted"
 
     def set_topic(self, id: str):
+        validate_id(id)
         self.topic_id = id
 
     def set_task(self, task: str):
+        validate_title(task)
         self.task = task
 
     def set_due_date(self, date: str):
+        validate_date(date)
         self.due_date = date
 
     def set_completed(self, completed: str):
+        if completed not in ["0", "1"]:
+            raise InvalidDataError("invalid value")
         self.completed = completed
 
 class Habit(Entry):
@@ -317,12 +332,16 @@ class Habit(Entry):
         return list(days_completed)
     
     def set_days_completed(self, days_completed: list):
+        for day in days_completed:
+            validate_date(day)
         self.days_completed = days_completed
     
     def set_topic(self, id: str):
+        validate_id(id)
         self.topic_id = id
 
     def set_name(self, name: str):
+        validate_title(name)
         self.name = name
 
 class Tag(Entry):
@@ -358,4 +377,5 @@ class Tag(Entry):
         return "tag successfully deleted"
  
     def set_name(self, name: str):
+        validate_title(name)
         self.name = name

@@ -2,20 +2,20 @@ from shadow import app
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from shadow.error_handling import error_handler
-from shadow.controllers import Controller
+from shadow.controllers.user_controller import UserController
 
 @app.route("/api/users", methods=["GET"])
 @error_handler
 @jwt_required()
 def get_user(): 
     user_id = get_jwt_identity()
-    return Controller.get_user(user_id)
+    return UserController.get_user(user_id)
 
 @app.route("/api/users", methods=["POST"])
 @error_handler
 def create_user():
     data = request.get_json()
-    return Controller.create_user(data)
+    return UserController.create_user(data)
 
 @app.route("/api/users", methods=["PUT"])
 @error_handler
@@ -23,7 +23,7 @@ def create_user():
 def update_user():
     user_id = get_jwt_identity()
     data = request.get_json()
-    return Controller.update_user(user_id, data)
+    return UserController.update_user(user_id, data)
 
 @app.route("/api/users", methods=["DELETE"])
 @error_handler
@@ -31,55 +31,52 @@ def update_user():
 def delete_user():
     user_id = get_jwt_identity()
     data = request.get_json()
-    return Controller.delete_user(user_id, data)
+    return UserController.delete_user(user_id, data)
 
 @app.route("/api/users/token", methods=["POST"])
 @error_handler
 def get_token():
     data = request.get_json()
-    return Controller.get_token(data)
+    return UserController.get_token(data)
 
 @app.route("/api/users/check_availability", methods=["POST"])
 @error_handler
 def check_available_username_email():
     data = request.get_json()
-    return Controller.check_available_username_email(data)
+    return UserController.check_available_username_email(data)
 
 @app.route("/api/data", methods=["GET"])
 @error_handler
 @jwt_required()
 def get_all_data_by_user():
     user_id = get_jwt_identity()
-    return Controller.get_all_data_by_user(user_id)
+    return UserController.get_all_data_by_user(user_id)
 
-@app.route("/api/entries", methods=["GET"])
+@app.route("/api/users/verify_email", methods=["POST"])
 @error_handler
 @jwt_required()
-def get_entry():
-    user_id = get_jwt_identity()
-    data = {"type": request.args.get('type'), "id": request.args.get('id')}
-    return Controller.get_entry(user_id, data)
-    
-@app.route("/api/entries", methods=["POST"])
-@error_handler
-@jwt_required()
-def create_entry():
-    user_id = get_jwt_identity()
-    data = request.get_json()
-    return Controller.create_entry(user_id, data)
+def verify_email():
+    email = get_jwt_identity()
+    return UserController.email_verification(email)
 
-@app.route("/api/entries", methods=["PUT"])
+@app.route("/api/users/verify_email_send_link", methods=["POST"])
 @error_handler
 @jwt_required()
-def update_entry():
+def verify_email_send_link():
     user_id = get_jwt_identity()
-    data = request.get_json()
-    return Controller.update_entry(user_id, data)
- 
-@app.route("/api/entries", methods=["DELETE"])
+    return UserController.email_verification_send_link(user_id)
+
+@app.route("/api/users/reset_password", methods=["POST"])
 @error_handler
 @jwt_required()
-def delete_entry():
-    user_id = get_jwt_identity()
+def reset_password_send_link():
+    email = get_jwt_identity()
     data = request.get_json()
-    return Controller.delete_entry(user_id, data)    
+    data["email"] = email
+    return UserController.reset_password(data)
+
+@app.route("/api/users/reset_password_send_link", methods=["POST"])
+@error_handler
+def reset_password():
+    data = request.get_json()
+    return UserController.password_reset_send_link(data)

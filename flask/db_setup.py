@@ -21,7 +21,8 @@ create_table_users_sql =    """CREATE TABLE IF NOT EXISTS users (
                                 id CHAR(36) PRIMARY KEY,
                                 username VARCHAR(100) NOT NULL UNIQUE,
                                 email VARCHAR(100) NOT NULL UNIQUE,
-                                password VARCHAR(100) NOT NULL
+                                password VARCHAR(100) NOT NULL,
+                                email_verified BOOLEAN NOT NULL DEFAULT 0
                             );"""
 
 create_table_categories_sql = """CREATE TABLE IF NOT EXISTS categories (
