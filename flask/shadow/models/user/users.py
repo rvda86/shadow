@@ -1,9 +1,12 @@
 from shadow.utils import uuid_generator
 from shadow.error_handling import UsernameOrEmailTakenError, InvalidPasswordError, NotFoundError
 from shadow.validation import validate_email, validate_password, validate_username
+from shadow.logging import get_user_logger
 from shadow import bcrypt
 from flask_jwt_extended import create_access_token
 from shadow.db_mysql import db_pool
+
+logger = get_user_logger()
 
 db = db_pool.acquire()
 
@@ -59,6 +62,7 @@ class User:
         self.set_password(data["password"])    
         self.id = uuid_generator()   
         db.create_update_delete(db.create_user_sql, (self.id, self.username, self.email, self.password))
+        logger.info(f'USER CREATED: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
         return {"msg": "account successfully created"}
 
     def update(self, user_id: str, data: dict):
@@ -67,6 +71,7 @@ class User:
             self.set_email(data["email"])
             self.set_password(data["password"])  
             db.create_update_delete(db.update_user_sql, (self.username, self.email, self.password, user_id))
+            logger.info(f'USER UPDATED: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
             return {"msg": "account successfully updated"}
         return {"msg": "not authenticated"}
 
@@ -79,6 +84,7 @@ class User:
                         db.delete_all_categories_user_sql,
                         db.delete_user_by_id_sql]
             db.create_update_delete(queries, (user_id, ))
+            logger.info(f'USER DELETED: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
             return {"msg": "account successfully deleted"}
         return {"msg": "not authenticated"}
 
@@ -121,7 +127,7 @@ class User:
     def set_email_verified(self, verified: bool):
         self.email_verified = verified
 
-    def email_is_verified(self):
+    def get_email_verified(self):
         return self.email_verified
 
     def update_email_verification_status(self):
@@ -130,10 +136,12 @@ class User:
         if not self.email_verified:
             email_verified = "0"
         db.create_update_delete(db.update_email_verification_status_sql, (email_verified, self.get_id()))
+        logger.info(f'USER EMAIL VERIFICATION UPDATED: {self.id} Username: {self.get_username()} Email: {self.get_email()} Email-verified {self.get_email_verified()}')
         return {"msg": "email verification status has been updated"}
 
     def update_password_password_reset(self):
         db.create_update_delete(db.update_password_sql, (self.password, self.get_id()))
+        logger.info(f'USER PASSWORD RESET: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
         return {"msg": "password has been updated"}
 
     def authenticate(self, password: str):

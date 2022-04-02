@@ -33,7 +33,7 @@ def send_email_verification_mail(user):
         return "Failed to send verification email"
 
 def send_password_reset_mail(user):
-    if user.email_is_verified():
+    if user.get_email_verified():
         access_token = create_access_token(identity=user.get_email())
         html = f"""
             <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

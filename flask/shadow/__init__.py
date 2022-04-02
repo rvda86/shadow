@@ -6,6 +6,7 @@ from flask_mail import Mail
 from dotenv import load_dotenv
 import os
 import datetime
+import logging
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -37,5 +38,7 @@ bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 mail = Mail(app)
 CORS(app)
+
+logging.basicConfig(filename='./shadow/logs/logs.log', level=logging.DEBUG, format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
 
 from shadow.routes import entry_routes, user_routes
