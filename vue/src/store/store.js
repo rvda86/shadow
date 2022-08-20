@@ -8,7 +8,7 @@ const store = createStore({
             headerTitle: '',
             showMenu: false,
             showModal: false,
-            apiLink: "http://192.168.2.2:5000/api",
+            apiLink: "http://192.168.2.3:5000/api",
             data: {userData: {}, categories: {}},
             dataIsLoaded: false,
             topicTypes: ["journal", "todo"] 

@@ -148,6 +148,7 @@ class User:
         if not bcrypt.check_password_hash(self.password, password):
             raise InvalidPasswordError
         self.authenticated = True
+        logger.info(f'USER AUTHENTICATED: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
 
     def get_token(self):
         if self.authenticated:
