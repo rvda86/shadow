@@ -25,7 +25,7 @@ const store = createStore({
             localStorage.removeItem("token")
             localStorage.removeItem("expires")
             state.authenticated = false
-            router.replace("/login")
+            router.replace("/")
         },
         toggleMenu(state) {
             state.showMenu = !state.showMenu
