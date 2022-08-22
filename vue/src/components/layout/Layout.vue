@@ -2,6 +2,9 @@
     <div id="grid">
         <Modal v-show="showModal"/>
         <header v-show="authenticated" id="header">
+            <HeaderAuth />
+        </header>
+        <header v-show="!authenticated" id="header">
             <Header />
         </header>
         <main id="main">
@@ -17,6 +20,7 @@
 <script>
 
 import { mapState } from 'vuex'
+import HeaderAuth from './HeaderAuth.vue'
 import Header from './Header.vue'
 import Menu from './Menu.vue'
 import FlashMessage from '../ui/FlashMessage.vue'
@@ -26,6 +30,7 @@ export default {
   name: 'Layout',
   components: {
       Header,
+      HeaderAuth,
       Menu,
       FlashMessage,
       Modal

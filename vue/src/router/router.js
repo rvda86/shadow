@@ -7,6 +7,7 @@ import Journal from '../components/pages/Journal.vue'
 import Todo from '../components/pages/Todo.vue'
 import CreateAccount from '../components/pages/CreateAccount.vue'
 import Login from '../components/pages/Login.vue'
+import Index from '../components/pages/Index.vue'
 import Home from '../components/pages/Home.vue'
 import NotFound from '../components/pages/NotFound.vue'
 import PasswordReset from '../components/pages/PasswordReset.vue'
@@ -27,8 +28,15 @@ function checkExpiration(to, from, next, authRequired) {
 
 const routes = [
   { path: '/', 
-    redirect: '/home'
+    redirect: '/index'
    },
+  { path: '/index', 
+   name: 'index', 
+   component: Index,
+   beforeEnter: (to, from, next) => {
+       checkExpiration(to, from, next, false)
+   }
+ },
   { path: '/topics/journal/:topicId', 
     name: 'journal', 
     component: Journal,

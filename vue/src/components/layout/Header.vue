@@ -1,7 +1,7 @@
 <template>
     <div class="header-nav-left">
-        <router-link class="header-item" @click="hideMenu" to="/">
-            Home
+        <router-link class="header-item" :to="{name: 'index'}">
+            SHADOW
         </router-link>
     </div>
     <div id="header-title">
@@ -9,27 +9,17 @@
             {{ headerTitle }}
         </a>
     </div>
-    <div class="header-nav-right">
-        <a class="header-item" @click="toggleMenu" href="#">
-            <div class="hamburger-menu"></div>  
-            <div class="hamburger-menu"></div>  
-            <div class="hamburger-menu"></div>            
-        </a>
+    <div class="header-nav-right2">
+        <router-link :to="{name: 'login'}"><button class="button">Log In</button></router-link>
+        <router-link :to="{name: 'createAccount'}"><button class="button">Create Account</button></router-link>
     </div>  
 </template>
 
 <script>
 
-import { mapState, mapMutations } from 'vuex'
 
 export default {
-    name: 'Header',
-    computed: {
-        ...mapState(["headerTitle"])
-    },
-    methods: {
-        ...mapMutations(["toggleMenu", "hideMenu"])
-    }
+    name: 'Header'
 }
 </script>
 
@@ -41,13 +31,9 @@ header {
     background-color: #333333;
     background-color: white;
 }
-#header-title {
+.header-nav-right2 {
     display: flex;
-    margin: auto;
-}
-.header-nav-right {
-    display: flex;
-    width: 75px;
+    width: 200px;
     justify-content: right;
 }
 .header-nav-left {
@@ -62,11 +48,5 @@ header {
     text-decoration: none;
     font-size: 0.8em;
     font-weight: 550;
-}
-.hamburger-menu {
-    width: 20px;
-    height: 2px;
-    margin: 4px 0;
-    background-color: black;
 }
 </style>
