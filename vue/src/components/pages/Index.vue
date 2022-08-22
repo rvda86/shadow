@@ -59,8 +59,8 @@
                 <h3>Track your habits</h3>
 
                 <p>Increase your motivation. It takes time to build a new habit, with a habit tracker you make your progress visible.</p>
-                <p>Become more aware of your behavior by being able to see how you did every day</p>
-                <p>Be more likely to succeed at changing your behavior</p>
+                <p>Become more aware of your behavior by being able to see how you did every day.</p>
+                <p>Be more likely to succeed at changing your behavior.</p>
 
             </div>
 
