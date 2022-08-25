@@ -60,12 +60,14 @@ class Category(Entry):
         self.set_name(data["name"])
         self.id = uuid_generator()
         db.create_update_delete(db.create_category_sql, (self.id, user_id, self.name))
+        self.entry_type = "category" 
+        self.load_by_id(self.id, user_id)
         return self, "category successfully created"
     
     def update(self, user_id: str, data: dict):
         self.set_name(data["name"])
         db.create_update_delete(db.update_category_sql, (self.name, self.id, user_id))
-        return "category successfully updated"
+        return self, "category successfully updated"
 
     def delete(self, user_id: str):
         db.create_update_delete(db.delete_category_sql, (self.id, user_id))
@@ -107,12 +109,13 @@ class Topic(Entry):
         self.set_name(data["name"])
         self.set_topic_type(data["topic_type"])
         db.create_update_delete(db.create_topic_sql, (self.id, user_id, self.category_id, self.name, self.topic_type))
+        self.load_by_id(self.id, user_id)
         return self, "topic successfully created"
             
     def update(self, user_id: str, data: dict):
         self.set_name(data["name"])
         db.create_update_delete(db.update_topic_sql, (self.name, self.id, user_id))
-        return "topic successfully updated"
+        return self, "topic successfully updated"
     
     def delete(self, user_id: str):
         if len(self.entries) > 0:
@@ -202,6 +205,7 @@ class Journal(Entry):
         self.set_title(data["title"])
         self.set_content(data["content"])
         db.create_update_delete(db.create_journal_entry_sql, (self.id, user_id, self.topic_id, self.date_posted, self.title, self.content))
+        self.load_by_id(self.id, user_id)
         return self, "entry successfully created"
     
     def update(self, user_id: str, data: dict):
@@ -209,7 +213,7 @@ class Journal(Entry):
         self.set_title(data["title"])
         self.set_content(data["content"])
         db.create_update_delete(db.update_journal_entry_sql, (self.date_edited, self.title, self.content, self.id, user_id))
-        return "entry successfully updated"
+        return self, "entry successfully updated"
    
     def delete(self, user_id: str):
         db.create_update_delete(db.delete_journal_entry_sql, (self.id, user_id))
@@ -253,6 +257,7 @@ class ToDo(Entry):
         self.set_task(data["task"])
         self.set_due_date(data["due_date"])
         db.create_update_delete(db.create_todo_entry_sql, (self.id, user_id, self.topic_id, self.date_posted, self.task, self.due_date))
+        self.load_by_id(self.id, user_id)
         return self, "entry successfully created"
 
     def update(self, user_id: str, data: dict):
@@ -261,7 +266,7 @@ class ToDo(Entry):
         self.set_due_date(data["due_date"])
         self.set_completed(data["completed"])
         db.create_update_delete(db.update_todo_entry_sql, (self.date_edited, self.task, self.due_date, self.completed, self.id, user_id))
-        return "entry successfully updated"
+        return self, "entry successfully updated"
  
     def delete(self, user_id: str):
         db.create_update_delete(db.delete_todo_entry_sql, (self.id, user_id))
@@ -308,6 +313,7 @@ class Habit(Entry):
         self.set_topic(data["topic_id"])
         self.set_name(data["name"])
         db.create_update_delete(db.create_habit_entry_sql, (self.id, user_id, self.topic_id, self.date_posted, self.name))
+        self.load_by_id(self.id, user_id)
         return self, "entry successfully created"
 
     def update(self, user_id: str, data: dict):
@@ -321,7 +327,7 @@ class Habit(Entry):
             if day not in data["days_completed"]:
                 db.create_update_delete(db.delete_habit_days_completed_sql, (self.id, user_id))
         self.set_days_completed(data["days_completed"])
-        return "entry successfully updated"
+        return self, "entry successfully updated"
 
     def delete(self, user_id: str):
         db.create_update_delete(db.delete_habit_entry_sql, (self.id, user_id))
@@ -365,6 +371,7 @@ class Tag(Entry):
         if data["name"] not in user_tags:
             self.set_name(data["name"])
             db.create_update_delete(db.create_tag_sql, (self.id, user_id, self.name))
+        self.load_by_id(self.id, user_id)
         return self, "tag successfully created"
 
     def update(self, user_id: str, data: dict):
@@ -372,7 +379,7 @@ class Tag(Entry):
         if user_tags is not None and data["name"] not in user_tags:
             self.set_name(data["name"])
             db.create_update_delete(db.update_tag_sql, (self.name, self.id, user_id))
-        return "tag successfully updated"
+        return self, "tag successfully updated"
 
     def delete(self, user_id: str):
         db.create_update_delete(db.delete_tag_sql, (self.id, user_id))

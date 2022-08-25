@@ -55,11 +55,75 @@ const store = createStore({
             state.data = {userData: data.user_data, categories: data.user_categories}
             state.dataIsLoaded = true
         },
+        addResourceLocal(state, newEntry) {
+            if (newEntry.entry_type === "category") {
+                state.data.categories.push(newEntry)
+            } else if (newEntry.entry_type === "topic") {
+                for (let category of state.data.categories) {
+                    if (category.id === newEntry.category_id) {
+                        category.topics.push(newEntry)
+                    }
+                }
+            } else {
+                for (let category of state.data.categories) {
+                    for (let topic of category.topics) {
+                        if (topic.id === newEntry.topic_id) {
+                            topic.entries.push(newEntry)
+                        }
+                    }
+                }
+            }
+        },
+        updateResourceLocal(state, updatedEntry) {
+            let categories = state.data.categories
+            for (let category of categories) {
+                if (category.id === updatedEntry.id) {
+                    categories[categories.indexOf(category)] = updatedEntry
+                    break
+                }
+                for (let topic of category.topics) {
+                    if (topic.id === updatedEntry.id) {
+                        category.topics[category.topics.indexOf(topic)] = updatedEntry
+                        break
+                    }
+                    for (let entry of topic.entries) {
+                        if (entry.id === updatedEntry.id) {
+                            topic.entries[topic.entries.indexOf(entry)] = updatedEntry
+                            break
+                        }
+                    }
+                }
+            }
+        },
+        deleteResourceLocal(state, deletedEntry) {
+            let categories = state.data.categories
+            for (let category of categories) {
+                if (category.id === deletedEntry.id) {
+                    categories.splice(categories.indexOf(category), 1)
+                    break
+                }
+                for (let topic of category.topics) {
+                    if (topic.id === deletedEntry.id) {
+                        category.topics.splice(category.topics.indexOf(topic),1)
+                        break
+                    }
+                    for (let entry of topic.entries) {
+                        if (entry.id === deletedEntry.id) {
+                            topic.entries.splice(topic.entries.indexOf(entry), 1)
+                            break
+                        }
+                    }
+                }
+            }
+        },
+        updateAccountLocal(state, updatedUser) {
+            state.data.userData = updatedUser
+        },
         setHeaderTitle(state, headerTitle){
             state.headerTitle = headerTitle
         },
-        setFlashMessage(state, result) {
-            state.flashMessage = result.msg
+        setFlashMessage(state, msg) {
+            state.flashMessage = msg
             state.showFlashMessage = true
             setTimeout( () => state.showFlashMessage = false,  5000)
         },
@@ -85,10 +149,19 @@ const store = createStore({
             response.json().then(result => {
                 if (response.ok) {
                     result.status = "success"
-                    context.commit("setFlashMessage", result)
-                    context.dispatch('fetchDataRequest')
+                    context.commit("setFlashMessage", result.msg)
+                    if (method === "POST") {
+                        context.commit("addResourceLocal", result.entry)
+                    } else if (method === "PUT") {
+                        context.commit("updateResourceLocal", result.entry)
+                    } else if (method === "DELETE") {
+                        context.commit("deleteResourceLocal", data)
+                    } else {
+                        context.dispatch('fetchDataRequest')
+                    }
+                    
                 } else {
-                    context.commit("setFlashMessage", result)
+                    context.commit("setFlashMessage", result.msg)
                 }
             })
         },
@@ -112,9 +185,10 @@ const store = createStore({
             response.json().then(result => {
                 if (response.ok) {
                     result.status = "success"
-                    context.commit("setFlashMessage", result)
+                    context.commit("updateAccountLocal", result.data)
+                    context.commit("setFlashMessage", result.msg)
                 } else {
-                    context.commit("setFlashMessage", result)
+                    context.commit("setFlashMessage", result.msg)
                 }
             })
         },

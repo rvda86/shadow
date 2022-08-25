@@ -18,7 +18,7 @@ class EntryController:
         data = preprocess_incoming_data(data, "POST")
         entry = get_entry(data["type"])
         created_entry, msg = entry.create(user_id, data)  
-        created_entry = to_dict(created_entry)   
+        created_entry = to_dict(created_entry)
         return jsonify({"entry": created_entry, "msg": msg})
 
     @staticmethod
@@ -26,8 +26,9 @@ class EntryController:
         data = preprocess_incoming_data(data, "PUT")      
         entry = get_entry(data["type"])
         entry.load_by_id(data["id"], user_id)
-        msg = entry.update(user_id, data)
-        return jsonify({"msg": msg})
+        created_entry, msg = entry.update(user_id, data)
+        created_entry = to_dict(created_entry)
+        return jsonify({"entry": created_entry, "msg": msg})
 
     @staticmethod
     def delete_entry(user_id: str, data: dict):

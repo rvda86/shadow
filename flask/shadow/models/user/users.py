@@ -72,7 +72,8 @@ class User:
             self.set_password(data["password"])  
             db.create_update_delete(db.update_user_sql, (self.username, self.email, self.password, user_id))
             logger.info(f'USER UPDATED: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
-            return {"msg": "account successfully updated"}
+            return_data = {"username": self.get_username(), "email": self.get_email()}
+            return {"data": return_data, "msg": "account successfully updated"}
         return {"msg": "not authenticated"}
 
     def delete(self, user_id: str):      
