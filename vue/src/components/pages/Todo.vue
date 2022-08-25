@@ -1,8 +1,6 @@
 <template>
 <div>
 
-    <SettingsModal v-show="showSettingsModal" />
-
     <div class="card">
 
         <h4>ToDo</h4>
@@ -55,7 +53,6 @@ export default {
         }
     },
     computed: {
-        ...mapState(["showSettingsModal"]),
         topic() {
             for (let category of this.$store.state.data.categories) {
                 for (let topic of category.topics) {

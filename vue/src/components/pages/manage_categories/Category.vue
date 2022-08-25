@@ -2,8 +2,6 @@
 
     <div class="card">
 
-        <SettingsModal v-show="showSettingsModal" />
-
         <p class="category-settings"><strong>{{ category.entry_type }}</strong> {{ category.name }} <font-awesome-icon @click="showSettings" icon="fa-solid fa-gear" /></p>
         
         <p class="small-font">{{ (category.topics.length > 0) ? 'Topics in this category' : '' }}</p>
@@ -48,7 +46,7 @@ export default {
         SettingsModal
     },
     computed: {
-        ...mapState(["topicTypes", "showSettingsModal"])
+        ...mapState(["topicTypes"])
     },
     props: {
         category: Object

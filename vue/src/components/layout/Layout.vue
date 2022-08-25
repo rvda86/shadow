@@ -1,6 +1,7 @@
 <template>
     <div id="grid">
         <Modal v-show="showModal"/>
+        <SettingsModal v-show="showSettingsModal" />
 
         <header v-show="authenticated" id="header">
             <HeaderAuth />
@@ -26,6 +27,7 @@ import Header from './Header.vue'
 import Menu from './Menu.vue'
 import FlashMessage from '../ui/FlashMessage.vue'
 import Modal from '../ui/Modal.vue'
+import SettingsModal from '../settings/SettingsModal.vue'
 
 export default {
   name: 'Layout',
@@ -34,10 +36,11 @@ export default {
       HeaderAuth,
       Menu,
       FlashMessage,
-      Modal
+      Modal,
+      SettingsModal
   },
   computed: {
-      ...mapState(["authenticated", "showMenu", "showFlashMessage", "showModal", "showJournalSettingsModal"])
+      ...mapState(["authenticated", "showMenu", "showFlashMessage", "showModal", "showSettingsModal"])
   }
 }
 </script>

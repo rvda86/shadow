@@ -42,6 +42,9 @@ const store = createStore({
             state.settingsModalData = payload
             state.settingsModalData.newName = state.settingsModalData.name
         },
+        resetSettingsModalData(state) {
+            state.settingsModalData = {}
+        },
         setModalPayload(state, payload) {
             state.modalPayload = payload
         },
@@ -98,6 +101,7 @@ const store = createStore({
             state.dataIsLoaded = true
         },
         deleteResourceLocal(state, deletedEntry) {
+
             let categories = state.data.categories
             for (let category of categories) {
                 if (category.id === deletedEntry.id) {
@@ -133,6 +137,13 @@ const store = createStore({
         },
         setDataIsLoaded(state, boolean) {
             state.dataIsLoaded = boolean
+        },
+        rerouteAfterDelete(state, entry) {
+            if (entry.type === "topic") {
+                if (window.location.pathname.slice(-36) === entry.id) {
+                    router.replace("/home")
+                }
+            }
         }
     },
     actions: {
@@ -165,6 +176,7 @@ const store = createStore({
                         context.commit("updateResourceLocal", result.entry)
                     } else if (method === "DELETE") {
                         context.commit("deleteResourceLocal", data)
+                        context.commit("rerouteAfterDelete", data)
                     } else {
                         context.dispatch('fetchDataRequest')
                     }

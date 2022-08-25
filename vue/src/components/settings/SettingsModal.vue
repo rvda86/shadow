@@ -29,18 +29,21 @@ export default {
         ...mapState(["settingsModalData"])
     },
     methods: {
-        ...mapMutations(["toggleSettingsModal", "setModalPayload", "toggleModal"]),
+        ...mapMutations(["toggleSettingsModal", "setModalPayload", "toggleModal", "resetSettingsModalData"]),
         ...mapActions(["sendEntryDataRequest"]),
         cancelHandler() {
             this.toggleSettingsModal()
+            this.resetSettingsModalData()
         },
         confirmHandler() {
             this.toggleSettingsModal()
+            this.resetSettingsModalData()
             this.sendEntryDataRequest(['PUT', {type: this.settingsModalData.entry_type, name: this.settingsModalData.newName, id: this.settingsModalData.id}])
         },
         deleteHandler() {
             this.setModalPayload({func: this.sendEntryDataRequest, payload: ['DELETE', {type: this.settingsModalData.entry_type, id: this.settingsModalData.id}]})
             this.toggleSettingsModal()
+            this.resetSettingsModalData()
             this.toggleModal()
         }
     }

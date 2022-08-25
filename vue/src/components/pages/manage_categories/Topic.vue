@@ -2,7 +2,6 @@
 
     <div>
 
-        <SettingsModal v-show="showSettingsModal" />
         <p><strong>{{ topic.topic_type }}</strong> {{ topic.name }} <font-awesome-icon @click="showSettings" icon="fa-solid fa-gear" /></p>
         
     </div>
@@ -21,9 +20,6 @@ export default {
     },
     props: {
         topic: Object
-    },
-    computed: {
-        ...mapState(["showSettingsModal"]),
     },
     methods: {
         ...mapMutations(["toggleSettingsModal", "setSettingsModalData"]),
