@@ -10,11 +10,6 @@ logger = get_user_logger()
 
 db = db_pool.acquire()
 
-def get_all_usernames_emails():
-    existing_usernames = [record[0] for record in db.retrieve_all(db.retrieve_all_usernames_sql)]
-    existing_emails = [record[0] for record in db.retrieve_all(db.retrieve_all_emails_sql)]
-    return existing_usernames, existing_emails
-
 class User:    
 
     id: str

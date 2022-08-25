@@ -212,28 +212,15 @@ const store = createStore({
                                         {method: 'POST', 
                                         headers: {'Content-type': 'application/json'}, 
                                         body: JSON.stringify(data)})
-            response.json().then(data => {
+            response.json().then(result => {
                 if (response.ok) {              
-                    context.commit("login", data)
+                    context.commit("login", result)
                     context.dispatch('fetchDataRequest')
                 } else {
-                    context.commit("setFlashMessage", data)
+                    context.commit("setFlashMessage", result.msg)
                 }
             })
-        },  
-        async checkUsernameEmailAvailabilityRequest(context, data) {
-            let response = await fetch(`${this.state.apiLink}/users/check_availability`, 
-                                        {method: 'POST', 
-                                        headers: {'Content-type': 'application/json', 'Authorization': "Bearer " + localStorage.getItem("token")},
-                                        body: JSON.stringify(data)})
-            response.json().then(data => {
-                if (response.ok) {              
-                    context.commit("setUsernameEmailAvailability", data)
-                } else {
-                    context.commit("setFlashMessage", data)
-                }
-            })
-        },
+        }, 
         async sendPasswordResetLinkRequest(context, data) {
             let response = await fetch(`${this.state.apiLink}/users/reset_password_send_link`, 
                                         {method: 'POST', 
@@ -242,9 +229,9 @@ const store = createStore({
             response.json().then(result => {
                 if (response.ok) {              
                     result.status = "success"
-                    context.commit("setFlashMessage", result)
+                    context.commit("setFlashMessage", result.msg)
                 } else {
-                    context.commit("setFlashMessage", data)
+                    context.commit("setFlashMessage", result.msg)
                 }
             })
         },
@@ -256,10 +243,10 @@ const store = createStore({
             response.json().then(result => {
                 if (response.ok) {              
                     result.status = "success"
-                    context.commit("setFlashMessage", result)
+                    context.commit("setFlashMessage", result.msg)
                     router.replace("/login")    
                 } else {
-                    context.commit("setFlashMessage", data)
+                    context.commit("setFlashMessage", result.msg)
                 }
             })
         },
@@ -270,10 +257,10 @@ const store = createStore({
             response.json().then(result => {
                 if (response.ok) {              
                     result.status = "success"
-                    context.commit("setFlashMessage", result)
+                    context.commit("setFlashMessage", result.msg)
                     router.replace("/login")    
                 } else {
-                    context.commit("setFlashMessage", data)
+                    context.commit("setFlashMessage", result.msg)
                 }
             })
         },

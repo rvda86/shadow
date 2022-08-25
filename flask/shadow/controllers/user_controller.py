@@ -1,5 +1,4 @@
 from flask import jsonify
-from shadow.models.user.users import User, get_all_usernames_emails
 from shadow.validation import preprocess_incoming_data
 from shadow.models.entry.entries import get_all_categories_by_user, to_dict
 from shadow.utils import send_email_verification_mail, send_password_reset_mail
@@ -87,17 +86,6 @@ class UserController:
         user.authenticate(data["password"])
         response = user.get_token()
         return jsonify(response)
-
-    @staticmethod
-    def check_available_username_email(data: dict):
-        existing_usernames, existing_emails = get_all_usernames_emails()
-        username_available = True
-        email_available = True
-        if data["username"] in existing_usernames:
-            username_available = False
-        if data["email"] in existing_emails:
-            email_available = False
-        return jsonify({"username": username_available, "email": email_available})
 
     @staticmethod
     def get_all_data_by_user(user_id: str):
