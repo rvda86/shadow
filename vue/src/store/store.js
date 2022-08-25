@@ -170,10 +170,10 @@ const store = createStore({
             response.json().then(result => {
                 if (response.ok) {
                     result.status = "success"
-                    context.commit("setFlashMessage", result)
+                    context.commit("setFlashMessage", result.msg)
                     router.replace("/login")            
                 } else {
-                    context.commit("setFlashMessage", result)
+                    context.commit("setFlashMessage", result.msg)
                 }
             })      
         },
@@ -200,10 +200,10 @@ const store = createStore({
             response.json().then(result => {
                 if (response.ok) {
                     result.status = "success"
-                    context.commit("setFlashMessage", result)
+                    context.commit("setFlashMessage", result.msg)
                     context.commit("logout")
                 } else {
-                    context.commit("setFlashMessage", result)
+                    context.commit("setFlashMessage", result.msg)
                 }
             })
         },
