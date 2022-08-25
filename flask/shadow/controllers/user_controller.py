@@ -1,4 +1,5 @@
 from flask import jsonify
+from shadow.models.user.users import User
 from shadow.validation import preprocess_incoming_data
 from shadow.models.entry.entries import get_all_categories_by_user, to_dict
 from shadow.utils import send_email_verification_mail, send_password_reset_mail
