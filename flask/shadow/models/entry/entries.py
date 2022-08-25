@@ -3,7 +3,7 @@ from datetime import datetime
 from shadow.validation import validate_title, validate_id, validate_date
 from shadow.utils import uuid_generator
 from shadow.db_mysql import db_pool
-from shadow.error_handling import InvalidDataError, NotFoundError
+from shadow.error_handling import InvalidDataError, NotFoundError, TopicNotEmptyError
 
 db = db_pool.acquire()
 
@@ -115,6 +115,8 @@ class Topic(Entry):
         return "topic successfully updated"
     
     def delete(self, user_id: str):
+        if len(self.entries) > 0:
+            raise TopicNotEmptyError
         db.create_update_delete(db.delete_topic_sql, (self.id, user_id))
         return "topic successfully deleted"
 

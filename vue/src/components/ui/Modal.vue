@@ -39,24 +39,7 @@ export default {
 
 <style>
 
-.backdrop {
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(109, 109, 109, 0.8);
-    z-index: 1
-}
-.modal {
-    position: relative;
-    display: flex;
-    top: 20%;
-    margin: auto;
-    padding: 1em;
-    max-width: 400px;
-    background-color: white;
-    z-index: 2
-}
+
+
 
 </style>

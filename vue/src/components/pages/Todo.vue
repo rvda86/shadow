@@ -1,4 +1,15 @@
 <template>
+<div>
+
+    <SettingsModal v-show="showSettingsModal" />
+
+    <div class="card">
+
+        <h4>ToDo</h4>
+        <p>{{ topic.name }} <font-awesome-icon @click="showSettings" icon="fa-solid fa-gear" /></p>
+
+    </div>
+
     <div class="card">
         <button class="button" @click="toggleNewTask">New Task</button>
         <div v-show="showNewTask">
@@ -18,19 +29,22 @@
         <EntryTodo :entry=entry />
     </div>
 
-  
+</div>
+
 </template>
 
 <script>
 
-import { mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 import EntryTodo from './todo/EntryTodo.vue'
+import SettingsModal from '../settings/SettingsModal.vue'
 
 export default {
-    name: 'Journal',
+    name: 'ToDo',
     components: {
-        EntryTodo
+        EntryTodo,
+        SettingsModal
     },
     data() {
         return {
@@ -41,6 +55,7 @@ export default {
         }
     },
     computed: {
+        ...mapState(["showSettingsModal"]),
         topic() {
             for (let category of this.$store.state.data.categories) {
                 for (let topic of category.topics) {
@@ -53,7 +68,7 @@ export default {
     },
     methods: {
         ...mapActions(["sendEntryDataRequest"]),
-        ...mapMutations(["setHeaderTitle"]),
+        ...mapMutations(["setHeaderTitle", "toggleSettingsModal", "setSettingsModalData"]),
         toggleNewTask() {
             this.showNewTask = !this.showNewTask
         },
@@ -66,6 +81,10 @@ export default {
         toggleShowCompleted() {
             this.showCompleted = !this.showCompleted
         },
+        showSettings() {
+            this.setSettingsModalData(this.topic)
+            this.toggleSettingsModal()
+        }
     },
     updated() {
         this.setHeaderTitle(this.topic.name)

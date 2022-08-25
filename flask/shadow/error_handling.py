@@ -18,6 +18,9 @@ class DatabaseError(Exception):
 class VerificationMailError(Exception):
     pass
 
+class TopicNotEmptyError(Exception):
+    pass
+
 def error_handler(func):
     @wraps(func)
     def inner(*args, **kwargs):
@@ -35,4 +38,6 @@ def error_handler(func):
             return {"msg": "Resource not found"}, 404
         except DatabaseError:
             return {"msg": "Something went wrong"}, 500
+        except TopicNotEmptyError:
+            return {"msg": "Cannot delete while there are still entries within this topic"}, 409
     return inner

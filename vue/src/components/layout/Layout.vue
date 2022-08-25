@@ -1,6 +1,7 @@
 <template>
     <div id="grid">
         <Modal v-show="showModal"/>
+
         <header v-show="authenticated" id="header">
             <HeaderAuth />
         </header>
@@ -36,7 +37,7 @@ export default {
       Modal
   },
   computed: {
-      ...mapState(["authenticated", "showMenu", "showFlashMessage", "showModal"])
+      ...mapState(["authenticated", "showMenu", "showFlashMessage", "showModal", "showJournalSettingsModal"])
   }
 }
 </script>
@@ -96,6 +97,11 @@ body {
   padding: 5px;
 }
 
+.input-title {
+  margin: 3px;
+  padding: 5px;
+}
+
 .textarea {
   min-width: 300px;
   min-height: 300px;
@@ -143,6 +149,13 @@ h4, h5 {
 .link {
   color: blue;
   text-decoration: none;
+  margin: 0 2px;
+}
+
+.link-red {
+  color: red;
+  text-decoration: none;
+  margin: 0 2px;
 }
 
 p {
@@ -154,6 +167,28 @@ p {
     font-weight: 600;
     margin: 3px;
     color: red
+}
+
+.backdrop {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(109, 109, 109, 0.8);
+    z-index: 1
+}
+
+
+.modal {
+    position: relative;
+    display: flex;
+    top: 20%;
+    margin: auto;
+    padding: 1em;
+    max-width: 400px;
+    background-color: white;
+    z-index: 999
 }
 
 

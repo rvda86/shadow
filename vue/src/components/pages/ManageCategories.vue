@@ -1,15 +1,18 @@
 <template>
-<div class="card">
-    <h4>Add a new category</h4>
 
-    <form class="flex" @submit.prevent="submitHandler">
-            <input class="input" type="text" v-model="newCategoryName" placeholder="new category" required>
-            <button class="button">Add Category</button>
-    </form>
-</div>
+<div>
+    <div class="card">
+        <h4>Add a new category</h4>
 
-<div :key="category.id" v-for="category in data.categories">
-    <Category :category=category />
+        <form class="flex" @submit.prevent="submitHandler">
+                <input class="input" type="text" v-model="newCategoryName" placeholder="new category" required>
+                <button class="button">Add</button>
+        </form>
+    </div>
+
+    <div :key="category.id" v-for="category in data.categories">
+        <Category :category=category />
+    </div>
 </div>
 
 </template>

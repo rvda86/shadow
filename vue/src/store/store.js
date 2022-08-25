@@ -8,6 +8,8 @@ const store = createStore({
             headerTitle: '',
             showMenu: false,
             showModal: false,
+            showSettingsModal: false,
+            settingsModalData: {},
             apiLink: "http://192.168.2.3:5000/api",
             data: {userData: {}, categories: {}},
             dataIsLoaded: false,
@@ -33,6 +35,13 @@ const store = createStore({
         toggleModal(state) {
             state.showModal = !state.showModal
         },
+        toggleSettingsModal(state) {
+            state.showSettingsModal = !state.showSettingsModal
+        },
+        setSettingsModalData(state, payload) {
+            state.settingsModalData = payload
+            state.settingsModalData.newName = state.settingsModalData.name
+        },
         setModalPayload(state, payload) {
             state.modalPayload = payload
         },
@@ -48,10 +57,6 @@ const store = createStore({
         },
         setHeaderTitle(state, headerTitle){
             state.headerTitle = headerTitle
-        },
-        setUsernameEmailAvailability(state, data) {
-            state.usernameAvailable = data.username
-            state.emailAvailable = data.email
         },
         setFlashMessage(state, result) {
             state.flashMessage = result.msg

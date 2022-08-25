@@ -1,5 +1,15 @@
 <template>
     <div>
+
+        <SettingsModal v-show="showSettingsModal" />
+
+        <div class="card">
+
+            <h4>Journal</h4>
+            <p>{{ topic.name }} <font-awesome-icon @click="showSettings" icon="fa-solid fa-gear" /></p>
+
+        </div>
+
         <div class="card">
           <button class="button" @click="toggleNewEntry">New Entry</button>
           <div v-show="showNewEntry">
@@ -21,14 +31,16 @@
 
 <script>
 
-import { mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 import EntryJournal from './journal/EntryJournal.vue'
+import SettingsModal from '../settings/SettingsModal.vue'
 
 export default {
   name: 'Journal',
   components: {
-      EntryJournal
+      EntryJournal,
+      SettingsModal
   },
   data() {
         return {
@@ -38,6 +50,7 @@ export default {
         }
   },
   computed: {
+        ...mapState(["showSettingsModal"]),
         topic() {
             for (let category of this.$store.state.data.categories) {
                 for (let topic of category.topics) {
@@ -50,7 +63,7 @@ export default {
   },
   methods: {
     ...mapActions(["sendEntryDataRequest"]),
-    ...mapMutations(["setHeaderTitle"]),
+    ...mapMutations(["setHeaderTitle", "toggleSettingsModal", "setSettingsModalData"]),
     toggleNewEntry() {
         this.showNewEntry = !this.showNewEntry
     },
@@ -59,12 +72,16 @@ export default {
         this.title = ''
         this.content = ''
         this.toggleNewEntry()
-      }
+    },
+    showSettings() {
+        this.setSettingsModalData(this.topic)
+        this.toggleSettingsModal()
+    }
   },
   updated() {
         this.setHeaderTitle(this.topic.name)
   },
-  mounted () {
+  mounted() {
         this.setHeaderTitle(this.topic.name)
   }
 }
