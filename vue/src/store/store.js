@@ -73,6 +73,7 @@ const store = createStore({
                     }
                 }
             }
+            state.dataIsLoaded = true
         },
         updateResourceLocal(state, updatedEntry) {
             let categories = state.data.categories
@@ -94,6 +95,7 @@ const store = createStore({
                     }
                 }
             }
+            state.dataIsLoaded = true
         },
         deleteResourceLocal(state, deletedEntry) {
             let categories = state.data.categories
@@ -115,9 +117,11 @@ const store = createStore({
                     }
                 }
             }
+            state.dataIsLoaded = true
         },
         updateAccountLocal(state, updatedUser) {
             state.data.userData = updatedUser
+            state.dataIsLoaded = true
         },
         setHeaderTitle(state, headerTitle){
             state.headerTitle = headerTitle
@@ -127,9 +131,13 @@ const store = createStore({
             state.showFlashMessage = true
             setTimeout( () => state.showFlashMessage = false,  5000)
         },
+        setDataIsLoaded(state, boolean) {
+            state.dataIsLoaded = boolean
+        }
     },
     actions: {
         async fetchDataRequest(context) {
+            context.commit("setDataIsLoaded", false)
             let response = await fetch(`${this.state.apiLink}/data`, 
                                         {method: 'GET', 
                                         headers: {'Content-type': 'application/json', 'Authorization': "Bearer " + localStorage.getItem("token")}})
@@ -141,6 +149,7 @@ const store = createStore({
             }
         },
         async sendEntryDataRequest(context, payload) {
+            context.commit("setDataIsLoaded", false)
             let [method, data] = payload
             let response = await fetch(`${this.state.apiLink}/entries`, 
                                         {method: method, 
@@ -178,6 +187,7 @@ const store = createStore({
             })      
         },
         async updateAccountRequest(context, data) {
+            context.commit("setDataIsLoaded", false)
             let response = await fetch(`${this.state.apiLink}/users`,
                                         {method: 'PUT', 
                                         headers: {'Content-type': 'application/json', 'Authorization': "Bearer " + localStorage.getItem("token")}, 
