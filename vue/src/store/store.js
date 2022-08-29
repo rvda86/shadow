@@ -182,6 +182,7 @@ const store = createStore({
                     }
                     
                 } else {
+                    context.commit("setDataIsLoaded", true)
                     context.commit("setFlashMessage", result.msg)
                 }
             })
