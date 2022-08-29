@@ -56,7 +56,7 @@ def check_keys(data, method):
 def preprocess_incoming_data(data, method):
     if not isinstance(data, dict):
         raise InvalidDataError("not a dictionary")
-    data = sanitize_strings(data)
+    # data = sanitize_strings(data)
     check_keys(data, method)
     return data
 

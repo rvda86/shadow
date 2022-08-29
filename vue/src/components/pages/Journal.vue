@@ -1,22 +1,22 @@
 <template>
     <div>
 
-        <div class="card">
+        <div class="card card-grey">
 
             <h4>Journal</h4>
             <p>{{ topic.name }} <font-awesome-icon @click="showSettings" icon="fa-solid fa-gear" /></p>
 
         </div>
 
-        <div class="card">
-          <button class="button" @click="toggleNewEntry">New Entry</button>
-          <div v-show="showNewEntry">
-              <form class="flex" @submit.prevent="submitHandler">
-                  <input class="input" type="text" placeholder="title" v-model="title" required>
-                  <textarea class="textarea" v-model="content" placeholder="content" required></textarea>
-                  <button class="button">Submit</button>
-              </form>
-              <button class="button-small background-red" @click="toggleNewEntry">Cancel</button>
+        <div class="card card-grey">
+            <button class="button" @click="toggleNewEntry">New Entry</button>
+            <div v-show="showNewEntry">
+                <form class="flex" @submit.prevent="submitHandler">
+                    <input class="input" type="text" placeholder="title" v-model="title" required>
+                    <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+                    <button class="button">Submit</button>
+                </form>
+                <button class="button-small background-red" @click="toggleNewEntry">Cancel</button>
           </div>
         </div>
 
@@ -29,24 +29,32 @@
 
 <script>
 
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 import EntryJournal from './journal/EntryJournal.vue'
 import SettingsModal from '../settings/SettingsModal.vue'
 
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+
 export default {
-  name: 'Journal',
-  components: {
+    name: 'Journal',
+    components: {
       EntryJournal,
       SettingsModal
-  },
-  data() {
+    },
+    data() {
         return {
             title: '',
             content: '',
-            showNewEntry: false
-        }
-  },
+            showNewEntry: false,
+            editor: ClassicEditor,
+            editorData: '',
+            editorConfig: {
+                toolbar: { shouldNotGroupWhenFull: true }
+                }
+            }
+    },
   computed: {
         topic() {
             for (let category of this.$store.state.data.categories) {
@@ -65,7 +73,7 @@ export default {
         this.showNewEntry = !this.showNewEntry
     },
     submitHandler(){
-        this.sendEntryDataRequest(['POST', {type: 'journal', title: this.title, content: this.content, topic_id: this.topic.id}])
+        this.sendEntryDataRequest(['POST', {type: 'journal', title: this.title, content: this.editorData, topic_id: this.topic.id}])
         this.title = ''
         this.content = ''
         this.toggleNewEntry()
@@ -85,5 +93,6 @@ export default {
 </script>
 
 <style>
+
 
 </style>

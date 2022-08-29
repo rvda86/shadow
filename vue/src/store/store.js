@@ -71,7 +71,7 @@ const store = createStore({
                 for (let category of state.data.categories) {
                     for (let topic of category.topics) {
                         if (topic.id === newEntry.topic_id) {
-                            topic.entries.push(newEntry)
+                            topic.entries.unshift(newEntry)
                         }
                     }
                 }

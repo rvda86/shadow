@@ -1,7 +1,6 @@
 <template>
 
     <div>
-
         <p>
             <strong>{{ topic.topic_type }}</strong> 
             <router-link class="link" :to="{name: topic.topic_type, params: { topicId: topic.id }}">{{ topic.name }}</router-link>

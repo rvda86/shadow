@@ -84,6 +84,11 @@ body {
   align-items: center;
 }
 
+.card-grey {
+  background-color: rgb(245, 245, 245);
+}
+
+
 .flex {
   display: flex;
   flex-direction: column;
@@ -161,6 +166,10 @@ h4, h5 {
   margin: 0 2px;
 }
 
+a:hover {
+  color: black;
+}
+
 p {
   margin: 0;  
 }
@@ -194,5 +203,20 @@ p {
     z-index: 999
 }
 
+.journal-entry {
+    width: 95%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-grey {
+  color: rgb(50, 50, 50);
+}
+
+.icon-margin {
+  margin: 0 10px 0 0
+}
 
 </style>
