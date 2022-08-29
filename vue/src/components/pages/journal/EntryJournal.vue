@@ -3,7 +3,7 @@
 
         <div class="journal-entry" v-show="!editing">
             <h4>{{ entry.title }}</h4>
-            <font-awesome-icon class="icon-margin" icon="fa-solid fa-pen" @click="toggleEditing" />
+            <font-awesome-icon class="margin-right-10" icon="fa-solid fa-pen" @click="toggleEditing" />
             <font-awesome-icon icon="fa-solid fa-trash" @click="deleteHandler" />
             <p class="small-font text-grey">Created: {{ entry.date_posted }}</p>
             <p class="small-font text-grey">{{ (entry.date_edited) ? 'Last Edited:' : '' }} {{entry.date_edited}} </p>
