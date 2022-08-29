@@ -6,7 +6,7 @@
     </div>
 
     <div id="header-title">
-        {{ headerTitle }}
+        <p class="small-font">{{ headerTitle }}</p>
     </div>
 
     <div class="header-nav-right">
