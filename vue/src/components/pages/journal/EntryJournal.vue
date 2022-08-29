@@ -16,7 +16,7 @@
                     <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
                     <button class="button">Submit</button>
                 </form>
-                <button class="button-small background-red" @click="toggleNewEntry">Cancel</button>
+                <button class="button-small background-red" @click="toggleEditing">Cancel</button>
         </div>
 
     </div>
