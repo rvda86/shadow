@@ -37,8 +37,8 @@ export default {
         },
         confirmHandler() {
             this.toggleSettingsModal()
-            this.resetSettingsModalData()
             this.sendEntryDataRequest(['PUT', {type: this.settingsModalData.entry_type, name: this.settingsModalData.newName, id: this.settingsModalData.id}])
+            this.resetSettingsModalData()
         },
         deleteHandler() {
             this.setModalPayload({func: this.sendEntryDataRequest, payload: ['DELETE', {type: this.settingsModalData.entry_type, id: this.settingsModalData.id}]})

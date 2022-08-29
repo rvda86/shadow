@@ -3,10 +3,13 @@
         <div>
             <h3>Enter your new password:</h3>
             <form class="flex" @submit.prevent="submitHandler">
-                <input class="input" type="password" placeholder="new password" v-model="newPassword" required>
-                <input class="input" type="password" placeholder="confirm new password" v-on:input="showFeedback()" v-model="newPasswordConfirmed" required>
-                <p class="feedback-message" :style="{color: (this.newPassword === this.newPasswordConfirmed) ? 'green' : 'red'}" v-show="showFeedbackPassword">
-                    {{ (this.newPassword === this.newPasswordConfirmed) ? 'passwords match' : 'passwords do not match' }}
+                <input class="input" type="password" placeholder="new password" v-on:input="enableFeedbackNewPassword()" v-model="newPassword" required>
+                <p class="feedback-message" :style="{color: (validatePasswordHandler()) ? 'green' : 'red'}" v-show="showFeedbackNewPassword">
+                    {{ (validatePasswordHandler()) ? 'password ok' : 'minimum of 8 characters, at least one number and one letter' }}
+                </p>
+                <input class="input" type="password" placeholder="confirm new password" v-on:input="enableFeedbackNewPasswordConfirmed()" v-model="newPasswordConfirmed" required>
+                <p class="feedback-message" :style="{color: (validatePasswordMatch()) ? 'green' : 'red'}" v-show="showFeedbackNewPasswordConfirmed">
+                        {{ (validatePasswordMatch()) ? 'passwords match' : 'passwords do not match' }}
                 </p>
                 <button class="button">Submit</button>
             </form>
@@ -19,6 +22,7 @@
 <script>
 
 import { mapActions } from 'vuex'
+import { validatePassword } from '../../validation-rules'
 
 export default {
     name: 'PasswordReset',
@@ -26,7 +30,8 @@ export default {
         return {
             newPassword: '',
             newPasswordConfirmed: '',
-            showFeedbackPassword: false
+            showFeedbackNewPassword: false,
+            showFeedbackNewPasswordConfirmed: false
         }
     },
     methods: {
@@ -38,8 +43,17 @@ export default {
                 this.passwordResetRequest({password: this.newPassword, token: token})
             }
         },
-        showFeedback() {
-            this.showFeedbackPassword = (this.newPasswordConfirmed.length > 0) ? true : false  
+        enableFeedbackNewPassword() {
+            this.showFeedbackNewPassword = (this.newPassword.length > 0) ? true : false  
+        },
+        enableFeedbackNewPasswordConfirmed() {
+            this.showFeedbackNewPasswordConfirmed = (this.newPasswordConfirmed.length > 0) ? true : false  
+        },
+        validatePasswordHandler() {
+            return validatePassword(this.newPassword)
+        },
+        validatePasswordMatch() {
+            return this.newPassword === this.newPasswordConfirmed
         }
     }
 }

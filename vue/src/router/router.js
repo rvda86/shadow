@@ -14,14 +14,20 @@ import PasswordReset from '../components/pages/PasswordReset.vue'
 import RequestPasswordReset from '../components/pages/RequestPasswordReset.vue'
 import VerifyEmail from '../components/pages/VerifyEmail.vue'
 
-function checkExpiration(to, from, next, authRequired) {
+function checkTokenExpiration(to, from, next, authRequired, routeToHomeIfAuthed) {
   let expiration_time = localStorage.getItem('expires')
-  if (Date.now() < expiration_time) {    
-    if (authRequired) next()
-    else next ('/home')   
+  if (Date.now() < expiration_time) {  
+    if (routeToHomeIfAuthed) {
+      next('/home')
+    } else {
+      next()  
+    }
   } else {
-    if (authRequired) next('/login')
-    else next()
+    if (authRequired) {
+      next('/login')
+    } else {
+      next()
+    }
     store.state.authenticated = false
   }
 }
@@ -34,77 +40,77 @@ const routes = [
    name: 'index', 
    component: Index,
    beforeEnter: (to, from, next) => {
-       checkExpiration(to, from, next, false)
+       checkTokenExpiration(to, from, next, false, false)
    }
  },
   { path: '/topics/journal/:topicId', 
     name: 'journal', 
     component: Journal,
     beforeEnter: (to, from, next) => {
-        checkExpiration(to, from, next, true)
+        checkTokenExpiration(to, from, next, true, false)
     }
   },
   { path: '/topics/todo/:topicId', 
     name: 'todo', 
     component: Todo,
     beforeEnter: (to, from, next) => {
-       checkExpiration(to, from, next, true)
+       checkTokenExpiration(to, from, next, true, false)
     }
   },
   { path: '/join', 
     name: 'createAccount', 
     component: CreateAccount,
     beforeEnter: (to, from, next) => {
-       checkExpiration(to, from, next, false)
+       checkTokenExpiration(to, from, next, false, true)
     }
   },
   { path: '/login', 
     name: 'login', 
     component: Login,
     beforeEnter: (to, from, next) => {
-        checkExpiration(to, from, next, false)
+        checkTokenExpiration(to, from, next, false, true)
     }
   },
   { path: '/home',
     name: 'home',
     component: Home,
     beforeEnter: (to, from, next) => {
-        checkExpiration(to, from, next, true)
+        checkTokenExpiration(to, from, next, true, false)
     }
   },
   { path: '/manage_categories', 
     name: 'manageCategories', 
     component: ManageCategories,
     beforeEnter: (to, from, next) => {
-        checkExpiration(to, from, next, true)
+        checkTokenExpiration(to, from, next, true, false)
     }
   },
   { path: '/manage_account', 
     name: 'manageAccount', 
     component: ManageAccount,
     beforeEnter: (to, from, next) => {
-        checkExpiration(to, from, next, true)
+        checkTokenExpiration(to, from, next, true, false)
     }
   },
   { path: '/password_reset', 
   name: 'passwordReset', 
   component: PasswordReset,
   beforeEnter: (to, from, next) => {
-      checkExpiration(to, from, next, false)
+      checkTokenExpiration(to, from, next, false, false)
     }
   },
   { path: '/request_password_reset', 
   name: 'requestPasswordReset', 
   component: RequestPasswordReset,
   beforeEnter: (to, from, next) => {
-      checkExpiration(to, from, next, false)
+      checkTokenExpiration(to, from, next, false, false)
     }
   },
   { path: '/verify_email', 
   name: 'verifyEmail', 
   component: VerifyEmail,
   beforeEnter: (to, from, next) => {
-      checkExpiration(to, from, next, false)
+      checkTokenExpiration(to, from, next, false, false)
     }
   },
   { path: '/:pathMatch(.*)*', 

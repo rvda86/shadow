@@ -257,6 +257,19 @@ const store = createStore({
                 }
             })
         },
+        async sendEmailVerificationLinkRequest(context) {
+            let response = await fetch (`${this.state.apiLink}/users/verify_email_send_link`,
+                                        {method: 'GET',
+                                        headers: {'Content-type': 'application/json', 'Authorization': "Bearer " + localStorage.getItem("token")}})
+            response.json().then(result => {
+                if (response.ok) {
+                    result.status = "success"
+                    context.commit("setFlashMessage", result.msg)
+                } else {
+                    context.commit("setFlashMessage", result.msg)
+                }
+            })
+        },
         async passwordResetRequest(context, data) {
             let response = await fetch(`${this.state.apiLink}/users/reset_password`, 
                                         {method: 'POST', 

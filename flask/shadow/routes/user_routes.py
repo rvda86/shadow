@@ -39,12 +39,6 @@ def get_token():
     data = request.get_json()
     return UserController.get_token(data)
 
-@app.route("/api/users/check_availability", methods=["POST"])
-@error_handler
-def check_available_username_email():
-    data = request.get_json()
-    return UserController.check_available_username_email(data)
-
 @app.route("/api/data", methods=["GET"])
 @error_handler
 @jwt_required()
@@ -59,7 +53,7 @@ def verify_email():
     email = get_jwt_identity()
     return UserController.email_verification(email)
 
-@app.route("/api/users/verify_email_send_link", methods=["POST"])
+@app.route("/api/users/verify_email_send_link", methods=["GET"])
 @error_handler
 @jwt_required()
 def verify_email_send_link():

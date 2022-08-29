@@ -10,13 +10,14 @@ class UserController:
     def get_user(user_id):
         user = User()
         user.load_by_id(user_id)
-        return jsonify({"username": user.get_username(), "email": user.get_email()})
+        return jsonify({"username": user.get_username(), "email": user.get_email(), "email_verified": user.get_email_verified()})
 
     @staticmethod
     def email_verification_send_link(user_id):
         user = User()
         user.load_by_id(user_id)
-        send_email_verification_mail(user)
+        response = send_email_verification_mail(user)
+        return jsonify({"msg": response})
 
     @staticmethod
     def password_reset_send_link(data):
@@ -92,7 +93,7 @@ class UserController:
     def get_all_data_by_user(user_id: str):
         user = User()
         user.load_by_id(user_id)
-        user_data = {"username": user.get_username(), "email": user.get_email()}
+        user_data = {"username": user.get_username(), "email": user.get_email(), "email_verified": user.get_email_verified()}
         user_categories = [to_dict(category) for category in get_all_categories_by_user(user_id)]
         return jsonify({"user_data": user_data, "user_categories": user_categories})
 
