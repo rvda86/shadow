@@ -1,27 +1,19 @@
 <template>
 <div>
 
-    <div class="card">
-
+    <div class="card card-grey">
         <h4>ToDo</h4>
         <p>{{ topic.name }} <font-awesome-icon @click="showSettings" icon="fa-solid fa-gear" /></p>
-
+        <a href="#" class="link small-font" @click="toggleShowCompleted">{{ showCompleted ? 'Hide completed' : 'Show Completed' }}</a>
     </div>
 
-    <div class="card">
-        <button class="button" @click="toggleNewTask">New Task</button>
-        <div v-show="showNewTask">
-             <form class="flex" @submit.prevent="submitHandler">
-                <input class="input" type="text" placeholder="task" v-model="task" required>
-                <p>Due date:</p>
-                <input type="date" v-model="dueDate">
-                <button class="button">Submit</button>
-            </form>
-            <button class="button-small background-red" @click="toggleNewTask">Cancel</button>
-        </div>
-
-        <a href="#" class="link" @click="toggleShowCompleted">{{ showCompleted ? 'Hide completed' : 'Show Completed' }}</a>
+    <div class="card card-grey">
+        <div>
+            <input class="input" type="text" placeholder="Add a task" v-model="task" required>
+            <font-awesome-icon icon="fa-solid fa-plus" @click="addToDoHandler"/>
+        </div>        
     </div>
+
 
     <div :key="entry.id" v-for="entry in topic.entries" v-show="(((entry.completed == '1' && showCompleted) || (entry.completed == '0')) ? true : false)">
         <EntryTodo :entry=entry />
@@ -47,7 +39,6 @@ export default {
     data() {
         return {
             task: '',
-            dueDate: '',
             showNewTask: false,
             showCompleted: false
         }
@@ -69,8 +60,8 @@ export default {
         toggleNewTask() {
             this.showNewTask = !this.showNewTask
         },
-        submitHandler(){
-            this.sendEntryDataRequest(['POST', {type: 'todo', task: this.task, due_date: this.dueDate, topic_id: this.topic.id}])
+        addToDoHandler(){
+            this.sendEntryDataRequest(['POST', {type: 'todo', task: this.task, topic_id: this.topic.id}])
             this.title = ''
             this.dueDate = ''
             this.toggleNewTask()

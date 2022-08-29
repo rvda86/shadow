@@ -203,7 +203,7 @@ p {
     z-index: 999
 }
 
-.journal-entry {
+.journal-entry, .todo-entry {
     width: 95%;
 }
 
@@ -215,8 +215,12 @@ p {
   color: rgb(50, 50, 50);
 }
 
-.icon-margin {
-  margin: 0 10px 0 0
+.margin-right-10 {
+  margin-right: 10px;
+}
+
+.margin-right-auto {
+  margin-right: auto;
 }
 
 </style>
