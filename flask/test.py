@@ -11,7 +11,6 @@ class TestApi(unittest.TestCase):
     api = API_LINK
     users_endpoint = f"{api}/users"
     token_endpoint = f"{api}/users/token"
-    check_availability_endpoint = f"{api}/users/check_availability"
 
     entries_endpoint = f"{api}/entries"
     data_endpoint = f"{api}/data"
@@ -37,9 +36,9 @@ class TestApi(unittest.TestCase):
         username2 = "user_2"
         new_username = "donald"
         password = "password1"
-        email = "robinvda@email.com"
-        email2 = "ruimtepiraat86@gmail.com"
-        new_email = "rvda@protonmail.com"
+        email = "meneer1@email.com"
+        email2 = "mevrouw1@gmail.com"
+        new_email = "meneer1@protonmail.com"
         wrong_password = "pa$$w0rd"
         invalid_email = "user_1email.com"
         invalid_password = "passwor"
@@ -57,11 +56,7 @@ class TestApi(unittest.TestCase):
         self.success_update_user(token, {"username": username, "email": email, "password": new_password, "currentPassword": password})
         self.success_update_user(token, {"username": username, "email": new_email, "password": new_password, "currentPassword": new_password})
         self.success_update_user(token, {"username": new_username, "email": new_email, "password": new_password, "currentPassword": new_password})
-        self.confirm_success_update_username_email(token, {"username": new_username, "email": new_email})
-        self.success_check_username_available({"username": "user_2", "email": "new@email.com"})
-        self.fail_check_username_available({"username": new_username, "email": new_email})
-        self.success_check_email_available({"username": "user_2", "email": "new@email.com"})
-        self.fail_check_email_available({"username": new_username, "email": new_email})
+        self.confirm_success_update_username_email(token, {"username": new_username, "email": new_email, "email_verified": 0})
         self.success_get_token({"username": new_username, "password": new_password})
         self.fail_delete_user_wrong_password(token, {"password": wrong_password})
         self.success_delete_user(token, {"password": new_password} )
@@ -117,25 +112,6 @@ class TestApi(unittest.TestCase):
     def fail_delete_user_wrong_password(self, token, data):
         response = self.delete_user(data, token)
         self.assertEqual(401, response.status_code)
-
-    def success_check_username_available(self, data):
-        response = self.check_availability(data)
-        self.assertEqual(True, response.json()["username"])
-
-    def fail_check_username_available(self, data):
-        response = self.check_availability(data)
-        self.assertEqual(False, response.json()["username"])
-
-    def success_check_email_available(self, data):
-        response = self.check_availability(data)
-        self.assertEqual(True, response.json()["email"])
-
-    def fail_check_email_available(self, data):
-        response = self.check_availability(data)
-        self.assertEqual(False, response.json()["email"])
-
-    def check_availability(self, data):
-        return requests.post(self.check_availability_endpoint, data=json.dumps(data), headers={'Content-type': 'application/json'})
 
     def create_user(self, data):
         return requests.post(self.users_endpoint, data=json.dumps(data), headers={'Content-type': 'application/json'})
@@ -198,11 +174,11 @@ class TestApi(unittest.TestCase):
         token1, token2 = self.set_up_tokens()
         category_id = self.set_up_category_id(token1)
         topic_id = self.set_up_topic_id("todo", category_id, token1)
-        id = self.success_create_entry({"type": "todo", "task": "My First Task", "due_date": "2021-12-01", "topic_id": topic_id}, token1)
+        id = self.success_create_entry({"type": "todo", "task": "My First Task", "topic_id": topic_id}, token1)
         
         data = { 
             "entry_type": "todo",
-            "update": {"type": "todo", "task": "My First Updated Task", "due_date": "2021-12-01", "completed": "0", "id": id},
+            "update": {"type": "todo", "task": "My First Updated Task", "completed": "0", "id": id},
             "delete": {"type": "todo", "id": id}
             }
         
