@@ -59,10 +59,10 @@ class Database:
     delete_journal_entry_sql = "DELETE FROM journal_entries WHERE id = %s AND user_id = %s"
     delete_all_journal_entries_user_sql = "DELETE FROM journal_entries WHERE user_id = %s"
    
-    create_todo_entry_sql = "INSERT INTO todo_entries (id, user_id, topic_id, date_posted, task, due_date) VALUES (%s, %s, %s, %s, %s, %s)"
-    retrieve_todo_entry_sql = "SELECT id, topic_id, date_posted, date_edited, task, DATE_FORMAT(due_date, '%Y-%m-%d'), completed FROM todo_entries WHERE id = %s AND user_id = %s"
-    retrieve_todo_ids_by_topic_sql = "SELECT id FROM todo_entries WHERE topic_id = %s AND user_id = %s ORDER BY due_date DESC"
-    update_todo_entry_sql = "UPDATE todo_entries SET date_edited = %s, task = %s, due_date = %s, completed = %s WHERE id = %s AND user_id = %s"
+    create_todo_entry_sql = "INSERT INTO todo_entries (id, user_id, topic_id, date_posted, task) VALUES (%s, %s, %s, %s, %s)"
+    retrieve_todo_entry_sql = "SELECT id, topic_id, date_posted, date_edited, task, completed FROM todo_entries WHERE id = %s AND user_id = %s"
+    retrieve_todo_ids_by_topic_sql = "SELECT id FROM todo_entries WHERE topic_id = %s AND user_id = %s ORDER BY date_posted DESC"
+    update_todo_entry_sql = "UPDATE todo_entries SET date_edited = %s, task = %s, completed = %s WHERE id = %s AND user_id = %s"
     delete_todo_entry_sql = "DELETE FROM todo_entries WHERE id = %s AND user_id = %s"
     delete_all_todo_entries_user_sql = "DELETE FROM todo_entries WHERE user_id = %s"
 

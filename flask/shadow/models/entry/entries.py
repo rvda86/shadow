@@ -239,7 +239,6 @@ class ToDo(Entry):
     date_posted: str
     date_edited: str
     task: str
-    due_date: str
     completed: str
     entry_type: str
     
@@ -247,7 +246,7 @@ class ToDo(Entry):
         result = db.retrieve(db.retrieve_todo_entry_sql, (id, user_id))
         if result is None:
             raise NotFoundError
-        self.id, self.topic_id, self.date_posted, self.date_edited, self.task, self.due_date, self.completed = result
+        self.id, self.topic_id, self.date_posted, self.date_edited, self.task, self.completed = result
         self.entry_type = "todo"
 
     def create(self, user_id: str, data: dict):
@@ -255,17 +254,15 @@ class ToDo(Entry):
         self.date_posted = datetime.utcnow()
         self.set_topic(data["topic_id"])
         self.set_task(data["task"])
-        self.set_due_date(data["due_date"])
-        db.create_update_delete(db.create_todo_entry_sql, (self.id, user_id, self.topic_id, self.date_posted, self.task, self.due_date))
+        db.create_update_delete(db.create_todo_entry_sql, (self.id, user_id, self.topic_id, self.date_posted, self.task))
         self.load_by_id(self.id, user_id)
         return self, "entry successfully created"
 
     def update(self, user_id: str, data: dict):
         self.date_edited = datetime.utcnow()
         self.set_task(data["task"])
-        self.set_due_date(data["due_date"])
         self.set_completed(data["completed"])
-        db.create_update_delete(db.update_todo_entry_sql, (self.date_edited, self.task, self.due_date, self.completed, self.id, user_id))
+        db.create_update_delete(db.update_todo_entry_sql, (self.date_edited, self.task, self.completed, self.id, user_id))
         return self, "entry successfully updated"
  
     def delete(self, user_id: str):
@@ -279,10 +276,6 @@ class ToDo(Entry):
     def set_task(self, task: str):
         validate_title(task)
         self.task = task
-
-    def set_due_date(self, date: str):
-        validate_date(date)
-        self.due_date = date
 
     def set_completed(self, completed: str):
         if completed not in ["0", "1"]:

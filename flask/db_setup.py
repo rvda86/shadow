@@ -61,7 +61,6 @@ create_table_todo_entries_sql =  """CREATE TABLE IF NOT EXISTS todo_entries (
                                 date_posted DATETIME(0) NOT NULL,
                                 date_edited DATETIME(0),
                                 task VARCHAR(100) NOT NULL,
-                                due_date DATE,
                                 completed BOOLEAN NOT NULL DEFAULT 0,                           
                                 FOREIGN KEY(user_id) REFERENCES users(id) on DELETE RESTRICT,
                                 FOREIGN KEY(topic_id) REFERENCES topics(id) on DELETE RESTRICT
@@ -136,6 +135,6 @@ def drop_db(name):
 
 if __name__ == '__main__':
     # create_db(db.name)
-    create_tables()
+    # create_tables()
     # drop_db(db.name)
     pass
