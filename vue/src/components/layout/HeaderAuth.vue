@@ -1,6 +1,6 @@
 <template>
     <div class="header-nav-left">
-        <router-link class="header-item" @click="hideMenu" to="/">
+        <router-link class="header-item" @click="hideMenu" to="/home">
             Home
         </router-link>
     </div>
