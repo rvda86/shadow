@@ -65,15 +65,17 @@ body {
 #header {
     grid-area: header;
     margin: 0;
-    padding: 5px;
+    padding: 15px;
 }
 
 header {
+    position: fixed;
+    width: 100%;
     margin: 0;
     padding: 0;
     display: flex;
-    background-color: #333333;
     background-color: white;
+    box-shadow: 4px 4px 10px rgb(230, 230, 230);
 }
 
 #header-title {
@@ -140,6 +142,7 @@ header {
 #main{
     grid-area: main;
     margin: 0;
+    margin-top: 65px;
     padding: 0;
 }
 
@@ -224,14 +227,9 @@ header {
   flex-direction: row;
 }
 
-.input {
+.input, .margin-3-padding-3, .input-title {
   margin: 3px;
-  padding: 5px;
-}
-
-.input-title {
-  margin: 3px;
-  padding: 5px;
+  padding: 3px;
 }
 
 .textarea {
@@ -243,23 +241,25 @@ h4, h5 {
   margin: 2px;
 }
 
+.flash-message {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid rgb(109, 109, 109);
+    border-radius: 3px;
+}
+
 .button {
   background-color: #1b4e8c;
   color: white;
   font-weight: 600;
+  font-size: 0.8em;
   padding: 10px;
   margin: 5px;
   border: 0;
-  border-radius: 5px;
-}
-
-.button-small {
-  background-color: #1b4e8c;
-  color: white;
-  padding: 8px;
-  margin: 0 5px;
-  border: 0;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
 .link {
@@ -301,7 +301,7 @@ a:hover {
     top: 20%;
     margin: auto;
     padding: 1em;
-    max-width: 400px;
+    max-width: 350px;
     background-color: white;
     z-index: 999
 }
@@ -320,6 +320,10 @@ p {
 
 .background-red {
   background-color: #ce2316;
+}
+
+.background-green {
+  background-color: green;
 }
 
 .small-font {
@@ -342,12 +346,24 @@ p {
     margin: 10px;
 }
 
+.margin-top-5 {
+  margin-top: 5px;
+}
+
 .margin-right-10 {
   margin-right: 10px;
 }
 
+.margin-left-3 {
+  margin-left: 3px;
+}
+
 .margin-right-auto {
   margin-right: auto;
+}
+
+.margin-left-auto {
+  margin-left: auto;
 }
 
 .w-200 {

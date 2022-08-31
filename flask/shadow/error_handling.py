@@ -18,7 +18,7 @@ class DatabaseError(Exception):
 class VerificationMailError(Exception):
     pass
 
-class TopicNotEmptyError(Exception):
+class NotEmptyError(Exception):
     pass
 
 def error_handler(func):
@@ -36,6 +36,6 @@ def error_handler(func):
             return {"msg": "resource not found"}, 404
         except DatabaseError:
             return {"msg": "something went wrong"}, 500
-        except TopicNotEmptyError:
-            return {"msg": "cannot delete while there are still entries within this topic"}, 409
+        except NotEmptyError as e:
+            return {"msg": str(e)}, 409
     return inner

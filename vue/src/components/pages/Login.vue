@@ -1,5 +1,5 @@
 <template>
-    <div class="card"> 
+    <div class="card card-grey"> 
 
         <h3>Log In</h3>
 

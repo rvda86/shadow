@@ -1,6 +1,6 @@
 <template>
     
-    <div class="card">
+    <div class="card card-grey">
 
         <h3>Create Your Account</h3>
 

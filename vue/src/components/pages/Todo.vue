@@ -55,15 +55,18 @@ export default {
     },
     methods: {
         ...mapActions(["sendEntryDataRequest"]),
-        ...mapMutations(["setHeaderTitle", "toggleSettingsModal", "setSettingsModalData"]),
+        ...mapMutations(["setHeaderTitle", "toggleSettingsModal", "setSettingsModalData", "setFlashMessage"]),
         toggleNewTask() {
             this.showNewTask = !this.showNewTask
         },
         addToDoHandler(){
+            if (this.task.length === 0) {
+                this.setFlashMessage("enter task's name")
+            } else {
             this.sendEntryDataRequest(['POST', {type: 'todo', task: this.task, topic_id: this.topic.id}])
-            this.title = ''
-            this.dueDate = ''
+            this.task = ''
             this.toggleNewTask()
+            }
         },
         toggleShowCompleted() {
             this.topic.showCompleted = !this.topic.showCompleted

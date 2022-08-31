@@ -1,18 +1,15 @@
 <template>
-    <div class="backdrop">
+    <div class="backdrop" @click="cancelHandler">
         
-        <div class="modal flex">
-            <h5> {{ settingsModalData.name }} - {{ settingsModalData.topic_type }} {{ settingsModalData.entry_type }}</h5>
+        <div class="modal flex" @click="dontCancelHandler">
+            <font-awesome-icon @click="cancelHandler" class="margin-left-auto" icon='fa-solid fa-xmark' />
+            <p><strong>{{ settingsModalData.topic_type }} {{ settingsModalData.entry_type }}</strong> "{{ settingsModalData.name }}"</p>
 
             <div class="flex-row">
                 <span class="input-title">Name</span>
                 <input class="input" type="text" v-model=settingsModalData.newName required>
-            </div>
-
-            <div class="flex-row">
-                <button class="button background-red" @click="deleteHandler">Delete {{ settingsModalData.topic_type }} {{ settingsModalData.entry_type }}</button>
-                <button class="button" @click="cancelHandler">Cancel</button>
-                <button class="button" @click="confirmHandler">Save</button>
+                <font-awesome-icon icon="fa-solid fa-trash" class="margin-3-padding-3" @click="deleteHandler" />
+                <font-awesome-icon icon="fa-solid fa-floppy-disk" class="margin-3-padding-3" @click="confirmHandler"/>
             </div>
 
         </div>
@@ -25,6 +22,11 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
     name: 'settingsModal',
+    data() {
+        return {
+            dontCancel: false
+        }
+    },
     computed: {
         ...mapState(["settingsModalData"])
     },
@@ -32,8 +34,14 @@ export default {
         ...mapMutations(["toggleSettingsModal", "setModalPayload", "toggleModal", "resetSettingsModalData"]),
         ...mapActions(["sendEntryDataRequest"]),
         cancelHandler() {
-            this.toggleSettingsModal()
-            this.resetSettingsModalData()
+            if (!this.dontCancel) {
+                this.toggleSettingsModal()
+                this.resetSettingsModalData()                
+            }
+            this.dontCancel = false
+        },
+        dontCancelHandler() {
+            this.dontCancel = true
         },
         confirmHandler() {
             this.toggleSettingsModal()

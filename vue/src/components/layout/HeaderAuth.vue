@@ -1,7 +1,7 @@
 <template>
     <div class="header-nav-left">
         <router-link class="header-item" @click="hideMenu" to="/home">
-            Home
+            <font-awesome-icon icon="fa-solid fa-house" />
         </router-link>
     </div>
 

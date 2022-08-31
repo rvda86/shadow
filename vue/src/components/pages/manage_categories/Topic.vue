@@ -2,9 +2,9 @@
 
     <div>
         <p>
-            <strong>{{ topic.topic_type }}</strong> 
+            {{ topic.topic_type }}
             <router-link class="link" :to="{name: topic.topic_type, params: { topicId: topic.id }}">{{ topic.name }}</router-link>
-            <font-awesome-icon @click="showSettings" icon="fa-solid fa-gear" />
+            <font-awesome-icon @click="showSettings" class="margin-left-3" icon="fa-solid fa-gear" />
         </p>
     </div>
 

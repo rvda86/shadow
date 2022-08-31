@@ -2,12 +2,12 @@
 
 <div>
     <div class="card card-grey">
-        <h4>Add a new category</h4>
+        <h5>Add a new category</h5>
 
-        <form class="flex" @submit.prevent="submitHandler">
-                <input class="input" type="text" v-model="newCategoryName" placeholder="new category" required>
-                <button class="button">Add</button>
-        </form>
+        <div class="flex-row">
+                <input class="input" type="text" v-model="newCategoryName" placeholder="new category">
+                <font-awesome-icon class="margin-3-padding-3" icon="fa-solid fa-plus" @click="submitHandler"/>
+        </div>
     </div>
 
     <div :key="category.id" v-for="category in data.categories">
@@ -38,10 +38,14 @@ export default {
     },
     methods: {
         ...mapActions(["sendEntryDataRequest"]),
-        ...mapMutations(["setHeaderTitle"]),
+        ...mapMutations(["setHeaderTitle", "setFlashMessage"]),
         submitHandler() {
+            if (this.newCategoryName.length === 0) {
+                this.setFlashMessage("enter category's name")
+            } else {
             this.sendEntryDataRequest(['POST', {type: 'category', name: this.newCategoryName}])
             this.newCategoryName = ''
+            }
         }
     },
     mounted() {

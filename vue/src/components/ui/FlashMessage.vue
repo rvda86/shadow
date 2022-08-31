@@ -20,12 +20,4 @@ export default {
 
 <style>
 
-.flash-message {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background-color: white;
-    padding: 20px;
-}
-
 </style>

@@ -61,8 +61,8 @@
         <div class="card" v-show="editing">
             <div class="flex-row todo-entry">
                 <input class="input margin-right-auto" type="text" placeholder="habit name" v-model="name">
-                <button class="button background-red" @click="toggleEditing">Cancel</button>
-                <button class="button" @click="updateHandler">Save</button>
+                <font-awesome-icon icon="fa-solid fa-floppy-disk" class="margin-3-padding-3" @click="updateHandler"/>
+                <font-awesome-icon icon="fa-solid fa-xmark" class="margin-3-padding-3" @click="toggleEditing" />
             </div>
         </div>
 

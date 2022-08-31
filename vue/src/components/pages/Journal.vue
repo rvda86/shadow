@@ -9,14 +9,14 @@
         </div>
 
         <div class="card card-grey">
-            <button class="button" @click="toggleNewEntry">New Entry</button>
+            <button class="button" v-show="!showNewEntry" @click="toggleNewEntry">New Entry</button>
             <div v-show="showNewEntry">
                 <form class="flex" @submit.prevent="submitHandler">
+                    <font-awesome-icon @click="toggleNewEntry" class="margin-left-auto" icon='fa-solid fa-xmark' />
                     <input class="input" type="text" placeholder="title" v-model="title">
                     <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
-                    <button class="button">Submit</button>
+                    <button class="button">Create new entry</button>
                 </form>
-                <button class="button-small background-red" @click="toggleNewEntry">Cancel</button>
           </div>
         </div>
 

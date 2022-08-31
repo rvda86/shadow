@@ -17,7 +17,7 @@ export default {
         ...mapMutations(["setHeaderTitle"])
     },
     mounted () {
-        this.setHeaderTitle('Welcome')
+        this.setHeaderTitle('Home')
     }
 }
 

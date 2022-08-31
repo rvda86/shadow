@@ -14,11 +14,11 @@
 
         <div v-show="editing">
                 <form class="flex" @submit.prevent="updateHandler">
+                    <font-awesome-icon @click="toggleEditing" class="margin-left-auto" icon='fa-solid fa-xmark' />
                     <input class="input" type="text" placeholder="title" v-model="title">
                     <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
-                    <button class="button">Submit</button>
+                    <button class="button">Save</button>
                 </form>
-                <button class="button-small background-red" @click="toggleEditing">Cancel</button>
         </div>
 
     </div>
