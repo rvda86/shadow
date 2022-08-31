@@ -211,6 +211,7 @@ const store = createStore({
                     context.commit("updateAccountLocal", result.data)
                     context.commit("setFlashMessage", result.msg)
                 } else {
+                    context.commit("setDataIsLoaded", true)
                     context.commit("setFlashMessage", result.msg)
                 }
             })
@@ -226,6 +227,7 @@ const store = createStore({
                     context.commit("setFlashMessage", result.msg)
                     context.commit("logout")
                 } else {
+                    context.commit("setDataIsLoaded", true)
                     context.commit("setFlashMessage", result.msg)
                 }
             })

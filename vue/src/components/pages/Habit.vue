@@ -3,7 +3,7 @@
 
         <div class="card card-grey">
 
-            <h4>Habit</h4>
+            <h4>Habits</h4>
             <p>{{ topic.name }} <font-awesome-icon @click="showSettings" icon="fa-solid fa-gear" /></p>
 
         </div>
@@ -54,10 +54,14 @@ export default {
     },
     methods: {
         ...mapActions(["sendEntryDataRequest"]),
-        ...mapMutations(["setHeaderTitle", "toggleSettingsModal", "setSettingsModalData"]),
+        ...mapMutations(["setHeaderTitle", "toggleSettingsModal", "setSettingsModalData", "setFlashMessage"]),
         addHabitHandler(){
+            if (this.name.length === 0) {
+                this.setFlashMessage("enter habit's name")
+            } else {
             this.sendEntryDataRequest(['POST', {type: 'habit', name: this.name, topic_id: this.topic.id}])
             this.name = ''
+            }
         },
         showSettings() {
             this.setSettingsModalData(this.topic)

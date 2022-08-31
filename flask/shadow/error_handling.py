@@ -27,17 +27,15 @@ def error_handler(func):
         try:
             return func(*args, **kwargs)
         except InvalidDataError as e:
-            print(e) 
-            return {"msg": "Invalid data"}, 422
+            return {"msg": str(e)}, 422
         except UsernameOrEmailTakenError as e:
-            print(e)
-            return {"msg": "Username or email already taken"}, 409
+            return {"msg": "username or email already taken"}, 409
         except InvalidPasswordError:
-            return {"msg": "Wrong password provided"}, 401
+            return {"msg": "wrong password provided"}, 401
         except NotFoundError:
-            return {"msg": "Resource not found"}, 404
+            return {"msg": "resource not found"}, 404
         except DatabaseError:
-            return {"msg": "Something went wrong"}, 500
+            return {"msg": "something went wrong"}, 500
         except TopicNotEmptyError:
-            return {"msg": "Cannot delete while there are still entries within this topic"}, 409
+            return {"msg": "cannot delete while there are still entries within this topic"}, 409
     return inner

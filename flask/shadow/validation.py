@@ -56,15 +56,14 @@ def check_keys(data, method):
 def preprocess_incoming_data(data, method):
     if not isinstance(data, dict):
         raise InvalidDataError("not a dictionary")
-    # data = sanitize_strings(data)
     check_keys(data, method)
     return data
 
 def validate_email(email):
     if not isinstance(email, str):
-        raise InvalidDataError("invalid email")
+        raise InvalidDataError("invalid email address")
     if not re.search("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email):
-        raise InvalidDataError("invalid email")
+        raise InvalidDataError("invalid email address")
 
 def validate_password(password):
     if not isinstance(password, str):
@@ -80,9 +79,19 @@ def validate_username(username):
 
 def validate_title(title):
     if not isinstance(title, str):
-        raise InvalidDataError("invalid input")
+        raise InvalidDataError("invalid title")
+    if len(title) == 0:
+        raise InvalidDataError("title is required")
     if not re.search("^[A-Za-z0-9_ ]{1,100}$", title):
-        raise InvalidDataError("invalid input")
+        raise InvalidDataError("invalid title")
+
+def validate_name(name):
+    if not isinstance(name, str):
+        raise InvalidDataError("invalid name")
+    if len(name) == 0:
+        raise InvalidDataError("oops, no input")
+    if not re.search("^[A-Za-z0-9_ ]{1,100}$", name):
+        raise InvalidDataError("invalid name")
 
 def validate_id(id):
     if not isinstance(id, str):

@@ -12,7 +12,7 @@
             <button class="button" @click="toggleNewEntry">New Entry</button>
             <div v-show="showNewEntry">
                 <form class="flex" @submit.prevent="submitHandler">
-                    <input class="input" type="text" placeholder="title" v-model="title" required>
+                    <input class="input" type="text" placeholder="title" v-model="title">
                     <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
                     <button class="button">Submit</button>
                 </form>
@@ -68,15 +68,19 @@ export default {
   },
   methods: {
     ...mapActions(["sendEntryDataRequest"]),
-    ...mapMutations(["setHeaderTitle", "toggleSettingsModal", "setSettingsModalData"]),
+    ...mapMutations(["setHeaderTitle", "toggleSettingsModal", "setSettingsModalData", "setFlashMessage"]),
     toggleNewEntry() {
         this.showNewEntry = !this.showNewEntry
     },
     submitHandler(){
-        this.sendEntryDataRequest(['POST', {type: 'journal', title: this.title, content: this.editorData, topic_id: this.topic.id}])
-        this.title = ''
-        this.content = ''
-        this.toggleNewEntry()
+        if (this.title.length === 0) {
+            this.setFlashMessage("title is required")
+        } else {
+            this.sendEntryDataRequest(['POST', {type: 'journal', title: this.title, content: this.editorData, topic_id: this.topic.id}])
+            this.title = ''
+            this.content = ''
+            this.toggleNewEntry()
+        }
     },
     showSettings() {
         this.setSettingsModalData(this.topic)

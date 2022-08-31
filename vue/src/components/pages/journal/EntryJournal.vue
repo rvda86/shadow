@@ -14,7 +14,7 @@
 
         <div v-show="editing">
                 <form class="flex" @submit.prevent="updateHandler">
-                    <input class="input" type="text" placeholder="title" v-model="title" required>
+                    <input class="input" type="text" placeholder="title" v-model="title">
                     <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
                     <button class="button">Submit</button>
                 </form>
@@ -49,14 +49,18 @@ export default {
     },
     methods: {
         ...mapActions(["sendEntryDataRequest"]),
-        ...mapMutations(["toggleModal", "setModalPayload"]),
+        ...mapMutations(["toggleModal", "setModalPayload", "setFlashMessage"]),
         toggleEditing() {
             this.editing = !this.editing
         },
         updateHandler() {
-            this.setModalPayload({func: this.sendEntryDataRequest, payload: ['PUT', {type: 'journal', title: this.title, content: this.editorData, id: this.entry.id}]})
-            this.toggleModal()
-            this.toggleEditing()
+            if (this.title.length === 0) {
+                this.setFlashMessage("title is required")
+            } else {
+                this.setModalPayload({func: this.sendEntryDataRequest, payload: ['PUT', {type: 'journal', title: this.title, content: this.editorData, id: this.entry.id}]})
+                this.toggleModal()
+                this.toggleEditing()
+            }
         },
         deleteHandler() {
             this.setModalPayload({func: this.sendEntryDataRequest, payload: ['DELETE', {type: 'journal', id: this.entry.id}]})

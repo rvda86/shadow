@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
-from shadow.validation import validate_title, validate_id, validate_date
+from shadow.validation import validate_title, validate_id, validate_date, validate_name
 from shadow.utils import uuid_generator
 from shadow.db_mysql import db_pool
 from shadow.error_handling import InvalidDataError, NotFoundError, TopicNotEmptyError
@@ -62,19 +62,19 @@ class Category(Entry):
         db.create_update_delete(db.create_category_sql, (self.id, user_id, self.name))
         self.entry_type = "category" 
         self.load_by_id(self.id, user_id)
-        return self, "category successfully created"
+        return self, "category created"
     
     def update(self, user_id: str, data: dict):
         self.set_name(data["name"])
         db.create_update_delete(db.update_category_sql, (self.name, self.id, user_id))
-        return self, "category successfully updated"
+        return self, "category updated"
 
     def delete(self, user_id: str):
         db.create_update_delete(db.delete_category_sql, (self.id, user_id))
-        return "category successfully deleted"
+        return "category deleted"
     
     def set_name(self, name: str):
-        validate_title(name)
+        validate_name(name)
         self.name = name
 
     def load_topics(self, user_id: str):
@@ -110,21 +110,21 @@ class Topic(Entry):
         self.set_topic_type(data["topic_type"])
         db.create_update_delete(db.create_topic_sql, (self.id, user_id, self.category_id, self.name, self.topic_type))
         self.load_by_id(self.id, user_id)
-        return self, "topic successfully created"
+        return self, "topic created"
             
     def update(self, user_id: str, data: dict):
         self.set_name(data["name"])
         db.create_update_delete(db.update_topic_sql, (self.name, self.id, user_id))
-        return self, "topic successfully updated"
+        return self, "topic updated"
     
     def delete(self, user_id: str):
         if len(self.entries) > 0:
             raise TopicNotEmptyError
         db.create_update_delete(db.delete_topic_sql, (self.id, user_id))
-        return "topic successfully deleted"
+        return "topic deleted"
 
     def set_name(self, name: str):
-        validate_title(name)
+        validate_name(name)
         self.name = name
     
     def set_topic_type(self, topic_type: str):
@@ -206,18 +206,18 @@ class Journal(Entry):
         self.set_content(data["content"])
         db.create_update_delete(db.create_journal_entry_sql, (self.id, user_id, self.topic_id, self.date_posted, self.title, self.content))
         self.load_by_id(self.id, user_id)
-        return self, "entry successfully created"
+        return self, "journal entry created"
     
     def update(self, user_id: str, data: dict):
         self.date_edited = datetime.utcnow()
         self.set_title(data["title"])
         self.set_content(data["content"])
         db.create_update_delete(db.update_journal_entry_sql, (self.date_edited, self.title, self.content, self.id, user_id))
-        return self, "entry successfully updated"
+        return self, "journal entry updated"
    
     def delete(self, user_id: str):
         db.create_update_delete(db.delete_journal_entry_sql, (self.id, user_id))
-        return "entry successfully deleted"
+        return "journal entry deleted"
 
     def set_title(self, title: str):
         validate_title(title)
@@ -256,25 +256,25 @@ class ToDo(Entry):
         self.set_task(data["task"])
         db.create_update_delete(db.create_todo_entry_sql, (self.id, user_id, self.topic_id, self.date_posted, self.task))
         self.load_by_id(self.id, user_id)
-        return self, "entry successfully created"
+        return self, "todo entry created"
 
     def update(self, user_id: str, data: dict):
         self.date_edited = datetime.utcnow()
         self.set_task(data["task"])
         self.set_completed(data["completed"])
         db.create_update_delete(db.update_todo_entry_sql, (self.date_edited, self.task, self.completed, self.id, user_id))
-        return self, "entry successfully updated"
+        return self, "todo entry updated"
  
     def delete(self, user_id: str):
         db.create_update_delete(db.delete_todo_entry_sql, (self.id, user_id))
-        return "entry successfully deleted"
+        return "todo entry deleted"
 
     def set_topic(self, id: str):
         validate_id(id)
         self.topic_id = id
 
     def set_task(self, task: str):
-        validate_title(task)
+        validate_name(task)
         self.task = task
 
     def set_completed(self, completed: str):
@@ -307,7 +307,7 @@ class Habit(Entry):
         self.set_name(data["name"])
         db.create_update_delete(db.create_habit_entry_sql, (self.id, user_id, self.topic_id, self.date_posted, self.name))
         self.load_by_id(self.id, user_id)
-        return self, "entry successfully created"
+        return self, "habit tracker created"
 
     def update(self, user_id: str, data: dict):
         self.date_edited = datetime.utcnow()
@@ -329,11 +329,11 @@ class Habit(Entry):
                         db.create_update_delete(db.delete_habit_days_completed_sql, (self.id, user_id, day["date"]))
 
         self.load_by_id(self.id, user_id)
-        return self, "entry successfully updated"
+        return self, "habit tracker updated"
 
     def delete(self, user_id: str):
         db.create_update_delete(db.delete_habit_entry_sql, (self.id, user_id))
-        return "entry successfully deleted"
+        return "habit tracker deleted"
  
     def load_days_completed(self, user_id: str):
         days_completed = db.retrieve_all_by_id(db.retrieve_habit_days_completed_sql, (self.id, user_id))
@@ -366,7 +366,7 @@ class Habit(Entry):
         self.topic_id = id
 
     def set_name(self, name: str):
-        validate_title(name)
+        validate_name(name)
         self.name = name
 
 class Tag(Entry):
@@ -389,18 +389,18 @@ class Tag(Entry):
             self.set_name(data["name"])
             db.create_update_delete(db.create_tag_sql, (self.id, user_id, self.name))
         self.load_by_id(self.id, user_id)
-        return self, "tag successfully created"
+        return self, "tag created"
 
     def update(self, user_id: str, data: dict):
         user_tags = db.retrieve(db.retrieve_tags_by_user_sql, (user_id, ))
         if user_tags is not None and data["name"] not in user_tags:
             self.set_name(data["name"])
             db.create_update_delete(db.update_tag_sql, (self.name, self.id, user_id))
-        return self, "tag successfully updated"
+        return self, "tag updated"
 
     def delete(self, user_id: str):
         db.create_update_delete(db.delete_tag_sql, (self.id, user_id))
-        return "tag successfully deleted"
+        return "tag deleted"
  
     def set_name(self, name: str):
         validate_title(name)

@@ -4,7 +4,7 @@
 
         <h3>Delete Your Account</h3>
         <form class="flex" @submit.prevent="submitHandler">            
-            <input class="input" type="password" placeholder="current password" v-model="currentPassword" required />
+            <input class="input" type="password" placeholder="current password" v-model="currentPassword" />
             <button class="button background-red" type="submit">Delete Account</button>
         </form>
 

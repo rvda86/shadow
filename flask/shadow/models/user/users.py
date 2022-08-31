@@ -58,7 +58,7 @@ class User:
         self.id = uuid_generator()   
         db.create_update_delete(db.create_user_sql, (self.id, self.username, self.email, self.password))
         logger.info(f'USER CREATED: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
-        return {"msg": "account successfully created"}
+        return {"msg": "account created, you can now log in"}
 
     def update(self, user_id: str, data: dict):
         if self.authenticated:

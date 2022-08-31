@@ -60,7 +60,7 @@
 
         <div class="card" v-show="editing">
             <div class="flex-row todo-entry">
-                <input class="input margin-right-auto" type="text" placeholder="habit name" v-model="name" required>
+                <input class="input margin-right-auto" type="text" placeholder="habit name" v-model="name">
                 <button class="button background-red" @click="toggleEditing">Cancel</button>
                 <button class="button" @click="updateHandler">Save</button>
             </div>
@@ -87,13 +87,17 @@ export default {
     },
     methods: {
         ...mapActions(["sendEntryDataRequest"]),
-        ...mapMutations(["toggleModal", "setModalPayload"]),
+        ...mapMutations(["toggleModal", "setModalPayload", "setFlashMessage"]),
         toggleEditing() {
             this.editing = !this.editing
         },
         updateHandler() {
+            if (this.name.length === 0) {
+                this.setFlashMessage("habit name required")
+            } else {
             this.sendEntryDataRequest(['PUT', {type: 'habit', name: this.name, days: this.entry.days, id: this.entry.id}])
             this.editing = false
+            }
         },
         deleteHandler() {
             this.setModalPayload({func: this.sendEntryDataRequest, payload: ['DELETE', {type: 'habit', id: this.entry.id}]})
