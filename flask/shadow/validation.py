@@ -27,7 +27,7 @@ required_keys = {
                     "DELETE": ["type", "id"]},
         "habit": {  "GET": ["type", "id"],
                     "POST": ["type", "name", "topic_id"],
-                    "PUT": ["type", "name", "days_completed", "id"],
+                    "PUT": ["type", "name", "days", "id"],
                     "DELETE": ["type", "id"]},
         "user": {   "GET": ["type", "id"],
                     "POST": ["type", "username", "email", "password"], 
@@ -93,5 +93,6 @@ def validate_id(id):
 def validate_date(date):
     if not isinstance(date, str):
         raise InvalidDataError("invalid date")
-    if not re.search("(\d{4}-\d{2}-\d{2})", date):
+    if not re.search("([a-zA-Z]{3}-\d{2}\/\d{2}\/\d{4})", date):
+        print(date)
         raise InvalidDataError("invalid date")

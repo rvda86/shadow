@@ -17,6 +17,7 @@
                 <option value="" selected disabled>Select topic type</option>
                 <option>{{ topicTypes[0] }}</option>
                 <option>{{ topicTypes[1] }}</option>
+                <option>{{ topicTypes[2] }}</option>
             </select>
             <button class="button">Add</button>
         </form>

@@ -80,7 +80,7 @@ create_table_habit_entries_sql =  """CREATE TABLE IF NOT EXISTS habit_entries (
 create_table_habit_days_completed_sql = """CREATE TABLE IF NOT EXISTS habit_days_completed (
                                 user_id CHAR(36) NOT NULL,
                                 habit_id CHAR(36) NOT NULL,
-                                day DATE NOT NULL UNIQUE,                         
+                                day CHAR(14) NOT NULL,                         
                                 FOREIGN KEY(user_id) REFERENCES users(id),
                                 FOREIGN KEY(habit_id) REFERENCES habit_entries(id) on DELETE CASCADE,
                                 PRIMARY KEY(habit_id, day)
@@ -135,6 +135,6 @@ def drop_db(name):
 
 if __name__ == '__main__':
     # create_db(db.name)
-    # create_tables()
+    create_tables()
     # drop_db(db.name)
     pass

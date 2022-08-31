@@ -2,9 +2,11 @@
     <div class="card">
 
         <div class="journal-entry" v-show="!editing">
-            <h4>{{ entry.title }}</h4>
-            <font-awesome-icon class="margin-right-10" icon="fa-solid fa-pen" @click="toggleEditing" />
-            <font-awesome-icon icon="fa-solid fa-trash" @click="deleteHandler" />
+            <div class="flex-row">
+                <h4 class="margin-right-auto">{{ entry.title }}</h4>
+                <font-awesome-icon class="margin-right-10" icon="fa-solid fa-pen" @click="toggleEditing" />
+                <font-awesome-icon icon="fa-solid fa-trash" @click="deleteHandler" />
+            </div>
             <p class="small-font text-grey">Created: {{ entry.date_posted }}</p>
             <p class="small-font text-grey">{{ (entry.date_edited) ? 'Last Edited:' : '' }} {{entry.date_edited}} </p>
             <p v-bind:id="entry.id">  </p>
@@ -62,8 +64,8 @@ export default {
         }
     },
     mounted() {
-        const lala = document.getElementById(this.entry.id)
-        lala.innerHTML = this.entry.content
+        const content = document.getElementById(this.entry.id)
+        content.innerHTML = this.entry.content
     }
 }
 

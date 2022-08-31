@@ -5,6 +5,7 @@ import ManageCategories from '../components/pages/ManageCategories.vue'
 import ManageAccount from '../components/pages/ManageAccount.vue'
 import Journal from '../components/pages/Journal.vue'
 import Todo from '../components/pages/Todo.vue'
+import Habit from '../components/pages/Habit.vue'
 import CreateAccount from '../components/pages/CreateAccount.vue'
 import Login from '../components/pages/Login.vue'
 import Index from '../components/pages/Index.vue'
@@ -55,6 +56,13 @@ const routes = [
     component: Todo,
     beforeEnter: (to, from, next) => {
        checkTokenExpiration(to, from, next, true, false)
+    }
+  },
+  { path: '/topics/habit/:topicId', 
+  name: 'habit', 
+  component: Habit,
+  beforeEnter: (to, from, next) => {
+     checkTokenExpiration(to, from, next, true, false)
     }
   },
   { path: '/join', 

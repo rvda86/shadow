@@ -29,7 +29,7 @@ class Database:
 
     create_habit_days_completed_sql = "INSERT INTO habit_days_completed (user_id, habit_id, day) VALUES (%s, %s, %s)"
     retrieve_habit_days_completed_sql = "SELECT day FROM habit_days_completed WHERE habit_id = %s AND user_id = %s"
-    delete_habit_days_completed_sql = "DELETE FROM habit_days_completed WHERE habit_id = %s AND user_id = %s"
+    delete_habit_days_completed_sql = "DELETE FROM habit_days_completed WHERE habit_id = %s AND user_id = %s AND day = %s"
 
     create_habit_entry_sql = "INSERT INTO habit_entries (id, user_id, topic_id, date_posted, name) VALUES (%s, %s, %s, %s, %s)"
     retrieve_habit_entry_sql = "SELECT id, topic_id, date_posted, date_edited, name FROM habit_entries WHERE id = %s AND user_id = %s"

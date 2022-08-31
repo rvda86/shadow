@@ -191,7 +191,14 @@ class TestApi(unittest.TestCase):
         id = self.success_create_entry({"type": "habit", "name": "My First Habit", "topic_id": topic_id}, token1)
         data = { 
             "entry_type": "habit",
-            "update": {"type": "habit", "name": "My First Updated Habit", "days_completed": ["2022-03-12", "2022-03-13"], "id": id},
+            "update": {"type": "habit", \
+                        "name": "My First Updated Habit", 
+                        "days": [ { "completed": 0, "date": "Mon-15/08/2022" }, 
+                                { "completed": 1, "date": "Tue-16/08/2022" }, 
+                                { "completed": 0, "date": "Wed-17/08/2022" }, 
+                                { "completed": 1, "date": "Thu-18/08/2022" }, 
+                                { "completed": 0, "date": "Fri-19/08/2022" },],
+                        "id": id},
             "delete": {"type": "habit", "id": id}
             }
         

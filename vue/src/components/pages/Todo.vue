@@ -25,7 +25,7 @@
 
 <script>
 
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 import EntryTodo from './todo/EntryTodo.vue'
 import SettingsModal from '../settings/SettingsModal.vue'
@@ -39,7 +39,6 @@ export default {
     data() {
         return {
             task: '',
-            showNewTask: false,
             showCompleted: false
         }
     },

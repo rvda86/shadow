@@ -54,7 +54,6 @@ body {
     font-size: 100%;
     font-family: sans-serif;
     background-color:rgb(245, 245, 245);
-    background-color: #eff7fa;
 }
 #grid {
     display: grid;
@@ -191,7 +190,6 @@ p {
     z-index: 1
 }
 
-
 .modal {
     position: relative;
     display: flex;
@@ -203,7 +201,7 @@ p {
     z-index: 999
 }
 
-.journal-entry, .todo-entry {
+.journal-entry, .todo-entry, .habit-entry {
     width: 95%;
 }
 
@@ -221,6 +219,10 @@ p {
 
 .margin-right-auto {
   margin-right: auto;
+}
+
+.habit-column {
+  width: 20px
 }
 
 </style>

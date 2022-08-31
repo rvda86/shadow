@@ -13,7 +13,7 @@ const store = createStore({
             apiLink: "http://192.168.2.3:5000/api",
             data: {userData: {}, categories: {}},
             dataIsLoaded: false,
-            topicTypes: ["journal", "todo"] 
+            topicTypes: ["journal", "todo", "habit"] 
         }
     },
     mutations: {
