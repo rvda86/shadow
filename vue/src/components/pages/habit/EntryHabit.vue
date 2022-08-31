@@ -7,7 +7,8 @@
                 <font-awesome-icon class="margin-right-10" icon="fa-solid fa-pen" @click="toggleEditing"/>
                 <font-awesome-icon icon="fa-solid fa-trash" @click="deleteHandler" />
             </div>
-            <p class="small-font">{{ entry.days[index-6].date }} to {{ entry.days[index].date }}</p>
+
+            <p class="small-font">{{ entry.days[topic[this.entry.id]-6].date }} to {{ entry.days[topic[this.entry.id]].date }}</p>
 
             <table>
                 <tr>
@@ -23,33 +24,33 @@
                 </tr>
                 <tr>
                     <td class="habit-column"></td>
-                    <td class="habit-column" @click="updateDay(entry.days[index-6])">
-                        <font-awesome-icon v-show="(entry.days[index-6].completed === 0)" icon='fa-solid fa-xmark' />
-                        <font-awesome-icon v-show="(entry.days[index-6].completed === 1)" icon='fa-solid fa-check' />
+                    <td class="habit-column" @click="updateDay(entry.days[topic[this.entry.id]-6])">
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]-6].completed === 0)" icon='fa-solid fa-xmark' />
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]-6].completed === 1)" icon='fa-solid fa-check' />
                     </td>
-                    <td class="habit-column" @click="updateDay(entry.days[index-5])">
-                        <font-awesome-icon v-show="(entry.days[index-5].completed === 0)" icon='fa-solid fa-xmark' />
-                        <font-awesome-icon v-show="(entry.days[index-5].completed === 1)" icon='fa-solid fa-check' />
+                    <td class="habit-column" @click="updateDay(entry.days[topic[this.entry.id]-5])">
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]-5].completed === 0)" icon='fa-solid fa-xmark' />
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]-5].completed === 1)" icon='fa-solid fa-check' />
                     </td>
-                    <td class="habit-column" @click="updateDay(entry.days[index-4])">
-                        <font-awesome-icon v-show="(entry.days[index-4].completed === 0)" icon='fa-solid fa-xmark' />
-                        <font-awesome-icon v-show="(entry.days[index-4].completed === 1)" icon='fa-solid fa-check' />
+                    <td class="habit-column" @click="updateDay(entry.days[topic[this.entry.id]-4])">
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]-4].completed === 0)" icon='fa-solid fa-xmark' />
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]-4].completed === 1)" icon='fa-solid fa-check' />
                     </td>
-                    <td class="habit-column" @click="updateDay(entry.days[index-3])">
-                        <font-awesome-icon v-show="(entry.days[index-3].completed === 0)" icon='fa-solid fa-xmark' />
-                        <font-awesome-icon v-show="(entry.days[index-3].completed === 1)" icon='fa-solid fa-check' />
+                    <td class="habit-column" @click="updateDay(entry.days[topic[this.entry.id]-3])">
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]-3].completed === 0)" icon='fa-solid fa-xmark' />
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]-3].completed === 1)" icon='fa-solid fa-check' />
                     </td>
-                    <td class="habit-column" @click="updateDay(entry.days[index-2])">
-                        <font-awesome-icon v-show="(entry.days[index-2].completed === 0)" icon='fa-solid fa-xmark' />
-                        <font-awesome-icon v-show="(entry.days[index-2].completed === 1)" icon='fa-solid fa-check' />
+                    <td class="habit-column" @click="updateDay(entry.days[topic[this.entry.id]-2])">
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]-2].completed === 0)" icon='fa-solid fa-xmark' />
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]-2].completed === 1)" icon='fa-solid fa-check' />
                     </td>
-                    <td class="habit-column" @click="updateDay(entry.days[index-1])">
-                        <font-awesome-icon v-show="(entry.days[index-1].completed === 0)" icon='fa-solid fa-xmark' />
-                        <font-awesome-icon v-show="(entry.days[index-1].completed === 1)" icon='fa-solid fa-check' />
+                    <td class="habit-column" @click="updateDay(entry.days[topic[this.entry.id]-1])">
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]-1].completed === 0)" icon='fa-solid fa-xmark' />
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]-1].completed === 1)" icon='fa-solid fa-check' />
                     </td>
-                    <td class="habit-column" @click="updateDay(entry.days[index])">
-                        <font-awesome-icon v-show="(entry.days[index].completed === 0)" icon='fa-solid fa-xmark' />
-                        <font-awesome-icon v-show="(entry.days[index].completed === 1)" icon='fa-solid fa-check' />
+                    <td class="habit-column" @click="updateDay(entry.days[topic[this.entry.id]])">
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]].completed === 0)" icon='fa-solid fa-xmark' />
+                        <font-awesome-icon v-show="(entry.days[topic[this.entry.id]].completed === 1)" icon='fa-solid fa-check' />
                     </td>
                     <td class="habit-column"></td>
                 </tr>
@@ -78,11 +79,11 @@ export default {
         return {
             editing: false,
             name: this.entry.name,
-            index: this.entry.days.length - 1,
         }
     },
     props: {
-        entry: Object
+        entry: Object,
+        topic: Object
     },
     methods: {
         ...mapActions(["sendEntryDataRequest"]),
@@ -103,20 +104,23 @@ export default {
             this.sendEntryDataRequest(['PUT', {type: 'habit', name: this.entry.name, days: this.entry.days, id: this.entry.id}])
         },
         showPreviousWeek() {
-            if (this.index > 6) {
-                this.index -= 7
+            if (this.topic[this.entry.id] > 6) {
+                this.topic[this.entry.id] -= 7
             } else {
-                this.index = this.entry.days.length - 1
+                this.topic[this.entry.id] = this.entry.days.length - 1
             }
         },
         showNextWeek() {
-            if (this.index === this.entry.days.length - 1) {
-                this.index = 6
+            if (this.topic[this.entry.id] === this.entry.days.length - 1) {
+                this.topic[this.entry.id] = 6
             } else {
-                this.index += 7
+                this.topic[this.entry.id] += 7
             }
         }
     },
+    created() {
+        this.topic[this.entry.id] = (this.topic[this.entry.id]) ? this.topic[this.entry.id] : this.entry.days.length - 1
+    }
 }
 
 

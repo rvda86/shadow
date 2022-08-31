@@ -4,8 +4,8 @@
             <h3>Enter your email address</h3>
             <form class="flex" @submit.prevent="submitHandler">
                 <input class="input" type="email" placeholder="email" v-model="email" v-on:input="showFeedback()" required>
-                <p class="feedback-message" :style="{color: (validateEmail()) ? 'green' : 'red'}" v-show="showFeedbackEmail">
-                    {{ (validateEmail()) ? 'valid email' : 'invalid email' }}
+                <p class="feedback-message" :style="{color: (validateEmailHandler()) ? 'green' : 'red'}" v-show="showFeedbackEmail">
+                    {{ (validateEmailHandler()) ? 'valid email' : 'invalid email' }}
                 </p>
                 <button class="button">Submit</button>
             </form>
@@ -17,6 +17,7 @@
 <script>
 
 import { mapActions } from 'vuex'
+import { validateEmail } from '../../validation-rules'
 
 export default {
     name: 'RequestPasswordReset',
@@ -34,8 +35,8 @@ export default {
         showFeedback() {
             this.showFeedbackEmail = (this.email.length > 0) ? true : false  
         },
-        validateEmail() {
-            return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email))
+        validateEmailHandler() {
+            return validateEmail(this.email)
         },
     }
 }

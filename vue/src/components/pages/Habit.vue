@@ -11,16 +11,12 @@
         <div class="card card-grey">
             <div>
                 <input class="input" type="text" placeholder="Add a habit" v-model="name" required>
-                <!-- <select>
-                    <option value="" selected disabled>Frequency</option>
-                    <option>Daily</option>
-                </select> -->
                 <font-awesome-icon icon="fa-solid fa-plus" @click="addHabitHandler"/>
             </div>        
         </div>
 
         <div :key="entry.id" v-for="entry in topic.entries">
-            <EntryHabit :entry=entry />
+            <EntryHabit :entry=entry :topic=topic />
         </div>
 
     </div>
@@ -78,6 +74,4 @@ export default {
 </script>
 
 <style>
-
-
 </style>

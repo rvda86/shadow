@@ -303,7 +303,6 @@ class Habit(Entry):
     def create(self, user_id: str, data: dict):
         self.id = uuid_generator()
         self.date_posted = datetime.utcnow()
-        self.date_posted = self.date_posted + timedelta(days = -10)
         self.set_topic(data["topic_id"])
         self.set_name(data["name"])
         db.create_update_delete(db.create_habit_entry_sql, (self.id, user_id, self.topic_id, self.date_posted, self.name))

@@ -69,13 +69,4 @@ export default {
 </script>
 
 <style>
-
-.category-settings {
-    margin: 10px;
-}
-
-.margin-10 {
-    margin: 10px;
-}
-
 </style>

@@ -1,7 +1,7 @@
 <template>
 
 <div>
-    <div class="card">
+    <div class="card card-grey">
         <h4>Add a new category</h4>
 
         <form class="flex" @submit.prevent="submitHandler">
@@ -52,22 +52,4 @@ export default {
 </script>
 
 <style>
-
-
-
-.settings-account {
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-}
-
-#settings-categories {
-    min-width: 600px;
-}
-
-.settings-categories {
-    display: flex;
-    flex-direction: row;
-}
-
 </style>

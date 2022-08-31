@@ -4,7 +4,7 @@
     <div class="card card-grey">
         <h4>ToDo</h4>
         <p>{{ topic.name }} <font-awesome-icon @click="showSettings" icon="fa-solid fa-gear" /></p>
-        <a href="#" class="link small-font" @click="toggleShowCompleted">{{ showCompleted ? 'Hide completed' : 'Show Completed' }}</a>
+        <a href="#" class="link small-font" @click="toggleShowCompleted">{{ topic.showCompleted ? 'Hide completed' : 'Show Completed' }}</a>
     </div>
 
     <div class="card card-grey">
@@ -15,7 +15,7 @@
     </div>
 
 
-    <div :key="entry.id" v-for="entry in topic.entries" v-show="(((entry.completed == '1' && showCompleted) || (entry.completed == '0')) ? true : false)">
+    <div :key="entry.id" v-for="entry in topic.entries" v-show="(((entry.completed == '1' && topic.showCompleted) || (entry.completed == '0')) ? true : false)">
         <EntryTodo :entry=entry />
     </div>
 
@@ -51,7 +51,7 @@ export default {
                     }
                 }
             }
-        }
+        },
     },
     methods: {
         ...mapActions(["sendEntryDataRequest"]),
@@ -66,7 +66,7 @@ export default {
             this.toggleNewTask()
         },
         toggleShowCompleted() {
-            this.showCompleted = !this.showCompleted
+            this.topic.showCompleted = !this.topic.showCompleted
         },
         showSettings() {
             this.setSettingsModalData(this.topic)

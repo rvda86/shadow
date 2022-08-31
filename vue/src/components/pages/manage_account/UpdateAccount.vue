@@ -111,22 +111,4 @@ export default {
 </script>
 
 <style>
-
-
-
-.settings-account {
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-}
-
-#settings-categories {
-    min-width: 600px;
-}
-
-.settings-categories {
-    display: flex;
-    flex-direction: row;
-}
-
 </style>

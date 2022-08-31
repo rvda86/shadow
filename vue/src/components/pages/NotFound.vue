@@ -1,6 +1,6 @@
 <template>
     <div class="card"> 
-        <h1>404 - Page not found</h1>
+        <h1 class="text-center">404 - Page not found</h1>
     </div>
 </template>
 
@@ -11,9 +11,4 @@ export default {
 }
 </script>
 
-<style scoped>
-    h1 {
-        text-align:center;
-    }
-
-</style>
+<style></style>
