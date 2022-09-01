@@ -3,12 +3,17 @@
         <Modal v-show="showModal"/>
         <SettingsModal v-show="showSettingsModal" />
 
-        <header v-show="authenticated" id="header">
+        <div>
+          <Demo />
+        </div>
+
+        <header v-show="authenticated" id="header">          
             <HeaderAuth />
         </header>
         <header v-show="!authenticated" id="header">
             <Header />
         </header>
+
         <main id="main">
           <nav v-show="showMenu">
             <Menu />
@@ -28,6 +33,7 @@ import Menu from './Menu.vue'
 import FlashMessage from '../ui/FlashMessage.vue'
 import Modal from '../ui/Modal.vue'
 import SettingsModal from '../settings/SettingsModal.vue'
+import Demo from './Demo.vue'
 
 export default {
   name: 'Layout',
@@ -37,7 +43,8 @@ export default {
       Menu,
       FlashMessage,
       Modal,
-      SettingsModal
+      SettingsModal,
+      Demo
   },
   computed: {
       ...mapState(["authenticated", "showMenu", "showFlashMessage", "showModal", "showSettingsModal"])
@@ -58,11 +65,27 @@ body {
 }
 #grid {
     display: grid;
-    grid-template-rows: 1fr auto;
+    grid-template-rows: 1fr 1fr auto;
     grid-template-areas: 
+        "demo"
         "header"
         "main";
 }
+
+#demo {
+    grid-area: demo;
+    position: fixed;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    background-color: #1b4e8c;
+    color: white;
+    font-weight: 1000;
+}
+
 #header {
     grid-area: header;
     margin: 0;
@@ -71,6 +94,7 @@ body {
 
 header {
     position: fixed;
+    top: 30px;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -143,7 +167,7 @@ header {
 #main{
     grid-area: main;
     margin: 0;
-    margin-top: 65px;
+    margin-top: 100px;
     padding: 0;
 }
 
