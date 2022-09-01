@@ -52,7 +52,8 @@ html { box-sizing: border-box; }
 body {
     margin: 0;
     font-size: 100%;
-    font-family: sans-serif;
+    font-family: Helvetica, sans-serif;
+    line-height: 1.3;
     background-color:rgb(245, 245, 245);
 }
 #grid {
@@ -148,7 +149,6 @@ header {
 
 #index {
     text-align: center;
-    font-family: sans-serif;
 }
 
 .index-story {
@@ -230,6 +230,14 @@ header {
 .input, .margin-3-padding-3, .input-title {
   margin: 3px;
   padding: 3px;
+}
+
+.input-narrow {
+  width: 150px;
+}
+
+.input-large {
+  padding: 5px;
 }
 
 .textarea {

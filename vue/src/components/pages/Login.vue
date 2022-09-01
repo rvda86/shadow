@@ -4,8 +4,8 @@
         <h3>Log In</h3>
 
         <form class="flex" @submit.prevent="submitHandler">
-            <input class="input" type="text" v-model="username" placeholder="Username" required>
-            <input class="input" type="password" v-model="password" placeholder="Password" required>
+            <input class="input input-large" type="text" v-model="username" placeholder="Username" required>
+            <input class="input input-large" type="password" v-model="password" placeholder="Password" required>
             <button class="button">Log In</button>
         </form>
 

@@ -5,15 +5,15 @@
         <h3>Create Your Account</h3>
 
         <form class="flex" @submit.prevent="submitHandler">
-            <input class="input" type="text" v-model="username" placeholder="Username" v-on:input="showFeedback()" required>
+            <input class="input input-large" type="text" v-model="username" placeholder="Username" v-on:input="showFeedback()" required>
             <p class="feedback-message" :style="{color: (validateUsernameHandler()) ? 'green' : 'red'}" v-show="showFeedbackUsername">
                     {{ (validateUsernameHandler()) ? 'username ok' : 'minimum of 5 characters, no special characters' }}
             </p>
-            <input class="input" type="email" v-model="email" placeholder="Email" v-on:input="showFeedback()" required>
+            <input class="input input-large" type="email" v-model="email" placeholder="Email" v-on:input="showFeedback()" required>
             <p class="feedback-message" :style="{color: (validateEmailHandler()) ? 'green' : 'red'}" v-show="showFeedbackEmail">
                     {{ (validateEmailHandler()) ? 'email ok' : 'this email is invalid' }}
             </p>
-            <input class="input" type="password" v-model="password" placeholder="Password" v-on:input="showFeedback()" required>
+            <input class="input input-large" type="password" v-model="password" placeholder="Password" v-on:input="showFeedback()" required>
             <p class="feedback-message" :style="{color: (validatePasswordHandler()) ? 'green' : 'red'}" v-show="showFeedbackPassword">
                     {{ (validatePasswordHandler()) ? 'password ok' : 'minimum of 8 characters, at least one number and one letter' }}
             </p>

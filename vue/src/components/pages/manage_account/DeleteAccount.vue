@@ -2,9 +2,9 @@
     
     <div class="card">
 
-        <h3>Delete Your Account</h3>
+        <h4>Delete Your Account</h4>
         <form class="flex" @submit.prevent="submitHandler">            
-            <input class="input" type="password" placeholder="current password" v-model="currentPassword" />
+            <input class="input input-large" type="password" placeholder="current password" v-model="currentPassword" />
             <button class="button background-red" type="submit">Delete Account</button>
         </form>
 

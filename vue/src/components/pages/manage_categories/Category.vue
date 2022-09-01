@@ -13,21 +13,9 @@
             <Topic :topic=topic />
         </div>   
 
-        <!-- <form class="flex margin-10" @submit.prevent="createTopicHandler">
-            <p class="small-font">Add a new topic to this category</p>
-            <input class="input" type="text" v-model="newTopicName" placeholder="new topic" required>
-            <select v-model=topicType required>
-                <option value="" selected disabled>Select topic type</option>
-                <option>{{ topicTypes[0] }}</option>
-                <option>{{ topicTypes[1] }}</option>
-                <option>{{ topicTypes[2] }}</option>
-            </select>
-            <button class="button">Add</button>
-        </form> -->
-
         <p class="small-font margin-top-5">Add a new topic to this category</p>
         <div class="flex-row">
-            <input class="input" type="text" v-model="newTopicName" placeholder="new topic" required>
+            <input class="input input-narrow" type="text" v-model="newTopicName" placeholder="new topic" required>
             <select class="margin-3-padding-3" v-model=topicType required>
                 <option value="" selected disabled>Select topic type</option>
                 <option>{{ topicTypes[0] }}</option>

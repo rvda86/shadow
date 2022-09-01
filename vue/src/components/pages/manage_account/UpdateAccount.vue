@@ -2,15 +2,15 @@
     
     <div class="card">
 
-        <h3>Edit Your Account</h3>
+        <h4>Edit Your Account</h4>
         <form class="flex" @submit.prevent="submitHandler">
             <p class="small-font">Username:</p>
-            <input class="input" type="text" v-model="username" v-on:input="enableFeedbackUsername()">
+            <input class="input input-large" type="text" v-model="username" v-on:input="enableFeedbackUsername()">
             <p class="feedback-message" :style="{color: (validateUsernameHandler()) ? 'green' : 'red'}" v-show="showFeedbackUsername">
                     {{ (validateUsernameHandler()) ? 'username ok' : 'minimum of 5 characters, no special characters' }}
             </p>
             <p class="small-font">Email:</p>
-            <input class="input" type="email" v-model="email" v-on:input="enableFeedbackEmail()">
+            <input class="input input-large" type="email" v-model="email" v-on:input="enableFeedbackEmail()">
             <p class="feedback-message" :style="{color: (validateEmailHandler()) ? 'green' : 'red'}" v-show="showFeedbackEmail">
                     {{ (validateEmailHandler()) ? 'email ok' : 'this email is invalid' }}
             </p>
@@ -20,19 +20,19 @@
 
             <p class="small-font">Password:</p>
             <p class="link small-font" @click="togglePasswordEdit">{{ editPasswordText }}</p>
-            <input class="input" v-if="editingPassword" type="password" placeholder="new password" v-model="newPassword" 
+            <input class="input input-large" v-if="editingPassword" type="password" placeholder="new password" v-model="newPassword" 
                     v-on:input="enableFeedbackNewPassword()">
             <p class="feedback-message" :style="{color: (validatePasswordHandler(this.newPassword)) ? 'green' : 'red'}" v-show="showFeedbackNewPassword">
                     {{ (validatePasswordHandler(this.newPassword)) ? 'password ok' : 'minimum of 8 characters, at least one number and one letter' }}
             </p>
-            <input class="input" v-if="editingPassword" type="password" placeholder="confirm new password" v-model="newPasswordConfirmed" 
+            <input class="input input-large" v-if="editingPassword" type="password" placeholder="confirm new password" v-model="newPasswordConfirmed" 
                     v-on:input="enableFeedbackNewPasswordConfirmed()">
             <p class="feedback-message" :style="{color: (validatePasswordMatch()) ? 'green' : 'red'}" v-show="showFeedbackNewPasswordConfirmed">
                     {{ (validatePasswordMatch()) ? 'passwords match' : 'passwords do not match' }}
             </p>
 
             <p class="small-font">Current Password:</p>
-            <input class="input" type="password" placeholder="current password" v-model="currentPassword">
+            <input class="input input-large" type="password" placeholder="current password" v-model="currentPassword">
             <button class="button">Update Account</button>
         </form>
 
