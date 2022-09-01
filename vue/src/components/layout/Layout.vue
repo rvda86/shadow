@@ -338,7 +338,7 @@ a:hover {
     z-index: 999
 }
 
-.journal-entry, .todo-entry, .habit-entry {
+.journal-entry, .todo-entry, .habit-entry, .home-text {
     width: 95%;
 }
 
