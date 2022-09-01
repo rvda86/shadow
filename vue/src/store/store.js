@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import router from '../router/router'
+import { apiLink } from '../env'
 
 const store = createStore({
     state() {
@@ -10,7 +11,7 @@ const store = createStore({
             showModal: false,
             showSettingsModal: false,
             settingsModalData: {},
-            apiLink: "http://192.168.2.3:5000/api",
+            apiLink: apiLink,
             data: {userData: {}, categories: {}},
             dataIsLoaded: false,
             topicTypes: ["journal", "todo", "habit"],
