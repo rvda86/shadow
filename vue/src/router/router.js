@@ -44,21 +44,21 @@ const routes = [
        checkTokenExpiration(to, from, next, false, false)
    }
  },
-  { path: '/topics/journal/:topicId', 
+  { path: '/journal/:topicId', 
     name: 'journal', 
     component: Journal,
     beforeEnter: (to, from, next) => {
         checkTokenExpiration(to, from, next, true, false)
     }
   },
-  { path: '/topics/todo/:topicId', 
+  { path: '/todo/:topicId', 
     name: 'todo', 
     component: Todo,
     beforeEnter: (to, from, next) => {
        checkTokenExpiration(to, from, next, true, false)
     }
   },
-  { path: '/topics/habit/:topicId', 
+  { path: '/habit/:topicId', 
   name: 'habit', 
   component: Habit,
   beforeEnter: (to, from, next) => {

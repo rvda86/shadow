@@ -65,7 +65,6 @@ class TestApi(unittest.TestCase):
     def success_create_user(self, data):
         response = self.create_user(data)
         self.assertEqual(200, response.status_code)
-        self.assertEqual("account successfully created", response.json()["msg"])
 
     def fail_create_user_duplicate(self, data):
         response = self.create_user(data)
@@ -94,7 +93,6 @@ class TestApi(unittest.TestCase):
     def success_update_user(self, token, data):
         response = self.update_user(data, token)
         self.assertEqual(200, response.status_code)
-        self.assertEqual("account successfully updated", response.json()["msg"])
 
     def confirm_success_update_username_email(self, token, data):
         response = self.get_user(token).json()
@@ -103,7 +101,6 @@ class TestApi(unittest.TestCase):
     def success_delete_user(self, token, data):
         response = self.delete_user(data, token)
         self.assertEqual(200, response.status_code)
-        self.assertEqual("account successfully deleted", response.json()["msg"])
 
     def fail_delete_user_unknown_user(self, token, data):
         response = self.delete_user(data, token)
@@ -250,13 +247,11 @@ class TestApi(unittest.TestCase):
 
     def fail_get_entry_wrong_user(self, entry_type, id, token):
         response = self.get_entry(entry_type, id, token)
-        self.assertEqual(404, response.status_code)
-        self.assertEqual("Resource not found", response.json()["msg"])    
+        self.assertEqual(404, response.status_code)    
 
     def fail_get_entry_unknown_entry(self, entry_type, id, token):
         response = self.get_entry(entry_type, id, token)
         self.assertEqual(404, response.status_code)
-        self.assertEqual("Resource not found", response.json()["msg"])
 
     def success_update_entry(self, data, token):
         response = self.update_entry(data, token)
@@ -265,12 +260,10 @@ class TestApi(unittest.TestCase):
     def fail_update_entry_wrong_user(self, data, token):
         response = self.update_entry(data, token)
         self.assertEqual(404, response.status_code)
-        self.assertEqual("Resource not found", response.json()["msg"])
 
     def fail_delete_entry_wrong_user(self, data, token):
         response = self.delete_entry(data, token)
         self.assertEqual(404, response.status_code)
-        self.assertEqual("Resource not found", response.json()["msg"])
 
     def success_delete_entry(self, data, token):
         response = self.delete_entry(data, token)

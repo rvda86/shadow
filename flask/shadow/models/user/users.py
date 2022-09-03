@@ -1,5 +1,5 @@
 from shadow.utils import uuid_generator
-from shadow.error_handling import UsernameOrEmailTakenError, InvalidPasswordError, NotFoundError
+from shadow.error_handling import UsernameTakenError, EmailTakenError, InvalidPasswordError, NotFoundError
 from shadow.validation import validate_email, validate_password, validate_username
 from shadow.logging import get_user_logger
 from shadow import bcrypt
@@ -99,10 +99,10 @@ class User:
         existing_usernames = [record[0] for record in db.retrieve_all(db.retrieve_all_usernames_sql)]
         if username in existing_usernames:
             if self.username is None:
-                raise UsernameOrEmailTakenError("username")
+                raise UsernameTakenError()
             else: 
                 if username != self.username:
-                    raise UsernameOrEmailTakenError("username")
+                    raise UsernameTakenError()
         self.username = username
 
     def set_email(self, email: str):
@@ -110,10 +110,10 @@ class User:
         existing_emails = [record[0] for record in db.retrieve_all(db.retrieve_all_emails_sql)]
         if email in existing_emails:
             if self.email is None:
-                raise UsernameOrEmailTakenError("email")
+                raise EmailTakenError()
             else: 
                 if email != self.email:
-                    raise UsernameOrEmailTakenError("email")
+                    raise EmailTakenError()
         self.email = email
 
     def set_password(self, password: str):

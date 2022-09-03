@@ -3,7 +3,10 @@ from functools import wraps
 class InvalidDataError(Exception):
     pass
 
-class UsernameOrEmailTakenError(Exception):
+class UsernameTakenError(Exception):
+    pass
+
+class EmailTakenError(Exception):
     pass
 
 class InvalidPasswordError(Exception):
@@ -28,8 +31,10 @@ def error_handler(func):
             return func(*args, **kwargs)
         except InvalidDataError as e:
             return {"msg": str(e)}, 422
-        except UsernameOrEmailTakenError as e:
-            return {"msg": "username or email already taken"}, 409
+        except UsernameTakenError:
+            return {"msg": "username already in use"}, 409
+        except EmailTakenError:
+            return {"msg": "email already in use"}, 409
         except InvalidPasswordError:
             return {"msg": "wrong password provided"}, 401
         except NotFoundError:

@@ -172,4 +172,4 @@ class DatabasePool:
         self.in_use = self.instances[db_instance]
 
 db_pool = DatabasePool()
-db_pool.set_in_use("testing")
+db_pool.set_in_use("development")
