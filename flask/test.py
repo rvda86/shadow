@@ -42,7 +42,7 @@ class TestApi(unittest.TestCase):
         wrong_password = "pa$$w0rd"
         invalid_email = "user_1email.com"
         invalid_password = "passwor"
-        new_password = "password2"
+        new_password = "pass-)(#$^&2"
 
         self.success_create_user({"username": username, "email": email, "password": password})
         self.fail_create_user_duplicate({"username": username, "email": email, "password": password})

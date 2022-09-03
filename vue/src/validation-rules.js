@@ -3,7 +3,7 @@ export function validateEmail(email) {
 }
 
 export function validatePassword(password) {
-    return (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,100}$/.test(password))
+    return !(/^(.{0,7}|[^0-9]*|[^A-Za-z]*)$/.test(password))
 }
 
 export function validateUsername(username) {
