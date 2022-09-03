@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card card-grey">
         <div>
             <h3>Enter your new password:</h3>
             <form class="flex" @submit.prevent="submitHandler">
