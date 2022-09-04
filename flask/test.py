@@ -2,13 +2,13 @@ import unittest
 import requests
 import json
 from shadow.db_mysql import db_pool
-from shadow import API_LINK
+from shadow import Config
 
 db = db_pool.acquire()
 
 class TestApi(unittest.TestCase):
 
-    api = API_LINK
+    api = Config.API_LINK
     users_endpoint = f"{api}/users"
     token_endpoint = f"{api}/users/token"
 

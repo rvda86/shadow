@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card card-grey">
         <div>
             <h3>Enter your email address</h3>
             <form class="flex" @submit.prevent="submitHandler">

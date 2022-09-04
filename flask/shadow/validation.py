@@ -74,7 +74,7 @@ def validate_password(password):
 def validate_username(username):
     if not isinstance(username, str):
         raise InvalidDataError("invalid username")
-    if not re.search("^[A-Za-z][A-Za-z0-9]{4,30}$", username):
+    if not re.search("^[A-Za-z][A-Za-z0-9_]{4,30}$", username):
         raise InvalidDataError("invalid username")
 
 def validate_title(title):
@@ -82,7 +82,7 @@ def validate_title(title):
         raise InvalidDataError("invalid title")
     if len(title) == 0:
         raise InvalidDataError("title is required")
-    if not re.search("^[-a-zA-Z0-9!@#$&()`.+,/\"]*$", title):
+    if not re.search("^[-a-zA-Z0-9!@#$&()`.+,/\" ]*$", title):
         raise InvalidDataError("invalid title")
 
 def validate_name(name):
@@ -90,7 +90,7 @@ def validate_name(name):
         raise InvalidDataError("invalid name")
     if len(name) == 0:
         raise InvalidDataError("oops, no input")
-    if not re.search("^[-a-zA-Z0-9!/_@#$&()`.+,/\"]*$", name):
+    if not re.search("^[-a-zA-Z0-9!/_@#$&()`.+,/\" ]*$", name):
         raise InvalidDataError("invalid name")
 
 def validate_id(id):

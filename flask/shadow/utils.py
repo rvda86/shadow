@@ -1,6 +1,7 @@
 import uuid
 from flask_mail import Message
-from shadow import EMAIL_VERIFICATION_LINK, PASSWORD_RESET_LINK, mail, MAIL_DEFAULT_SENDER
+from shadow import mail
+from shadow.config import Config
 from flask_jwt_extended import create_access_token
 
 def uuid_generator():
@@ -18,13 +19,13 @@ def send_email_verification_mail(user):
         </head>
         <body>
         <h2>Welcome to Shadow</h2>
-        <p>Please verify your email address by clicking on this link: <a href="{EMAIL_VERIFICATION_LINK}?token={access_token}">Verify my email</a>
+        <p>Please verify your email address by clicking on this link: <a href="{Config.EMAIL_VERIFICATION_LINK}?token={access_token}">Verify my email</a>
         </body>
         </html>
     """
     msg = Message(subject="Welcome to Shadow", 
             html=html, 
-            sender=MAIL_DEFAULT_SENDER,
+            sender=Config.MAIL_DEFAULT_SENDER,
             recipients=[user.get_email()])
     try:
         mail.send(msg)
@@ -45,14 +46,14 @@ def send_password_reset_mail(user):
             </head>
             <body>
             <h2>Password Reset</h2>
-            <p>Please click the following link to reset your password: <a href="{PASSWORD_RESET_LINK}?token={access_token}">Reset password</a>
+            <p>Please click the following link to reset your password: <a href="{Config.PASSWORD_RESET_LINK}?token={access_token}">Reset password</a>
             </body>
             </html>
         """
         try:
             msg = Message(f"Password reset for Shadow", 
                     html=html,
-                    sender=MAIL_DEFAULT_SENDER,
+                    sender=Config.MAIL_DEFAULT_SENDER,
                     recipients=[user.get_email()])
             mail.send(msg)
             return "Password reset email sent, please check your email to reset your password"

@@ -1,5 +1,5 @@
 from mysql.connector import connect, Error
-from shadow import DB_USER, DB_PASSWORD, DB_TESTING, DB_DEVELOPMENT
+from shadow.config import Config
 from shadow.error_handling import DatabaseError
 
 class Database:
@@ -73,7 +73,7 @@ class Database:
 
     def create_connection(self):
         try:
-            connection = connect(host="localhost", user=DB_USER, password=DB_PASSWORD, buffered=True, database=self.name)
+            connection = connect(host="localhost", user=Config.DB_USER, password=Config.DB_PASSWORD, buffered=True, database=self.name)
             cursor = connection.cursor()
             return connection, cursor
         except Error as e:
@@ -162,8 +162,8 @@ class Database:
 class DatabasePool:
 
     def __init__(self):
-        self.instances = {"development": Database(DB_DEVELOPMENT), "testing": Database(DB_TESTING)}
-        self.in_use = self.instances["development"]
+        self.instances = {"production": Database(Config.DB_PRODUCTION), "testing": Database(Config.DB_TESTING)}
+        self.in_use = self.instances["production"]
 
     def acquire(self):
         return self.in_use
@@ -171,5 +171,11 @@ class DatabasePool:
     def set_in_use(self, db_instance):
         self.in_use = self.instances[db_instance]
 
+
 db_pool = DatabasePool()
-db_pool.set_in_use("development")
+
+db_in_use = "production"
+if Config.TEST_ENVIRONMENT:
+    db_in_use = "testing"
+
+db_pool.set_in_use(db_in_use)

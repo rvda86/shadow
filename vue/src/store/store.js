@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import router from '../router/router'
-import { apiLink } from '../env'
+import { apiLink } from '../../env'
 
 const store = createStore({
     state() {
