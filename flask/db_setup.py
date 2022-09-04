@@ -1,6 +1,6 @@
 from mysql.connector import connect, Error
 from shadow.db_mysql import db_pool
-from shadow import DB_USER, DB_PASSWORD
+from shadow.config import Config
 
 db = db_pool.acquire()
 
@@ -8,8 +8,8 @@ def create_db(name):
     try:
         with connect(
             host="localhost",
-            user=DB_USER,
-            password=DB_PASSWORD
+            user=Config.DB_USER,
+            password=Config.DB_PASSWORD
         ) as connection:
             create_db_query = f"CREATE DATABASE {name}"
             with connection.cursor() as cursor:
@@ -124,8 +124,8 @@ def drop_db(name):
     try:
         with connect(
             host="localhost",
-            user=DB_USER,
-            password=DB_PASSWORD
+            user=Config.DB_USER,
+            password=Config.DB_PASSWORD
         ) as connection:
             create_db_query = f"DROP DATABASE IF EXISTS {name}"
             with connection.cursor() as cursor:
