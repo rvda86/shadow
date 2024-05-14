@@ -1,6 +1,7 @@
 import unittest
 
 from app.config import Config
+from app.constants.ControllerMessages import ControllerMessages
 from app.constants.ExceptionMessages import ExceptionMessages
 from app.db_mysql import db_pool
 from app.tests.user_routes.UserRequester import UserRequester
@@ -30,6 +31,7 @@ class TestCreateUser(unittest.TestCase):
         data, status_code = self.requester.create_user(data)
 
         self.assertEqual(200, status_code)
+        self.assertEqual(ControllerMessages.ACCOUNT_CREATED, data["msg"])
         self.assertEqual(self.username, data["data"]["username"])
         self.assertEqual(self.email, data["data"]["email"])
 

@@ -1,6 +1,7 @@
 from flask import jsonify
 
 from app.config import Config
+from app.constants.ControllerMessages import ControllerMessages
 from app.models.entry.entries import get_all_categories_by_user, to_dict
 from app.models.user.User import User
 from app.utils import send_email_verification_mail, send_password_reset_mail
@@ -16,7 +17,7 @@ class UserController:
         data = preprocess_incoming_data(data, "POST")
         user = User()
         user = user.create(data)
-        response = {"data": user.as_dict_private_profile(), "msg": "account created, you can now log in"}
+        response = {"data": user.as_dict_private_profile(), "msg": ControllerMessages.ACCOUNT_CREATED}
         if Config.MAIL_ENABLED:
             send_email_verification_mail(user)
         return jsonify(response)
