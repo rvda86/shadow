@@ -42,6 +42,14 @@ class TestCreateUser(unittest.TestCase):
         self.assertEqual(422, status_code)
         self.assertEqual(ExceptionMessages.PASSWORD_NUMERIC, data["msg"])
 
+    def test_password_too_common(self):
+        password = "password"
+        data = {"username": self.username, "email": self.email, "password": password}
+        data, status_code = self.requester.create_user(data)
+
+        self.assertEqual(422, status_code)
+        self.assertEqual(ExceptionMessages.PASSWORD_TOO_COMMON, data["msg"])
+
 
 if __name__ == "__main__":
     unittest.main()
