@@ -69,6 +69,27 @@ class TestCreateUser(unittest.TestCase):
         self.assertEqual(409, status_code)
         self.assertEqual(ExceptionMessages.USERNAME_NOT_AVAILABLE, data["msg"])
 
+    def test_username_contains_illegal_characters(self):
+        username = "user1!3@#$"
+        data, status_code = self.requester.create_user(self.email, self.password, username)
+
+        self.assertEqual(422, status_code)
+        self.assertEqual(ExceptionMessages.USERNAME_ILLEGAL_CHARACTERS, data["msg"])
+
+    def test_username_too_long(self):
+        username = "a"*31
+        data, status_code = self.requester.create_user(self.email, self.password, username)
+
+        self.assertEqual(422, status_code)
+        self.assertEqual(ExceptionMessages.USERNAME_TOO_LONG, data["msg"])
+
+    def test_username_too_short(self):
+        username = "a"
+        data, status_code = self.requester.create_user(self.email, self.password, username)
+
+        self.assertEqual(422, status_code)
+        self.assertEqual(ExceptionMessages.USERNAME_TOO_SHORT, data["msg"])
+
 
 if __name__ == "__main__":
     unittest.main()
