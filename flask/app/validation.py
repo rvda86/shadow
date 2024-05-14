@@ -72,12 +72,6 @@ def validate_email(email):
     if not re.search("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email):
         raise InvalidDataError("invalid email address")
 
-def validate_username(username):
-    if not isinstance(username, str):
-        raise InvalidDataError("invalid username")
-    if not re.search("^[A-Za-z][A-Za-z0-9_]{4,30}$", username):
-        raise InvalidDataError("invalid username")
-
 
 def validate_title(title):
     if not isinstance(title, str):

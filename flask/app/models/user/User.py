@@ -2,8 +2,9 @@ import copy
 
 from app.utils import uuid_generator
 from app.error_handling import UsernameTakenError, EmailTakenError, InvalidPasswordError, NotFoundError
-from app.validators.password import validate_password
-from app.validation import validate_email, validate_username
+from app.validators.password import is_valid_password
+from app.validators.username import is_valid_username
+from app.validation import validate_email
 from app.logging import get_user_logger
 from app.main import bcrypt
 from flask_jwt_extended import create_access_token
@@ -98,7 +99,7 @@ class User:
         return self.id
 
     def set_username(self, username: str):
-        validate_username(username)
+        is_valid_username(username)
         username = username.lower()
         existing_usernames = [record[0] for record in db.retrieve_all(db.retrieve_all_usernames_sql)]
         if username in existing_usernames:
@@ -121,7 +122,7 @@ class User:
         self.email = email
 
     def set_password(self, password: str):
-        validate_password(password)
+        is_valid_password(password)
         self.password = bcrypt.generate_password_hash(password)
 
     def set_email_verified(self, verified: bool):

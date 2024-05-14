@@ -35,8 +35,8 @@ class TestApi(unittest.TestCase):
         
     def test_users(self):
 
-        username = "user_1"
-        username2 = "user_2"
+        username = "user1"
+        username2 = "user2"
         new_username = "donald"
         password = "password1234"
         email = "meneer1@email.com"
@@ -225,10 +225,10 @@ class TestApi(unittest.TestCase):
         self.fail_get_entry_unknown_entry(data["entry_type"], id, token1) 
 
     def set_up_tokens(self):
-        self.create_user({"username": "user_1", "email": "user_1@email.com", "password": "password1234"})
-        token1 = self.get_token({"username": "user_1", "password": "password1234"}).json()["access_token"]
-        self.create_user({"username": "user_2", "email": "user_2@email.com", "password": "password1234"})
-        token2 = self.get_token({"username": "user_2", "password": "password1234"}).json()["access_token"]
+        self.create_user({"username": "user1", "email": "user_1@email.com", "password": "password1234"})
+        token1 = self.get_token({"username": "user1", "password": "password1234"}).json()["access_token"]
+        self.create_user({"username": "user2", "email": "user_2@email.com", "password": "password1234"})
+        token2 = self.get_token({"username": "user2", "password": "password1234"}).json()["access_token"]
         return token1, token2
 
     def set_up_category_id(self, token):

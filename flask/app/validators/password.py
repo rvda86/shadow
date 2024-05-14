@@ -10,9 +10,9 @@ max_password_length = 128
 min_password_length = 8
 
 
-def validate_password(password: str) -> bool:
+def is_valid_password(password: str) -> bool:
     if not isinstance(password, str):
-        raise InvalidDataError("invalid password")
+        raise InvalidDataError("not a string")
     if string_is_too_short(min_password_length, password):
         raise InvalidDataError(ExceptionMessages.PASSWORD_TOO_SHORT)
     if string_is_too_long(max_password_length, password):
