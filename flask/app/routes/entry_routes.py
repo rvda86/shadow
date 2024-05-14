@@ -1,4 +1,4 @@
-from app import flask_app as app
+from app.main import app
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.error_handling import error_handler

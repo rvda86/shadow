@@ -1,9 +1,9 @@
+import json
 import unittest
 import requests
-import json
-from app.db_mysql import db_pool
-from app import Config
 
+from app.db_mysql import db_pool
+from app.config import Config
 from app.tests.user_routes.test_create_user import TestCreateUser
 
 db = db_pool.acquire()

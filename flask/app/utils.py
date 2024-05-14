@@ -1,6 +1,6 @@
 import uuid
 from flask_mail import Message
-from app import mail
+from app.main import mail
 from app.config import Config
 from flask_jwt_extended import create_access_token
 
