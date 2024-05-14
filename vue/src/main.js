@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-import Markdown from 'vue3-markdown-it';
 import CKEditor from '@ckeditor/ckeditor5-vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -24,7 +23,6 @@ library.add(faFloppyDisk)
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
 app.use(store)
 app.use(router)
-app.use(Markdown)
 app.use(CKEditor)
 app.mount('#app')
 

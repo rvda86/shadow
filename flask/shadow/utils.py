@@ -18,12 +18,12 @@ def send_email_verification_mail(user):
 	        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         </head>
         <body>
-        <h2>Welcome to Shadow</h2>
+        <h2>Welcome to Shadow {user.get_username()}</h2>
         <p>Please verify your email address by clicking on this link: <a href="{Config.EMAIL_VERIFICATION_LINK}?token={access_token}">Verify my email</a>
         </body>
         </html>
     """
-    msg = Message(subject="Welcome to Shadow", 
+    msg = Message(subject=f"Welcome to Shadow {user.get_username()}", 
             html=html, 
             sender=Config.MAIL_DEFAULT_SENDER,
             recipients=[user.get_email()])
@@ -46,6 +46,7 @@ def send_password_reset_mail(user):
             </head>
             <body>
             <h2>Password Reset</h2>
+            <p>Hello {user.get_username()}</p>
             <p>Please click the following link to reset your password: <a href="{Config.PASSWORD_RESET_LINK}?token={access_token}">Reset password</a>
             </body>
             </html>
