@@ -21,6 +21,6 @@ jwt = JWTManager(app)
 mail = Mail(app)
 CORS(app)
 
-logging.basicConfig(filename='./shadow/logs/logs.log', level=logging.DEBUG, format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
+logging.basicConfig(filename='./shadow/logs/main.log', level=logging.DEBUG, format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
 
 from shadow.routes import entry_routes, user_routes, frontend_routes

@@ -4,7 +4,10 @@ import json
 from shadow.db_mysql import db_pool
 from shadow import Config
 
+from shadow.tests.user_routes.test_create_user import TestCreateUser
+
 db = db_pool.acquire()
+
 
 class TestApi(unittest.TestCase):
 
@@ -283,6 +286,7 @@ class TestApi(unittest.TestCase):
 
     def get_entry(self, entry_type, id, token):
         return requests.get(f'{self.entries_endpoint}?type={entry_type}&id={id}', headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})
+
 
 if __name__ == '__main__':
     unittest.main()

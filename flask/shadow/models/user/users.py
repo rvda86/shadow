@@ -10,7 +10,8 @@ logger = get_user_logger()
 
 db = db_pool.acquire()
 
-class User:    
+
+class User:
 
     id: str
     username: str

@@ -5,8 +5,7 @@ __pycache__
 venv
 node_modules
 dist
-logs.logs
-user.log
 env.js
 static
 templates
+*.log
