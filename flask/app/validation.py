@@ -71,12 +71,24 @@ def validate_email(email):
         raise InvalidDataError("invalid email address")
 
 
-def validate_password(password):
+def validate_password(password: str) -> bool:
     if not isinstance(password, str):
         raise InvalidDataError("invalid password")
+    if password_is_entirely_numeric(password):
+        raise InvalidDataError("This password cannot be entirely numeric.")
     if re.search("^(.{0,7}|[^0-9]*|[^A-Za-z]*)$", password):
         raise InvalidDataError("invalid password")
+    password_valid = True
+    return password_valid
 
+
+def password_is_entirely_numeric(password: str) -> bool:
+    if len(password) == 0:
+        return False
+    for char in password:
+        if char not in "1234567890":
+            return False
+    return True
 
 def validate_username(username):
     if not isinstance(username, str):

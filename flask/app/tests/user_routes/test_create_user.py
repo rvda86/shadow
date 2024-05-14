@@ -37,7 +37,7 @@ class TestCreateUser(unittest.TestCase):
         data = {"username": self.username, "email": self.email, "password": password}
         data, status_code = self.requester.create_user(data)
         self.assertEqual(422, status_code)
-        self.assertEqual("invalid password", data["msg"])
+        self.assertEqual("This password cannot be entirely numeric.", data["msg"])
 
 
 if __name__ == "__main__":
