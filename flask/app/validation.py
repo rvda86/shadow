@@ -1,5 +1,7 @@
-import re
 import bleach
+import re
+
+from app.constants.ExceptionMessages import ExceptionMessages
 from app.error_handling import InvalidDataError
 
 
@@ -75,7 +77,7 @@ def validate_password(password: str) -> bool:
     if not isinstance(password, str):
         raise InvalidDataError("invalid password")
     if password_is_entirely_numeric(password):
-        raise InvalidDataError("This password cannot be entirely numeric.")
+        raise InvalidDataError(ExceptionMessages.PASSWORD_NUMERIC)
     if re.search("^(.{0,7}|[^0-9]*|[^A-Za-z]*)$", password):
         raise InvalidDataError("invalid password")
     password_valid = True

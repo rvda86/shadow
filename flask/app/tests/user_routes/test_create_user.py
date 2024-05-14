@@ -1,7 +1,8 @@
 import unittest
 
-from app.db_mysql import db_pool
 from app.config import Config
+from app.constants.ExceptionMessages import ExceptionMessages
+from app.db_mysql import db_pool
 from app.tests.user_routes.UserRequester import UserRequester
 
 
@@ -37,7 +38,7 @@ class TestCreateUser(unittest.TestCase):
         data = {"username": self.username, "email": self.email, "password": password}
         data, status_code = self.requester.create_user(data)
         self.assertEqual(422, status_code)
-        self.assertEqual("This password cannot be entirely numeric.", data["msg"])
+        self.assertEqual(ExceptionMessages.PASSWORD_NUMERIC, data["msg"])
 
 
 if __name__ == "__main__":
