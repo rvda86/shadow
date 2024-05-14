@@ -29,9 +29,15 @@ class TestCreateUser(unittest.TestCase):
         data, status_code = self.requester.create_user(data)
 
         self.assertEqual(200, status_code)
+        self.assertEqual(self.username, data["data"]["username"])
+        self.assertEqual(self.email, data["data"]["email"])
 
-        # self.assertEqual(self.username, data["data"]["username"])
-        # self.assertEqual(self.email, data["data"]["email"])
+    def test_password_entirely_numeric(self):
+        password = "1234567891234"
+        data = {"username": self.username, "email": self.email, "password": password}
+        data, status_code = self.requester.create_user(data)
+        self.assertEqual(422, status_code)
+        self.assertEqual("invalid password", data["msg"])
 
 
 if __name__ == "__main__":
