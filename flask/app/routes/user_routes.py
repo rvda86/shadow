@@ -1,8 +1,9 @@
-from app.main import app
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.error_handling import (error_handler)
+
 from app.controllers.user_controller import UserController
+from app.error_handling import error_handler
+from app.main import app
 
 
 @app.route("/api/users", methods=["GET"])

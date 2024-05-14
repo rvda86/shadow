@@ -4,8 +4,10 @@ from app.main import mail
 from app.config import Config
 from flask_jwt_extended import create_access_token
 
+
 def uuid_generator():
     return str(uuid.uuid4())
+
 
 def send_email_verification_mail(user):
     access_token = create_access_token(identity=user.get_email())
@@ -32,6 +34,7 @@ def send_email_verification_mail(user):
         return "Verification email send"
     except ConnectionRefusedError:
         return "Failed to send verification email"
+
 
 def send_password_reset_mail(user):
     if user.get_email_verified():

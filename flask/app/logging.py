@@ -1,6 +1,7 @@
 import logging
 import time
 
+
 def get_user_logger():
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)

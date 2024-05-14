@@ -1,5 +1,5 @@
 from flask import jsonify
-from app.models.user.users import User
+from app.models.user.User import User
 from app.validation import preprocess_incoming_data
 from app.models.entry.entries import get_all_categories_by_user, to_dict
 from app.utils import send_email_verification_mail, send_password_reset_mail

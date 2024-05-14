@@ -2,6 +2,7 @@ from mysql.connector import connect, Error
 from app.config import Config
 from app.error_handling import DatabaseError
 
+
 class Database:
 
     create_user_sql = "INSERT INTO users (id, username, email, password) VALUES (%s, %s, %s, %s)"

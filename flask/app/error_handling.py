@@ -1,28 +1,37 @@
 from functools import wraps
 
+
 class InvalidDataError(Exception):
     pass
+
 
 class UsernameTakenError(Exception):
     pass
 
+
 class EmailTakenError(Exception):
     pass
+
 
 class InvalidPasswordError(Exception):
     pass
 
+
 class NotFoundError(Exception):
     pass
+
 
 class DatabaseError(Exception):
     pass
 
+
 class VerificationMailError(Exception):
     pass
 
+
 class NotEmptyError(Exception):
     pass
+
 
 def error_handler(func):
     @wraps(func)

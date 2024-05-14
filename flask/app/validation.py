@@ -2,11 +2,13 @@ import re
 import bleach
 from app.error_handling import InvalidDataError
 
+
 def sanitize_strings(data: dict):
     for k in data:
         if isinstance(data[k], str):
             data[k] = bleach.clean(data[k].strip())
     return data
+
 
 required_keys = {
         "category":{"GET": ["type", "id"],
@@ -40,6 +42,7 @@ required_keys = {
         "token": {  "POST": ["type", "username", "password"]},       
         }
 
+
 def check_keys(data, method):
     if "type" not in data: 
         raise InvalidDataError("key 'type' is mandatory")
@@ -53,11 +56,13 @@ def check_keys(data, method):
         if k not in required_keys[data["type"]][method]:
             raise InvalidDataError("key(s) not allowed")
 
+
 def preprocess_incoming_data(data, method):
     if not isinstance(data, dict):
         raise InvalidDataError("not a dictionary")
     check_keys(data, method)
     return data
+
 
 def validate_email(email):
     if not isinstance(email, str):
@@ -65,17 +70,20 @@ def validate_email(email):
     if not re.search("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email):
         raise InvalidDataError("invalid email address")
 
+
 def validate_password(password):
     if not isinstance(password, str):
         raise InvalidDataError("invalid password")
     if re.search("^(.{0,7}|[^0-9]*|[^A-Za-z]*)$", password):
         raise InvalidDataError("invalid password")
 
+
 def validate_username(username):
     if not isinstance(username, str):
         raise InvalidDataError("invalid username")
     if not re.search("^[A-Za-z][A-Za-z0-9_]{4,30}$", username):
         raise InvalidDataError("invalid username")
+
 
 def validate_title(title):
     if not isinstance(title, str):
@@ -85,6 +93,7 @@ def validate_title(title):
     if not re.search("^[-a-zA-Z0-9!@#$&()`.+,/\" ]*$", title):
         raise InvalidDataError("invalid title")
 
+
 def validate_name(name):
     if not isinstance(name, str):
         raise InvalidDataError("invalid name")
@@ -93,11 +102,13 @@ def validate_name(name):
     if not re.search("^[-a-zA-Z0-9!/_@#$&()`.+,/\" ]*$", name):
         raise InvalidDataError("invalid name")
 
+
 def validate_id(id):
     if not isinstance(id, str):
         raise InvalidDataError("invalid id")
     if not re.search("^[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$", id): 
         raise InvalidDataError("invalid id")
+
 
 def validate_date(date):
     if not isinstance(date, str):

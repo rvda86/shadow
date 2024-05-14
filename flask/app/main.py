@@ -1,10 +1,12 @@
+import datetime
+import logging
+
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_mail import Mail
-import datetime
-import logging
+
 from app.config import Config
 
 app = Flask(__name__)
@@ -21,6 +23,7 @@ jwt = JWTManager(app)
 mail = Mail(app)
 CORS(app)
 
-logging.basicConfig(filename='./app/logs/main.log', level=logging.DEBUG, format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
+logging.basicConfig(filename='./app/logs/main.log', level=logging.NOTSET, format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
+logging.getLogger().addHandler(logging.StreamHandler())
 
 from app.routes import entry_routes, user_routes, frontend_routes
