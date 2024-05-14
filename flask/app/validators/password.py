@@ -1,5 +1,3 @@
-import re
-
 from app.constants.ExceptionMessages import ExceptionMessages
 from app.error_handling import InvalidDataError
 
@@ -22,9 +20,6 @@ def validate_password(password: str) -> bool:
         raise InvalidDataError(ExceptionMessages.PASSWORD_TOO_COMMON)
     if password_is_entirely_numeric(password):
         raise InvalidDataError(ExceptionMessages.PASSWORD_NUMERIC)
-
-    if re.search("^(.{0,7}|[^0-9]*|[^A-Za-z]*)$", password):
-        raise InvalidDataError("invalid password")
     password_valid = True
     return password_valid
 
