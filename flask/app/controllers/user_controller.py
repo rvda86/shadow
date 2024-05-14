@@ -4,7 +4,19 @@ from app.validation import preprocess_incoming_data
 from app.models.entry.entries import get_all_categories_by_user, to_dict
 from app.utils import send_email_verification_mail, send_password_reset_mail
 
+
 class UserController:
+
+    @staticmethod
+    def create_user(data):
+        if isinstance(data, dict):
+            data["type"] = "user"
+        data = preprocess_incoming_data(data, "POST")
+        user = User()
+        user = user.create(data)
+        response = {"data": user.as_dict_private_profile(), "msg": "account created, you can now log in"}
+        send_email_verification_mail(user)
+        return jsonify(response)
 
     @staticmethod
     def get_user(user_id):
@@ -40,16 +52,6 @@ class UserController:
         user.load_by_email(data["email"])
         user.set_password(data["password"])
         response = user.update_password_password_reset()
-        return jsonify(response)
-
-    @staticmethod
-    def create_user(data):
-        if isinstance(data, dict): 
-            data["type"] = "user"
-        data = preprocess_incoming_data(data, "POST")
-        user = User()
-        response = user.create(data)
-        send_email_verification_mail(user)
         return jsonify(response)
     
     @staticmethod

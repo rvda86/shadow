@@ -1,3 +1,5 @@
+import copy
+
 from app.utils import uuid_generator
 from app.error_handling import UsernameTakenError, EmailTakenError, InvalidPasswordError, NotFoundError
 from app.validation import validate_email, validate_password, validate_username
@@ -28,6 +30,15 @@ class User:
         self.email_verified = False
         self.authenticated = False
 
+    def create(self, data: dict) -> "User":
+        self.set_username(data["username"])
+        self.set_email(data["email"])
+        self.set_password(data["password"])
+        self.id = uuid_generator()
+        db.create_update_delete(db.create_user_sql, (self.id, self.username, self.email, self.password))
+        logger.info(f'USER CREATED: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
+        return self
+
     def load_by_email(self, email: str):
         result = db.retrieve(db.retrieve_user_by_email_sql, (email, ))
         if result is None:
@@ -51,15 +62,6 @@ class User:
         self.id, self.username, self.email, self.password, self.email_verified = result
         if self.email_verified == "1":
             self.email_verified = True
-
-    def create(self, data: dict):
-        self.set_username(data["username"])
-        self.set_email(data["email"])
-        self.set_password(data["password"])    
-        self.id = uuid_generator()   
-        db.create_update_delete(db.create_user_sql, (self.id, self.username, self.email, self.password))
-        logger.info(f'USER CREATED: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
-        return {"msg": "account created, you can now log in"}
 
     def update(self, user_id: str, data: dict):
         if self.authenticated:
@@ -151,3 +153,12 @@ class User:
         if self.authenticated:
             access_token = create_access_token(identity=self.id)
             return {"access_token":access_token}
+
+    def as_dict_private_profile(self) -> dict:
+        self_copy = copy.deepcopy(self)
+        profile = {
+            "id": self_copy.get_id(),
+            "username": self_copy.get_username(),
+            "email": self_copy.get_email(),
+        }
+        return profile
