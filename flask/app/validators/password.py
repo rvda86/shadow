@@ -14,10 +14,15 @@ min_password_length = 8
 def validate_password(password: str) -> bool:
     if not isinstance(password, str):
         raise InvalidDataError("invalid password")
+    if len(password) < min_password_length:
+        raise InvalidDataError(ExceptionMessages.PASSWORD_TOO_SHORT)
+    if len(password) > max_password_length:
+        raise InvalidDataError(ExceptionMessages.PASSWORD_TOO_LONG)
     if password_is_too_common(password):
         raise InvalidDataError(ExceptionMessages.PASSWORD_TOO_COMMON)
     if password_is_entirely_numeric(password):
         raise InvalidDataError(ExceptionMessages.PASSWORD_NUMERIC)
+
     if re.search("^(.{0,7}|[^0-9]*|[^A-Za-z]*)$", password):
         raise InvalidDataError("invalid password")
     password_valid = True

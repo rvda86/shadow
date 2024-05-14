@@ -50,6 +50,22 @@ class TestCreateUser(unittest.TestCase):
         self.assertEqual(422, status_code)
         self.assertEqual(ExceptionMessages.PASSWORD_TOO_COMMON, data["msg"])
 
+    def test_password_too_long(self):
+        password = "a"*129
+        data = {"username": self.username, "email": self.email, "password": password}
+        data, status_code = self.requester.create_user(data)
+
+        self.assertEqual(422, status_code)
+        self.assertEqual(ExceptionMessages.PASSWORD_TOO_LONG, data["msg"])
+
+    def test_password_too_short(self):
+        password = "shortpw"
+        data = {"username": self.username, "email": self.email, "password": password}
+        data, status_code = self.requester.create_user(data)
+
+        self.assertEqual(422, status_code)
+        self.assertEqual(ExceptionMessages.PASSWORD_TOO_SHORT, data["msg"])
+
 
 if __name__ == "__main__":
     unittest.main()

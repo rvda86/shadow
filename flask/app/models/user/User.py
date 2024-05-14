@@ -2,7 +2,8 @@ import copy
 
 from app.utils import uuid_generator
 from app.error_handling import UsernameTakenError, EmailTakenError, InvalidPasswordError, NotFoundError
-from app.validation import validate_email, validate_password, validate_username
+from app.validators.password import validate_password
+from app.validation import validate_email, validate_username
 from app.logging import get_user_logger
 from app.main import bcrypt
 from flask_jwt_extended import create_access_token
