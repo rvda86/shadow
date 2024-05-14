@@ -7,7 +7,7 @@ from app.db_mysql import db_pool
 from app.tests.user_routes.UserRequester import UserRequester
 
 
-# /api/user POST
+# /api/users POST
 class TestCreateUser(unittest.TestCase):
 
     db = db_pool.acquire()
@@ -27,8 +27,7 @@ class TestCreateUser(unittest.TestCase):
         self.db.reset_database()
 
     def test_success(self):
-        data = {"username": self.username, "email": self.email, "password": self.password}
-        data, status_code = self.requester.create_user(data)
+        data, status_code = self.requester.create_user(self.email, self.password, self.username)
 
         self.assertEqual(200, status_code)
         self.assertEqual(ControllerMessages.ACCOUNT_CREATED, data["msg"])
@@ -37,40 +36,35 @@ class TestCreateUser(unittest.TestCase):
 
     def test_password_entirely_numeric(self):
         password = "1234567891234"
-        data = {"username": self.username, "email": self.email, "password": password}
-        data, status_code = self.requester.create_user(data)
+        data, status_code = self.requester.create_user(self.email, password, self.username)
         self.assertEqual(422, status_code)
         self.assertEqual(ExceptionMessages.PASSWORD_NUMERIC, data["msg"])
 
     def test_password_too_common(self):
         password = "password"
-        data = {"username": self.username, "email": self.email, "password": password}
-        data, status_code = self.requester.create_user(data)
+        data, status_code = self.requester.create_user(self.email, password, self.username)
 
         self.assertEqual(422, status_code)
         self.assertEqual(ExceptionMessages.PASSWORD_TOO_COMMON, data["msg"])
 
     def test_password_too_long(self):
         password = "a"*129
-        data = {"username": self.username, "email": self.email, "password": password}
-        data, status_code = self.requester.create_user(data)
+        data, status_code = self.requester.create_user(self.email, password, self.username)
 
         self.assertEqual(422, status_code)
         self.assertEqual(ExceptionMessages.PASSWORD_TOO_LONG, data["msg"])
 
     def test_password_too_short(self):
         password = "shortpw"
-        data = {"username": self.username, "email": self.email, "password": password}
-        data, status_code = self.requester.create_user(data)
+        data, status_code = self.requester.create_user(self.email, password, self.username)
 
         self.assertEqual(422, status_code)
         self.assertEqual(ExceptionMessages.PASSWORD_TOO_SHORT, data["msg"])
 
     def test_username_already_exists(self):
-        data = {"username": self.username, "email": self.email, "password": self.password}
-        self.requester.create_user(data)
-        data = {"username": self.username, "email": "user2@example.com", "password": self.password}
-        data, status_code = self.requester.create_user(data)
+        self.requester.create_user(self.email, self.password, self.username)
+        email = "user2@example.com"
+        data, status_code = self.requester.create_user(email, self.password, self.username)
 
         self.assertEqual(409, status_code)
         self.assertEqual(ExceptionMessages.USERNAME_NOT_AVAILABLE, data["msg"])
