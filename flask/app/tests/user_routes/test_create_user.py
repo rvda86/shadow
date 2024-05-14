@@ -66,6 +66,15 @@ class TestCreateUser(unittest.TestCase):
         self.assertEqual(422, status_code)
         self.assertEqual(ExceptionMessages.PASSWORD_TOO_SHORT, data["msg"])
 
+    def test_username_already_exists(self):
+        data = {"username": self.username, "email": self.email, "password": self.password}
+        self.requester.create_user(data)
+        data = {"username": self.username, "email": "user2@example.com", "password": self.password}
+        data, status_code = self.requester.create_user(data)
+
+        self.assertEqual(409, status_code)
+        self.assertEqual(ExceptionMessages.USERNAME_NOT_AVAILABLE, data["msg"])
+
 
 if __name__ == "__main__":
     unittest.main()

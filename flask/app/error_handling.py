@@ -1,5 +1,6 @@
 from functools import wraps
 
+from app.constants.ExceptionMessages import ExceptionMessages
 
 class InvalidDataError(Exception):
     pass
@@ -41,7 +42,7 @@ def error_handler(func):
         except InvalidDataError as e:
             return {"msg": str(e)}, 422
         except UsernameTakenError:
-            return {"msg": "username already in use"}, 409
+            return {"msg": ExceptionMessages.USERNAME_NOT_AVAILABLE}, 409
         except EmailTakenError:
             return {"msg": "email already in use"}, 409
         except InvalidPasswordError:
