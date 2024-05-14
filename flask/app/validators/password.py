@@ -1,5 +1,6 @@
 from app.constants.ExceptionMessages import ExceptionMessages
 from app.error_handling import InvalidDataError
+from app.validators.string import string_is_too_short, string_is_too_long
 
 common_passwords = ["password", "12345678", "123456789", "baseball", "football", "qwertyuiop", "1234567890",
                     "superman", "1qaz2wsx", "trustno1", "jennifer", "sunshine", "iloveyou", "starwars",
@@ -12,9 +13,9 @@ min_password_length = 8
 def validate_password(password: str) -> bool:
     if not isinstance(password, str):
         raise InvalidDataError("invalid password")
-    if len(password) < min_password_length:
+    if string_is_too_short(min_password_length, password):
         raise InvalidDataError(ExceptionMessages.PASSWORD_TOO_SHORT)
-    if len(password) > max_password_length:
+    if string_is_too_long(max_password_length, password):
         raise InvalidDataError(ExceptionMessages.PASSWORD_TOO_LONG)
     if password_is_too_common(password):
         raise InvalidDataError(ExceptionMessages.PASSWORD_TOO_COMMON)
