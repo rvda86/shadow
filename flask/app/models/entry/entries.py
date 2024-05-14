@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
-from shadow.validation import validate_title, validate_id, validate_date, validate_name
-from shadow.utils import uuid_generator
-from shadow.db_mysql import db_pool
-from shadow.error_handling import InvalidDataError, NotFoundError, NotEmptyError
+from app.validation import validate_title, validate_id, validate_date, validate_name
+from app.utils import uuid_generator
+from app.db_mysql import db_pool
+from app.error_handling import InvalidDataError, NotFoundError, NotEmptyError
 
 db = db_pool.acquire()
 

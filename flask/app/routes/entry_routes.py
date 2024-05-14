@@ -1,8 +1,8 @@
-from shadow import app
+from app import flask_app as app
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from shadow.error_handling import error_handler
-from shadow.controllers.entry_controller import EntryController
+from app.error_handling import error_handler
+from app.controllers.entry_controller import EntryController
 
 @app.route("/api/entries", methods=["GET"])
 @error_handler

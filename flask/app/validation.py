@@ -1,6 +1,6 @@
 import re
 import bleach
-from shadow.error_handling import InvalidDataError
+from app.error_handling import InvalidDataError
 
 def sanitize_strings(data: dict):
     for k in data:

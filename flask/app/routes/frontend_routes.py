@@ -1,4 +1,4 @@
-from shadow import app
+from app import flask_app as app
 from flask import render_template
 
 @app.route("/")

@@ -1,10 +1,10 @@
-from shadow.utils import uuid_generator
-from shadow.error_handling import UsernameTakenError, EmailTakenError, InvalidPasswordError, NotFoundError
-from shadow.validation import validate_email, validate_password, validate_username
-from shadow.logging import get_user_logger
-from shadow import bcrypt
+from app.utils import uuid_generator
+from app.error_handling import UsernameTakenError, EmailTakenError, InvalidPasswordError, NotFoundError
+from app.validation import validate_email, validate_password, validate_username
+from app.logging import get_user_logger
+from app import bcrypt
 from flask_jwt_extended import create_access_token
-from shadow.db_mysql import db_pool
+from app.db_mysql import db_pool
 
 logger = get_user_logger()
 

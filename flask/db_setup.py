@@ -1,6 +1,6 @@
 from mysql.connector import connect, Error
-from shadow.db_mysql import db_pool
-from shadow.config import Config
+from app.db_mysql import db_pool
+from app.config import Config
 
 db = db_pool.acquire()
 

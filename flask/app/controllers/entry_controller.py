@@ -1,7 +1,7 @@
 from flask import jsonify
-from shadow.validation import preprocess_incoming_data
-from shadow.factory import get_entry
-from shadow.models.entry.entries import to_dict
+from app.validation import preprocess_incoming_data
+from app.factory import get_entry
+from app.models.entry.entries import to_dict
 
 class EntryController:
 

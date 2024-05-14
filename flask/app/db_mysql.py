@@ -1,6 +1,6 @@
 from mysql.connector import connect, Error
-from shadow.config import Config
-from shadow.error_handling import DatabaseError
+from app.config import Config
+from app.error_handling import DatabaseError
 
 class Database:
 

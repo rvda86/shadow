@@ -1,7 +1,7 @@
 import uuid
 from flask_mail import Message
-from shadow import mail
-from shadow.config import Config
+from app import mail
+from app.config import Config
 from flask_jwt_extended import create_access_token
 
 def uuid_generator():

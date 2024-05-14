@@ -1,4 +1,4 @@
-from shadow.models.entry.entries import Category, Topic, Journal, ToDo, Habit, Tag
+from app.models.entry.entries import Category, Topic, Journal, ToDo, Habit, Tag
 
 def get_entry(entry_type):
     entry_types = {

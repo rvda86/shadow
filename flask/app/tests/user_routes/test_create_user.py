@@ -1,8 +1,8 @@
 import unittest
 
-from shadow.db_mysql import db_pool
-from shadow.config import Config
-from shadow.tests.user_routes.UserRequester import UserRequester
+from app.db_mysql import db_pool
+from app.config import Config
+from app.tests.user_routes.UserRequester import UserRequester
 
 
 # /api/user POST

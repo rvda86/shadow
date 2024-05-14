@@ -1,10 +1,10 @@
 import unittest
 import requests
 import json
-from shadow.db_mysql import db_pool
-from shadow import Config
+from app.db_mysql import db_pool
+from app import Config
 
-from shadow.tests.user_routes.test_create_user import TestCreateUser
+from app.tests.user_routes.test_create_user import TestCreateUser
 
 db = db_pool.acquire()
 
