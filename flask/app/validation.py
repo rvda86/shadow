@@ -65,14 +65,6 @@ def preprocess_incoming_data(data, method):
     check_keys(data, method)
     return data
 
-
-def validate_email(email):
-    if not isinstance(email, str):
-        raise InvalidDataError("invalid email address")
-    if not re.search("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email):
-        raise InvalidDataError("invalid email address")
-
-
 def validate_title(title):
     if not isinstance(title, str):
         raise InvalidDataError("invalid title")

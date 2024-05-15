@@ -1,17 +1,17 @@
 import copy
 
-from app.utils import uuid_generator
+from flask_jwt_extended import create_access_token
+
+from app.db_mysql import db_pool
 from app.error_handling import UsernameTakenError, EmailTakenError, InvalidPasswordError, NotFoundError
-from app.validators.password import is_valid_password
-from app.validators.username import is_valid_username
-from app.validation import validate_email
 from app.logging import get_user_logger
 from app.main import bcrypt
-from flask_jwt_extended import create_access_token
-from app.db_mysql import db_pool
+from app.utils import uuid_generator
+from app.validators.email import is_valid_email
+from app.validators.password import is_valid_password
+from app.validators.username import is_valid_username
 
 logger = get_user_logger()
-
 db = db_pool.acquire()
 
 
@@ -111,7 +111,7 @@ class User:
         self.username = username
 
     def set_email(self, email: str):
-        validate_email(email)
+        is_valid_email(email)
         existing_emails = [record[0] for record in db.retrieve_all(db.retrieve_all_emails_sql)]
         if email in existing_emails:
             if self.email is None:
