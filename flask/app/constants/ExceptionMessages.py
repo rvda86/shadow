@@ -1,5 +1,7 @@
 class ExceptionMessages:
 
+    EMAIL_NOT_AVAILABLE = "This email is not available."
+    EMAIL_NOT_VALID = "This email is not a valid email address."
     PASSWORD_NUMERIC = "This password cannot be entirely numeric."
     PASSWORD_TOO_COMMON = "This password is too common."
     PASSWORD_TOO_LONG = "This password is too long, use at most 128 characters."
