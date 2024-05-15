@@ -44,7 +44,7 @@ def error_handler(func):
         except UsernameTakenError:
             return {"msg": ExceptionMessages.USERNAME_NOT_AVAILABLE}, 409
         except EmailTakenError:
-            return {"msg": "email already in use"}, 409
+            return {"msg": ExceptionMessages.EMAIL_NOT_AVAILABLE}, 409
         except InvalidPasswordError:
             return {"msg": "wrong password provided"}, 401
         except NotFoundError:
