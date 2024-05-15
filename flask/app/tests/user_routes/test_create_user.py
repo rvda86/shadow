@@ -90,6 +90,22 @@ class TestCreateUser(unittest.TestCase):
         self.assertEqual(422, status_code)
         self.assertEqual(ExceptionMessages.USERNAME_TOO_SHORT, data["msg"])
 
+    def test_email_already_exists(self):
+        username = "user2"
+        self.requester.create_user(self.email, self.password, self.username)
+        data, status_code = self.requester.create_user(self.email, self.password, username)
+
+        self.assertEqual(409, status_code)
+        self.assertEqual(ExceptionMessages.EMAIL_NOT_AVAILABLE, data["msg"])
+
+    def test_invalid_email(self):
+        email = "user4example.com"
+
+        data, status_code = self.requester.create_user(email, self.password, self.username)
+
+        self.assertEqual(422, status_code)
+        self.assertEqual(ExceptionMessages.EMAIL_NOT_VALID, data["msg"])
+
 
 if __name__ == "__main__":
     unittest.main()
