@@ -2,6 +2,14 @@ from functools import wraps
 
 from app.constants.ExceptionMessages import ExceptionMessages
 
+
+class CustomException(Exception):
+    def __init__(self, status_code: int, message: str, headers=None):
+        self.status_code = status_code
+        self.message = message
+        self.headers = headers
+
+
 class InvalidDataError(Exception):
     pass
 
@@ -18,8 +26,11 @@ class InvalidPasswordError(Exception):
     pass
 
 
-class NotFoundError(Exception):
-    pass
+class NotFoundException(CustomException):
+    def __init__(self, message=None):
+        if not message:
+            message = ExceptionMessages.ITEM_NOT_FOUND
+        super().__init__(404, message)
 
 
 class DatabaseError(Exception):
@@ -39,6 +50,8 @@ def error_handler(func):
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
+        except CustomException as e:
+            return {"msg": e.message}, e.status_code
         except InvalidDataError as e:
             return {"msg": str(e)}, 422
         except UsernameTakenError:
@@ -46,9 +59,7 @@ def error_handler(func):
         except EmailTakenError:
             return {"msg": ExceptionMessages.EMAIL_NOT_AVAILABLE}, 409
         except InvalidPasswordError:
-            return {"msg": "wrong password provided"}, 401
-        except NotFoundError:
-            return {"msg": "resource not found"}, 404
+            return {"msg": ExceptionMessages.PASSWORD_WRONG}, 401
         except DatabaseError:
             return {"msg": "something went wrong"}, 500
         except NotEmptyError as e:

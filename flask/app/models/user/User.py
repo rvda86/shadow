@@ -2,8 +2,9 @@ import copy
 
 from flask_jwt_extended import create_access_token
 
+from app.constants.ExceptionMessages import ExceptionMessages
 from app.db_mysql import db_pool
-from app.error_handling import UsernameTakenError, EmailTakenError, InvalidPasswordError, NotFoundError
+from app.error_handling import UsernameTakenError, EmailTakenError, InvalidPasswordError, NotFoundException
 from app.logging import get_user_logger
 from app.main import bcrypt
 from app.utils import uuid_generator
@@ -52,7 +53,7 @@ class User:
     def load_by_username(self, username: str):
         result = db.retrieve(db.retrieve_user_by_username_sql, (username, ))
         if result is None:
-            raise NotFoundError
+            raise NotFoundException(ExceptionMessages.USER_NOT_FOUND)
         self.id, self.username, self.email, self.password, self.email_verified = result
         if self.email_verified == "1":
             self.email_verified = True
@@ -60,7 +61,7 @@ class User:
     def load_by_id(self, user_id: str):
         result = db.retrieve(db.retrieve_user_by_id_sql, (user_id, ))
         if result is None:
-            raise NotFoundError
+            raise NotFoundException
         self.id, self.username, self.email, self.password, self.email_verified = result
         if self.email_verified == "1":
             self.email_verified = True

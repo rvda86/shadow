@@ -1,5 +1,6 @@
 import httpx
 import json
+import requests
 
 
 class UserRequester:
@@ -15,8 +16,8 @@ class UserRequester:
                                     headers={'Content-type': 'application/json'})
         return response.json(), response.status_code
 
-    def get_token(self, email: str, password: str) -> tuple[dict, int]:
-        data = {"email": email, "password": password}
+    def get_token(self, username: str, password: str) -> tuple[dict, int]:
+        data = {"username": username, "password": password}
         response = self.client.post(self.endpoint_token, content=json.dumps(data),
                                     headers={"Content-type": "application/json"})
         return response.json(), response.status_code

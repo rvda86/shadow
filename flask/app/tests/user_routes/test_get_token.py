@@ -3,7 +3,6 @@ import unittest
 from flask_jwt_extended import decode_token
 
 from app.config import Config
-from app.constants.ControllerMessages import ControllerMessages
 from app.constants.ExceptionMessages import ExceptionMessages
 from app.db_mysql import db_pool
 from app.tests.user_routes.helpers import create_user
@@ -32,16 +31,12 @@ class TestGetToken(unittest.TestCase):
     def test_success(self):
         self.requester.create_user(self.email, self.password, self.username)
 
-        data, status_code = self.requester.get_token(self.email, self.password)
-        token = decode_token(data["access_token"])
-
-        print(token)
-
+        data, status_code = self.requester.get_token(self.username, self.password)
         self.assertEqual(200, status_code)
 
     def test_no_user_found(self):
-        email = "idontexist@example.com"
-        data, status_code = self.requester.get_token(email, self.password)
+        username = "idontexist"
+        data, status_code = self.requester.get_token(username, self.password)
 
         self.assertEqual(404, status_code)
         self.assertEqual(ExceptionMessages.USER_NOT_FOUND, data["msg"])
@@ -50,7 +45,7 @@ class TestGetToken(unittest.TestCase):
         self.requester.create_user(self.email, self.password, self.username)
 
         password = "wrong_password"
-        data, status_code = self.requester.get_token(self.email, password)
+        data, status_code = self.requester.get_token(self.username, password)
 
         self.assertEqual(401, status_code)
         self.assertEqual(ExceptionMessages.PASSWORD_WRONG, data["msg"])

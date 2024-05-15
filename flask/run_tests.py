@@ -4,7 +4,10 @@ import requests
 
 from app.db_mysql import db_pool
 from app.config import Config
+
 from app.tests.user_routes.test_create_user import TestCreateUser
+from app.tests.user_routes.test_get_token import TestGetToken
+# from app.tests.user_routes.test_update_user import TestUpdateUser
 
 db = db_pool.acquire()
 
@@ -72,7 +75,7 @@ class TestApi(unittest.TestCase):
     def fail_create_user_duplicate(self, data):
         response = self.create_user(data)
         self.assertEqual(409, response.status_code)
-    
+
     def fail_create_user_invalid_data(self, data):
         response = self.create_user(data)
         self.assertEqual(422, response.status_code)
@@ -92,7 +95,7 @@ class TestApi(unittest.TestCase):
     def success_get_user(self, token):
         response = self.get_user(token)
         self.assertEqual(200, response.status_code)
-    
+
     def success_update_user(self, token, data):
         response = self.update_user(data, token)
         self.assertEqual(200, response.status_code)
@@ -133,7 +136,7 @@ class TestApi(unittest.TestCase):
         token1, token2 = self.set_up_tokens()
         id = self.success_create_entry({"type": "category", "name": "category1"}, token1)
 
-        data = { 
+        data = {
             "entry_type": "category",
             "update": {"type": "category", "name": "cat_1", "id": id},
             "delete": {"type": "category", "id": id}
@@ -147,8 +150,8 @@ class TestApi(unittest.TestCase):
         id = self.success_create_entry({"type": "topic", "topic_type": "journal", "name": "topic_1", "category_id": category_id}, token1)
         self.success_create_entry({"type": "topic", "topic_type": "todo", "name": "topic_1", "category_id": category_id}, token1)
         self.success_create_entry({"type": "topic", "topic_type": "habit", "name": "topic_1", "category_id": category_id}, token1)
-        
-        data = { 
+
+        data = {
             "entry_type": "topic",
             "update": {"type": "topic", "name": "top_1", "id": id},
             "delete": {"type": "topic", "id": id}
@@ -162,7 +165,7 @@ class TestApi(unittest.TestCase):
         topic_id = self.set_up_topic_id("journal", category_id, token1)
         id = self.success_create_entry({"type": "journal", "title": "My First Post", "content": "This is my first post", "topic_id": topic_id}, token1)
 
-        data = { 
+        data = {
             "entry_type": "journal",
             "update": {"type": "journal", "title": "My First Updated Post", "content": "This is my first updated content", "id": id},
             "delete": {"type": "journal", "id": id}
@@ -175,13 +178,13 @@ class TestApi(unittest.TestCase):
         category_id = self.set_up_category_id(token1)
         topic_id = self.set_up_topic_id("todo", category_id, token1)
         id = self.success_create_entry({"type": "todo", "task": "My First Task", "topic_id": topic_id}, token1)
-        
-        data = { 
+
+        data = {
             "entry_type": "todo",
             "update": {"type": "todo", "task": "My First Updated Task", "completed": "0", "id": id},
             "delete": {"type": "todo", "id": id}
             }
-        
+
         self.run_test_cases(data, id, token1, token2)
 
     def test_habit(self):
@@ -189,32 +192,32 @@ class TestApi(unittest.TestCase):
         category_id = self.set_up_category_id(token1)
         topic_id = self.set_up_topic_id("habit", category_id, token1)
         id = self.success_create_entry({"type": "habit", "name": "My First Habit", "topic_id": topic_id}, token1)
-        data = { 
+        data = {
             "entry_type": "habit",
             "update": {"type": "habit", \
-                        "name": "My First Updated Habit", 
-                        "days": [ { "completed": 0, "date": "Mon-15/08/2022" }, 
-                                { "completed": 1, "date": "Tue-16/08/2022" }, 
-                                { "completed": 0, "date": "Wed-17/08/2022" }, 
-                                { "completed": 1, "date": "Thu-18/08/2022" }, 
+                        "name": "My First Updated Habit",
+                        "days": [ { "completed": 0, "date": "Mon-15/08/2022" },
+                                { "completed": 1, "date": "Tue-16/08/2022" },
+                                { "completed": 0, "date": "Wed-17/08/2022" },
+                                { "completed": 1, "date": "Thu-18/08/2022" },
                                 { "completed": 0, "date": "Fri-19/08/2022" },],
                         "id": id},
             "delete": {"type": "habit", "id": id}
             }
-        
+
         self.run_test_cases(data, id, token1, token2)
 
     def test_tag(self):
         token1, token2 = self.set_up_tokens()
         id = self.success_create_entry({"type": "tag", "name": "tag1"}, token1)
-        data = { 
+        data = {
             "entry_type": "tag",
             "update": {"type": "tag", "name": "tag2", "id": id},
             "delete": {"type": "tag", "id": id}
             }
-            
+
         self.run_test_cases(data, id, token1, token2)
- 
+
     def run_test_cases(self, data, id, token1, token2):
         self.success_get_entry(data["entry_type"], id, token1)
         self.fail_get_entry_wrong_user(data["entry_type"], id, token2)
@@ -222,7 +225,7 @@ class TestApi(unittest.TestCase):
         self.fail_update_entry_wrong_user(data["update"], token2)
         self.fail_delete_entry_wrong_user(data["delete"], token2)
         self.success_delete_entry(data["delete"], token1)
-        self.fail_get_entry_unknown_entry(data["entry_type"], id, token1) 
+        self.fail_get_entry_unknown_entry(data["entry_type"], id, token1)
 
     def set_up_tokens(self):
         self.create_user({"username": "user1", "email": "user_1@email.com", "password": "password1234"})
@@ -240,7 +243,7 @@ class TestApi(unittest.TestCase):
         return response.json()["entry"]["id"]
 
     def success_create_entry(self, data, token):
-        response = self.create_entry(data, token) 
+        response = self.create_entry(data, token)
         self.assertEqual(200, response.status_code)
         return response.json()["entry"]["id"]
 
@@ -250,7 +253,7 @@ class TestApi(unittest.TestCase):
 
     def fail_get_entry_wrong_user(self, entry_type, id, token):
         response = self.get_entry(entry_type, id, token)
-        self.assertEqual(404, response.status_code)    
+        self.assertEqual(404, response.status_code)
 
     def fail_get_entry_unknown_entry(self, entry_type, id, token):
         response = self.get_entry(entry_type, id, token)

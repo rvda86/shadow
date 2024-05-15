@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from app.validation import validate_title, validate_id, validate_date, validate_name
 from app.utils import uuid_generator
 from app.db_mysql import db_pool
-from app.error_handling import InvalidDataError, NotFoundError, NotEmptyError
+from app.error_handling import InvalidDataError, NotFoundException, NotEmptyError
 
 db = db_pool.acquire()
 
@@ -51,7 +51,7 @@ class Category(Entry):
     def load_by_id(self, id: str, user_id: str):
         result = db.retrieve(db.retrieve_category_sql, (id, user_id))
         if result == None:
-            raise NotFoundError
+            raise NotFoundException
         self.id, self.name = result
         self.entry_type = "category" 
         self.topics = self.load_topics(user_id)
@@ -100,7 +100,7 @@ class Topic(Entry):
     def load_by_id(self, id: str, user_id: str):
         result = db.retrieve(db.retrieve_topic_sql, (id, user_id))
         if result is None:
-            raise NotFoundError
+            raise NotFoundException
         self.id, self.category_id, self.name, self.topic_type = result
         self.entry_type = "topic"    
         self.entries = self.load_entries(user_id)
@@ -187,7 +187,7 @@ class Journal(Entry):
     def load_by_id(self, id: str, user_id: str):
         result = db.retrieve(db.retrieve_journal_entry_sql, (id, user_id))
         if result is None:
-            raise NotFoundError
+            raise NotFoundException
         self.id, self.topic_id, self.date_posted, self.date_edited, self.title, self.content = result
         self.entry_type = "journal"
         self.tags = self.load_tags(user_id)
@@ -247,7 +247,7 @@ class ToDo(Entry):
     def load_by_id(self, id: str, user_id: str):
         result = db.retrieve(db.retrieve_todo_entry_sql, (id, user_id))
         if result is None:
-            raise NotFoundError
+            raise NotFoundException
         self.id, self.topic_id, self.date_posted, self.date_edited, self.task, self.completed = result
         self.entry_type = "todo"
 
@@ -297,7 +297,7 @@ class Habit(Entry):
     def load_by_id(self, id: str, user_id: str):
         result = db.retrieve(db.retrieve_habit_entry_sql, (id, user_id))
         if result is None:
-            raise NotFoundError
+            raise NotFoundException
         self.id, self.topic_id, self.date_posted, self.date_edited, self.name = result
         self.entry_type = "habit"
         self.days = self.load_days(user_id)
@@ -378,7 +378,7 @@ class Tag(Entry):
     def load_by_id(self, id: str, user_id: str):
         result = db.retrieve(db.retrieve_tag_sql, (id, user_id))
         if result is None:
-            raise NotFoundError
+            raise NotFoundException
         self.id, self.name = result
         self.entry_type = "tag"
 
