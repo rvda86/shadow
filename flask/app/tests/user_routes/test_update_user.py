@@ -9,6 +9,7 @@ from app.tests.user_routes.UserRequester import UserRequester
 
 
 # /api/users PUT
+# update username or email
 class TestUpdateUser(unittest.TestCase):
 
     db = db_pool.acquire()

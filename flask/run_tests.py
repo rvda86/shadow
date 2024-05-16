@@ -7,6 +7,7 @@ from app.config import Config
 
 from app.tests.user_routes.test_create_user import TestCreateUser
 from app.tests.user_routes.test_get_token import TestGetToken
+from app.tests.user_routes.test_update_password import TestUpdatePassword
 from app.tests.user_routes.test_update_user import TestUpdateUser
 
 db = db_pool.acquire()
