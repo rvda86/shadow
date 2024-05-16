@@ -46,7 +46,7 @@ class User:
     def load_by_email(self, email: str):
         result = db.retrieve(db.retrieve_user_by_email_sql, (email, ))
         if result is None:
-            raise NotFoundError
+            raise NotFoundException(ExceptionMessages.USER_NOT_FOUND)
         self.id, self.username, self.email, self.password, self.email_verified = result
         if self.email_verified == "1":
             self.email_verified = True
@@ -88,7 +88,7 @@ class User:
                         db.delete_user_by_id_sql]
             db.create_update_delete(queries, (user_id, ))
             logger.info(f'USER DELETED: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
-            return {"msg": "account successfully deleted"}
+            return {"msg": ControllerMessages.ACCOUNT_DELETED}
         return {"msg": "not authenticated"}
 
     def get_username(self):
