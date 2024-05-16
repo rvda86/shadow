@@ -36,7 +36,6 @@ class TestUpdateUser(unittest.TestCase):
         email = "new@example.com"
 
         data, status_code = self.requester.update_user(self.password, email, self.password, username, token)
-
         self.assertEqual(200, status_code)
         self.assertEqual(username, data["data"]["username"])
         self.assertEqual(email, data["data"]["email"])
@@ -44,19 +43,17 @@ class TestUpdateUser(unittest.TestCase):
 
     def test_username_not_available(self):
         create_user(self.requester, self.email, self.password, self.username)
-
         token, data = create_user(self.requester, self.email2, self.password, self.username2)
 
-        data, status_code = self.requester.update_user(self.password, self.email2, self.password, token, self.username)
+        data, status_code = self.requester.update_user(self.password, self.email2, self.password, self.username, token)
         self.assertEqual(409, status_code)
         self.assertEqual(data["msg"], ExceptionMessages.USERNAME_NOT_AVAILABLE)
 
     def test_email_not_available(self):
         create_user(self.requester, self.email, self.password, self.username)
-
         token, data = create_user(self.requester, self.email2, self.password, self.username2)
 
-        data, status_code = self.requester.update_user(self.password, self.email, self.password, token, self.username2)
+        data, status_code = self.requester.update_user(self.password, self.email, self.password, self.username2, token)
         self.assertEqual(409, status_code)
         self.assertEqual(data["msg"], ExceptionMessages.EMAIL_NOT_AVAILABLE)
 
@@ -64,7 +61,7 @@ class TestUpdateUser(unittest.TestCase):
         token, data = create_user(self.requester, self.email2, self.password, self.username2)
 
         username = "a"*31
-        data, status_code = self.requester.update_user(self.password, self.email2, self.password, token, username)
+        data, status_code = self.requester.update_user(self.password, self.email2, self.password, username, token)
 
         self.assertEqual(422, status_code)
         self.assertEqual(data["msg"], ExceptionMessages.USERNAME_TOO_LONG)
@@ -73,8 +70,7 @@ class TestUpdateUser(unittest.TestCase):
         token, data = create_user(self.requester, self.email2, self.password, self.username2)
 
         username = "a"
-        data, status_code = self.requester.update_user(self.password, self.email2, self.password, token, username)
-
+        data, status_code = self.requester.update_user(self.password, self.email2, self.password, username, token)
         self.assertEqual(422, status_code)
         self.assertEqual(data["msg"], ExceptionMessages.USERNAME_TOO_SHORT)
 
@@ -83,8 +79,7 @@ class TestUpdateUser(unittest.TestCase):
 
         email = "user4example.com"
 
-        data, status_code = self.requester.update_user(self.password, email, self.password, token, self.username2)
-
+        data, status_code = self.requester.update_user(self.password, email, self.password, self.username2, token)
         self.assertEqual(422, status_code)
         self.assertEqual(data["msg"], ExceptionMessages.EMAIL_NOT_VALID)
 

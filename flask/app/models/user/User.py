@@ -2,6 +2,7 @@ import copy
 
 from flask_jwt_extended import create_access_token
 
+from app.constants.ControllerMessages import ControllerMessages
 from app.constants.ExceptionMessages import ExceptionMessages
 from app.db_mysql import db_pool
 from app.error_handling import UsernameTakenError, EmailTakenError, InvalidPasswordError, NotFoundException
@@ -74,7 +75,7 @@ class User:
             db.create_update_delete(db.update_user_sql, (self.username, self.email, self.password, user_id))
             logger.info(f'USER UPDATED: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
             return_data = {"username": self.get_username(), "email": self.get_email()}
-            return {"data": return_data, "msg": "account successfully updated"}
+            return {"data": return_data, "msg": ControllerMessages.ACCOUNT_UPDATED}
         return {"msg": "not authenticated"}
 
     def delete(self, user_id: str):      
