@@ -1,5 +1,7 @@
 import uuid
 from flask_mail import Message
+
+from app.constants.ControllerMessages import ControllerMessages
 from app.main import mail
 from app.config import Config
 from flask_jwt_extended import create_access_token
@@ -7,11 +9,6 @@ from flask_jwt_extended import create_access_token
 
 def uuid_generator():
     return str(uuid.uuid4())
-
-
-def create_access_token_based_on_email(email: str):
-    access_token = create_access_token(email)
-    return access_token
 
 
 def send_email_verification_mail(user):
@@ -36,7 +33,7 @@ def send_email_verification_mail(user):
             recipients=[user.get_email()])
     try:
         mail.send(msg)
-        return "Verification email send"
+        return ControllerMessages.EMAIL_VERIFICATION_MAIL_SENT
     except ConnectionRefusedError:
         return "Failed to send verification email"
 

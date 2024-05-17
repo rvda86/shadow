@@ -4,7 +4,7 @@ from app.config import Config
 from app.constants.ControllerMessages import ControllerMessages
 from app.models.entry.entries import get_all_categories_by_user, to_dict
 from app.models.user.User import User
-from app.utils import send_email_verification_mail, send_password_reset_mail
+from app.utils.utils import send_email_verification_mail, send_password_reset_mail
 from app.validation import preprocess_incoming_data
 
 
@@ -48,7 +48,10 @@ class UserController:
     def email_verification_send_link(user_id):
         user = User()
         user.load_by_id(user_id)
-        response = send_email_verification_mail(user)
+        if Config.MAIL_ENABLED:
+            response = send_email_verification_mail(user)
+        else:
+            response = ControllerMessages.EMAIL_VERIFICATION_DISABLED
         return jsonify({"msg": response})
 
     @staticmethod

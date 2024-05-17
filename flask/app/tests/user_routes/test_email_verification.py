@@ -2,11 +2,10 @@ import unittest
 
 from app.config import Config
 from app.constants.ControllerMessages import ControllerMessages
-from app.constants.ExceptionMessages import ExceptionMessages
 from app.db_mysql import db_pool
+from app.main import app
 from app.tests.user_routes.helpers import create_user
 from app.tests.user_routes.UserRequester import UserRequester
-from app.utils import create_access_token_based_on_email
 
 # /users/verify_email POST
 # /users/verify_email_send_link GET
@@ -34,6 +33,7 @@ class TestEmailVerification(unittest.TestCase):
         token, data = create_user(self.requester, self.email, self.password, self.username)
 
         data, status_code = self.requester.resend_email_verification_link(token)
+
         self.assertEqual(200, status_code)
         if Config.MAIL_ENABLED:
             self.assertEqual(ControllerMessages.EMAIL_VERIFICATION_MAIL_SENT, data["msg"])
@@ -42,7 +42,6 @@ class TestEmailVerification(unittest.TestCase):
 
     def test_success_verify_email(self):
         create_user(self.requester, self.email, self.password, self.username)
-        token = create_access_token_based_on_email(self.email)
 
         data, status_code = self.requester.verify_email(token)
         self.assertEqual(200, status_code)

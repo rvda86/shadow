@@ -8,7 +8,7 @@ from app.db_mysql import db_pool
 from app.error_handling import UsernameTakenError, EmailTakenError, InvalidPasswordError, NotFoundException
 from app.logging import get_user_logger
 from app.main import bcrypt
-from app.utils import uuid_generator
+from app.utils.utils import uuid_generator
 from app.validators.email import is_valid_email
 from app.validators.password import is_valid_password
 from app.validators.username import is_valid_username

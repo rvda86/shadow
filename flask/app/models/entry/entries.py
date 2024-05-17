@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 from app.validation import validate_title, validate_id, validate_date, validate_name
-from app.utils import uuid_generator
+from app.utils.utils import uuid_generator
 from app.db_mysql import db_pool
 from app.error_handling import InvalidDataError, NotFoundException, NotEmptyError
 

@@ -5,3 +5,4 @@ class ControllerMessages:
     ACCOUNT_UPDATED = "Your account has been updated successfully."
     EMAIL_VERIFICATION_DISABLED = "Email verification is currently disabled."
     EMAIL_VERIFICATION_MAIL_SENT = "Email verification link has been sent to your email address."
+    EMAIL_VERIFIED = "Your email has been verified."
