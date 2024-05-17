@@ -140,7 +140,7 @@ class User:
             email_verified = "0"
         db.create_update_delete(db.update_email_verification_status_sql, (email_verified, self.get_id()))
         logger.info(f'USER EMAIL VERIFICATION UPDATED: {self.id} Username: {self.get_username()} Email: {self.get_email()} Email-verified {self.get_email_verified()}')
-        return {"msg": "email verification status has been updated"}
+        return {"msg": ControllerMessages.EMAIL_VERIFIED}
 
     def update_password_password_reset(self):
         db.create_update_delete(db.update_password_sql, (self.password, self.get_id()))
@@ -156,7 +156,7 @@ class User:
     def get_token(self):
         if self.authenticated:
             access_token = create_access_token(identity=self.id)
-            return {"access_token":access_token}
+            return {"access_token": access_token}
 
     def as_dict_private_profile(self) -> dict:
         self_copy = copy.deepcopy(self)

@@ -1,6 +1,5 @@
 import httpx
 import json
-import requests
 
 
 class UserRequester:
@@ -28,6 +27,10 @@ class UserRequester:
                                     headers={"Content-type": "application/json"})
         return response.json(), response.status_code
 
+    def get_token_email(self, token: str):
+        response = self.client.get(f"{self.endpoint_user}/token-email", headers={'Authorization': "Bearer " + token})
+        return response.json(), response.status_code
+
     def get_user(self, token: str):
         response = self.client.get(self.endpoint_user, headers={'Authorization': "Bearer " + token})
         return response.json(), response.status_code
@@ -46,5 +49,5 @@ class UserRequester:
 
     def verify_email(self, token: str) -> tuple[dict, int]:
         response = self.client.post(f"{self.endpoint_user}/verify_email",
-                                    headers={"Content-type": "application/json", "Authorization": token})
+                                    headers={"Content-type": "application/json", 'Authorization': "Bearer " + token})
         return response.json(), response.status_code
