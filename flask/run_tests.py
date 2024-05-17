@@ -38,86 +38,6 @@ class TestApi(unittest.TestCase):
 
     def tearDown(self):
         db.reset_database()
-        
-    def test_users(self):
-
-        username = "user1"
-        username2 = "user2"
-        new_username = "donald"
-        password = "password1234"
-        email = "meneer1@email.com"
-        email2 = "mevrouw1@gmail.com"
-        new_email = "meneer1@protonmail.com"
-        wrong_password = "pa$$w0rd"
-        invalid_email = "user_1email.com"
-        invalid_password = "passwor"
-        new_password = "pass-)(#$^&2"
-
-        self.success_create_user({"username": username, "email": email, "password": password})
-        self.fail_create_user_duplicate({"username": username, "email": email, "password": password})
-        self.fail_create_user_invalid_data({"username": username2, "email": invalid_email, "password": password})
-        self.fail_create_user_invalid_data({"username": username2, "email": email2, "password": invalid_password})
-        self.success_get_token({"username": username, "password": password})
-        self.fail_get_token_unknown_user({"username": "user_2", "password": "password"})
-        self.fail_get_token_wrong_password({"username": username, "password": wrong_password} )
-        token = self.get_token({"username": username, "password": password}).json()["access_token"]
-        self.success_get_user(token)
-        self.success_update_user(token, {"username": username, "email": email, "password": new_password, "currentPassword": password})
-        self.success_update_user(token, {"username": username, "email": new_email, "password": new_password, "currentPassword": new_password})
-        self.success_update_user(token, {"username": new_username, "email": new_email, "password": new_password, "currentPassword": new_password})
-        self.confirm_success_update_username_email(token, {"username": new_username, "email": new_email, "email_verified": 0})
-        self.success_get_token({"username": new_username, "password": new_password})
-        self.fail_delete_user_wrong_password(token, {"password": wrong_password})
-        self.success_delete_user(token, {"password": new_password} )
-        self.fail_delete_user_unknown_user(token, {"password": new_password} )
-
-    def success_create_user(self, data):
-        response = self.create_user(data)
-        self.assertEqual(200, response.status_code)
-
-    def fail_create_user_duplicate(self, data):
-        response = self.create_user(data)
-        self.assertEqual(409, response.status_code)
-
-    def fail_create_user_invalid_data(self, data):
-        response = self.create_user(data)
-        self.assertEqual(422, response.status_code)
-
-    def success_get_token(self, data):
-        response = self.get_token(data)
-        self.assertEqual(200, response.status_code)
-
-    def fail_get_token_unknown_user(self, data):
-        response = self.get_token(data)
-        self.assertEqual(404, response.status_code)
-
-    def fail_get_token_wrong_password(self, data):
-        response = self.get_token(data)
-        self.assertEqual(401, response.status_code)
-
-    def success_get_user(self, token):
-        response = self.get_user(token)
-        self.assertEqual(200, response.status_code)
-
-    def success_update_user(self, token, data):
-        response = self.update_user(data, token)
-        self.assertEqual(200, response.status_code)
-
-    def confirm_success_update_username_email(self, token, data):
-        response = self.get_user(token).json()
-        self.assertEqual(data, response)
-
-    def success_delete_user(self, token, data):
-        response = self.delete_user(data, token)
-        self.assertEqual(200, response.status_code)
-
-    def fail_delete_user_unknown_user(self, token, data):
-        response = self.delete_user(data, token)
-        self.assertEqual(404, response.status_code)
-
-    def fail_delete_user_wrong_password(self, token, data):
-        response = self.delete_user(data, token)
-        self.assertEqual(401, response.status_code)
 
     def create_user(self, data):
         return requests.post(self.users_endpoint, data=json.dumps(data), headers={'Content-type': 'application/json'})
@@ -133,7 +53,6 @@ class TestApi(unittest.TestCase):
 
     def get_token(self, data):
         return requests.post(self.token_endpoint, data=json.dumps(data), headers={'Content-type': 'application/json'})
-
 
     def test_categories(self):
         token1, token2 = self.set_up_tokens()

@@ -40,7 +40,7 @@ class TestDeleteUser(unittest.TestCase):
 
         data, status_code = self.requester.delete_user(self.password, token)
         self.assertEqual(404, status_code)
-        self.assertEqual(ControllerMessages.ACCOUNT_DELETED, data["msg"])
+        self.assertEqual(ExceptionMessages.USER_NOT_FOUND, data["msg"])
 
     def test_wrong_password(self):
         token, data = create_user(self.requester, self.email, self.password, self.username)
