@@ -7,6 +7,7 @@ from app.config import Config
 
 from app.tests.user_routes.test_create_user import TestCreateUser
 from app.tests.user_routes.test_delete_user import TestDeleteUser
+from app.tests.user_routes.test_email_verification import TestEmailVerification
 from app.tests.user_routes.test_get_token import TestGetToken
 from app.tests.user_routes.test_get_user import TestGetUser
 from app.tests.user_routes.test_update_password import TestUpdatePassword

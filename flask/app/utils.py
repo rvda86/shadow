@@ -9,6 +9,11 @@ def uuid_generator():
     return str(uuid.uuid4())
 
 
+def create_access_token_based_on_email(email: str):
+    access_token = create_access_token(email)
+    return access_token
+
+
 def send_email_verification_mail(user):
     access_token = create_access_token(identity=user.get_email())
     html = f"""
