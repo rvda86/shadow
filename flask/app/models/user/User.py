@@ -62,7 +62,7 @@ class User:
     def load_by_id(self, user_id: str):
         result = db.retrieve(db.retrieve_user_by_id_sql, (user_id, ))
         if result is None:
-            raise NotFoundException
+            raise NotFoundException(ExceptionMessages.USER_NOT_FOUND)
         self.id, self.username, self.email, self.password, self.email_verified = result
         if self.email_verified == "1":
             self.email_verified = True
