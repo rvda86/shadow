@@ -1,4 +1,7 @@
+import sys
+
 from flask import jsonify
+from flask_jwt_extended import create_access_token
 
 from app.config import Config
 from app.constants.ControllerMessages import ControllerMessages
@@ -38,10 +41,7 @@ class UserController:
         user = User()
         user.load_by_email(email)
         user.set_email_verified(True)
-        if Config.MAIL_ENABLED:
-            response = user.update_email_verification_status()
-        else:
-            response = "email verification currently disabled."
+        response = user.update_email_verification_status()
         return jsonify(response)
 
     @staticmethod
@@ -80,6 +80,13 @@ class UserController:
         user.authenticate(data["password"])
         response = user.get_token()
         return jsonify(response)
+
+    @staticmethod
+    def get_token_email(user_id):
+        user = User()
+        user.load_by_id(user_id)
+        access_token = {"access_token": create_access_token(identity=user.get_email())}
+        return jsonify(access_token)
 
     @staticmethod
     def password_reset_send_link(data):

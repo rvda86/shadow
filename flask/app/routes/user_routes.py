@@ -46,6 +46,15 @@ def get_token():
     return UserController.get_token(data)
 
 
+# temp route for testing purposes
+@app.route("/api/users/token-email", methods=["GET"])
+@error_handler
+@jwt_required()
+def get_token_email():
+    user_id = get_jwt_identity()
+    return UserController.get_token_email(user_id)
+
+
 @app.route("/api/data", methods=["GET"])
 @error_handler
 @jwt_required()
