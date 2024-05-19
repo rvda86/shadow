@@ -4,6 +4,7 @@ class ExceptionMessages:
     EMAIL_NOT_VALID = "This email is not a valid email address."
     ITEM_NOT_FOUND = "Item not found."
     PASSWORD_NUMERIC = "This password cannot be entirely numeric."
+    PASSWORD_RESET_NOT_POSSIBLE = "You cannot reset your password because your email account is not verified"
     PASSWORD_TOO_COMMON = "This password is too common."
     PASSWORD_TOO_LONG = "This password is too long, use at most 128 characters."
     PASSWORD_TOO_SHORT = "This password is too short, use at least 8 characters."
