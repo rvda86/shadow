@@ -82,7 +82,7 @@ def verify_email_send_link():
 @app.route("/api/users/reset_password", methods=["POST"])
 @error_handler
 @jwt_required()
-def reset_password_send_link():
+def reset_password():
     email = get_jwt_identity()
     data = request.get_json()
     data["email"] = email
@@ -91,6 +91,6 @@ def reset_password_send_link():
 
 @app.route("/api/users/reset_password_send_link", methods=["POST"])
 @error_handler
-def reset_password():
+def reset_password_send_link():
     data = request.get_json()
     return UserController.password_reset_send_link(data)
