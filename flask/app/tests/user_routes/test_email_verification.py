@@ -6,10 +6,9 @@ from app.db_mysql import db_pool
 from app.tests.user_routes.helpers import create_user
 from app.tests.user_routes.UserRequester import UserRequester
 
+
 # /users/verify_email POST
 # /users/verify_email_send_link GET
-
-
 class TestEmailVerification(unittest.TestCase):
 
     db = db_pool.acquire()
