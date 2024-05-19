@@ -5,7 +5,8 @@ from flask_jwt_extended import create_access_token
 from app.constants.ControllerMessages import ControllerMessages
 from app.constants.ExceptionMessages import ExceptionMessages
 from app.db_mysql import db_pool
-from app.error_handling import UsernameTakenError, EmailTakenError, InvalidPasswordError, NotFoundException
+from app.error_handling import UsernameTakenError, EmailTakenError, InvalidPasswordError, NotFoundException, \
+    PasswordResetNotPossible
 from app.logging import get_user_logger
 from app.main import bcrypt
 from app.utils.utils import uuid_generator
@@ -143,9 +144,12 @@ class User:
         return {"msg": ControllerMessages.EMAIL_VERIFIED}
 
     def update_password_password_reset(self):
-        db.create_update_delete(db.update_password_sql, (self.password, self.get_id()))
-        logger.info(f'USER PASSWORD RESET: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
-        return {"msg": ControllerMessages.PASSWORD_RESET}
+        if self.email_verified:
+            db.create_update_delete(db.update_password_sql, (self.password, self.get_id()))
+            logger.info(f'USER PASSWORD RESET: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
+            return {"msg": ControllerMessages.PASSWORD_RESET}
+        else:
+            raise PasswordResetNotPossible()
 
     def authenticate(self, password: str):
         if not bcrypt.check_password_hash(self.password, password):

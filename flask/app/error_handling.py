@@ -33,6 +33,13 @@ class NotFoundException(CustomException):
         super().__init__(404, message)
 
 
+class PasswordResetNotPossible(CustomException):
+    def __init__(self, message=None):
+        if not message:
+            message = ExceptionMessages.PASSWORD_RESET_NOT_POSSIBLE
+        super().__init__(403, message)
+
+
 class DatabaseError(Exception):
     pass
 

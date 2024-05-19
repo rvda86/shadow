@@ -5,6 +5,8 @@ from flask_jwt_extended import create_access_token
 
 from app.config import Config
 from app.constants.ControllerMessages import ControllerMessages
+from app.constants.ExceptionMessages import ExceptionMessages
+from app.error_handling import PasswordResetNotPossible
 from app.models.entry.entries import get_all_categories_by_user, to_dict
 from app.models.user.User import User
 from app.utils.utils import send_email_verification_mail, send_password_reset_mail
@@ -92,6 +94,8 @@ class UserController:
     def password_reset_send_link(data):
         user = User()
         user.load_by_email(data["email"])
+        if not user.email_verified:
+            raise PasswordResetNotPossible()
         if Config.MAIL_ENABLED:
             response = send_password_reset_mail(user)
         else:
