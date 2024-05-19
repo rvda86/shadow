@@ -35,9 +35,22 @@ class UserRequester:
         response = self.client.get(self.endpoint_user, headers={'Authorization': "Bearer " + token})
         return response.json(), response.status_code
 
+    def password_reset(self, new_password: str, token: str) -> tuple[dict, int]:
+        data = {"password": new_password}
+        response = self.client.post(f"{self.endpoint_user}/reset_password",
+                                    content=json.dumps(data),
+                                    headers={"Content-type": "application/json", 'Authorization': "Bearer " + token})
+        return response.json(), response.status_code
+
     def resend_email_verification_link(self, token: str) -> tuple[dict, int]:
         response = self.client.get(f"{self.endpoint_user}/verify_email_send_link",
                                    headers={"Content-type": "application/json", 'Authorization': "Bearer " + token})
+        return response.json(), response.status_code
+
+    def send_password_reset_link(self, email: str) -> tuple[dict, int]:
+        data = {"email": email}
+        response = self.client.post(f"{self.endpoint_user}/reset_password_send_link", content=json.dumps(data),
+                                    headers={"Content-type": "application/json"})
         return response.json(), response.status_code
 
     def update_user(self, currentPassword: str, email: str, password: str, username: str, token: str) -> tuple[
