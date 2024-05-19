@@ -9,3 +9,5 @@ env.js
 static
 templates
 *.log
+
+docs
