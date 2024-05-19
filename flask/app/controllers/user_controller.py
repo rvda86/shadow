@@ -95,7 +95,7 @@ class UserController:
         if Config.MAIL_ENABLED:
             response = send_password_reset_mail(user)
         else:
-            response = "password reset currently disabled."
+            response = ControllerMessages.PASSWORD_RESET_MAIL_DISABLED
         return jsonify({"msg": response})
 
     @staticmethod 

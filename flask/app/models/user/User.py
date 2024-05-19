@@ -145,7 +145,7 @@ class User:
     def update_password_password_reset(self):
         db.create_update_delete(db.update_password_sql, (self.password, self.get_id()))
         logger.info(f'USER PASSWORD RESET: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
-        return {"msg": "password has been updated"}
+        return {"msg": ControllerMessages.PASSWORD_RESET}
 
     def authenticate(self, password: str):
         if not bcrypt.check_password_hash(self.password, password):

@@ -2,6 +2,7 @@ import uuid
 from flask_mail import Message
 
 from app.constants.ControllerMessages import ControllerMessages
+from app.constants.ExceptionMessages import ExceptionMessages
 from app.main import mail
 from app.config import Config
 from flask_jwt_extended import create_access_token
@@ -62,7 +63,7 @@ def send_password_reset_mail(user):
                     sender=Config.MAIL_DEFAULT_SENDER,
                     recipients=[user.get_email()])
             mail.send(msg)
-            return "Password reset email sent, please check your email to reset your password"
+            return ControllerMessages.PASSWORD_RESET_MAIL_SENT
         except ConnectionRefusedError:
             return "Failed to send reset password email"
-    return "Cannot send password reset email, email not verified"
+    return ExceptionMessages.PASSWORD_RESET_NOT_POSSIBLE
