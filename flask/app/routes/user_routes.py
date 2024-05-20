@@ -30,7 +30,7 @@ def update_user():
     return UserController.update_user(user_id, data)
 
 
-@app.route("/api/users", methods=["DELETE"])
+@app.route("/api/users/delete", methods=["POST"])
 @error_handler
 @jwt_required()
 def delete_user():
