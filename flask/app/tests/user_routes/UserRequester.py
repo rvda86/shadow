@@ -11,19 +11,19 @@ class UserRequester:
 
     def create_user(self, email: str, password: str, username: str) -> tuple[dict, int]:
         data = {"email": email, "password": password, "username": username}
-        response = self.client.post(self.endpoint_user, content=json.dumps(data),
+        response = self.client.post(self.endpoint_user, json=data,
                                     headers={'Content-type': 'application/json'})
         return response.json(), response.status_code
 
     def delete_user(self, password, token) -> tuple[dict, int]:
         data = {"password": password}
-        response = self.client.request("DELETE", self.endpoint_user, content=json.dumps(data),
+        response = self.client.request("DELETE", self.endpoint_user, json=data,
                                        headers={"Content-type": "application/json", 'Authorization': "Bearer " + token})
         return response.json(), response.status_code
 
     def get_token(self, username: str, password: str) -> tuple[dict, int]:
         data = {"username": username, "password": password}
-        response = self.client.post(self.endpoint_token, content=json.dumps(data),
+        response = self.client.post(self.endpoint_token, json=data,
                                     headers={"Content-type": "application/json"})
         return response.json(), response.status_code
 
@@ -38,7 +38,7 @@ class UserRequester:
     def password_reset(self, new_password: str, token: str) -> tuple[dict, int]:
         data = {"password": new_password}
         response = self.client.post(f"{self.endpoint_user}/reset_password",
-                                    content=json.dumps(data),
+                                    json=data,
                                     headers={"Content-type": "application/json", 'Authorization': "Bearer " + token})
         return response.json(), response.status_code
 
@@ -56,7 +56,7 @@ class UserRequester:
     def update_user(self, currentPassword: str, email: str, password: str, username: str, token: str) -> tuple[
         dict, int]:
         data = {"currentPassword": currentPassword, "email": email, "password": password, "username": username}
-        response = self.client.put(self.endpoint_user, content=json.dumps(data),
+        response = self.client.put(self.endpoint_user, json=data,
                                    headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})
         return response.json(), response.status_code
 
