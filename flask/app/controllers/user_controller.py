@@ -1,11 +1,8 @@
-import sys
-
 from flask import jsonify
 from flask_jwt_extended import create_access_token
 
 from app.config import Config
 from app.constants.ControllerMessages import ControllerMessages
-from app.constants.ExceptionMessages import ExceptionMessages
 from app.error_handling import PasswordResetNotPossible
 from app.models.entry.entries import get_all_categories_by_user, to_dict
 from app.models.user.User import User
