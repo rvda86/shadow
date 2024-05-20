@@ -1,11 +1,8 @@
 import unittest
 
-from flask_jwt_extended import decode_token
-
 from app.config import Config
 from app.constants.ExceptionMessages import ExceptionMessages
 from app.db_mysql import db_pool
-from app.tests.user_routes.helpers import create_user
 from app.tests.user_routes.UserRequester import UserRequester
 
 

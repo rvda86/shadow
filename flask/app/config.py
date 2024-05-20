@@ -22,3 +22,4 @@ class Config:
     PASSWORD_RESET_LINK = os.getenv("PASSWORD_RESET_LINK")
     SECRET_KEY = os.getenv("SECRET_KEY")
     TEST_ENVIRONMENT = bool(int(os.getenv("TEST_ENVIRONMENT")))
+    TEST_CLIENT = os.getenv("TEST_CLIENT")

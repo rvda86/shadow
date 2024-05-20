@@ -3,7 +3,7 @@ import unittest
 from app.config import Config
 from app.constants.ControllerMessages import ControllerMessages
 from app.db_mysql import db_pool
-from app.tests.user_routes.helpers import create_user
+from app.tests.helpers import create_user
 from app.tests.user_routes.UserRequester import UserRequester
 
 
