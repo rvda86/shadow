@@ -1,5 +1,4 @@
 import httpx
-import json
 
 from app.config import Config
 from app.main import app
