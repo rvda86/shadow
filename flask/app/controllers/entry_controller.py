@@ -1,7 +1,7 @@
 from flask import jsonify
 
 from app.factory import get_entry
-from app.models.entry.entries import to_dict
+from app.models.entry.Entry import to_dict
 from app.validation import preprocess_incoming_data
 
 

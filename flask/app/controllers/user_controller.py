@@ -4,7 +4,8 @@ from flask_jwt_extended import create_access_token
 from app.config import Config
 from app.constants.ControllerMessages import ControllerMessages
 from app.error_handling import PasswordResetNotPossible
-from app.models.entry.entries import get_all_categories_by_user, to_dict
+from app.models.entry.Category import get_all_categories_by_user
+from app.models.entry.Entry import to_dict
 from app.models.user.User import User
 from app.utils.utils import send_email_verification_mail, send_password_reset_mail
 from app.validation import preprocess_incoming_data
