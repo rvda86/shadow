@@ -216,7 +216,9 @@ class TestApi(unittest.TestCase):
         return requests.put(self.entries_endpoint, data=json.dumps(data), headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})
 
     def delete_entry(self, data, token):
-        return requests.delete(self.entries_endpoint, data=json.dumps(data), headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})
+        entry_type = data["type"]
+        id = data["id"]
+        return requests.delete(f'{self.entries_endpoint}?type={entry_type}&id={id}', headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})
 
     def get_entry(self, entry_type, id, token):
         return requests.get(f'{self.entries_endpoint}?type={entry_type}&id={id}', headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})

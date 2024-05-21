@@ -22,9 +22,9 @@ class EntryRequester:
                                                                              'Authorization': "Bearer " + token})
         return get_response_json_status_code(response)
 
-    def delete_entry(self, data, token):
-        response = self.client.delete(self.endpoint_entry, json=data, headers={'Content-type': 'application/json',
-                                                                               'Authorization': "Bearer " + token})
+    def delete_entry(self, entry_type, entry_id, token):
+        response = self.client.delete(f'{self.endpoint_entry}?type={entry_type}&id={entry_id}',
+                                      headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})
         return get_response_json_status_code(response)
 
     def get_entry(self, entry_type, entry_id, token):
