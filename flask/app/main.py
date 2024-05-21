@@ -25,7 +25,10 @@ def create_app():
     mail = Mail(app)
     CORS(app)
     logging.basicConfig(filename='./app/logs/main.log', level=logging.DEBUG, format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
-    # logging.getLogger().addHandler(logging.StreamHandler())
+    logger = logging.getLogger()
+    logger.setLevel(logging.CRITICAL)
+    logger.addHandler(logging.StreamHandler())
+
     return app, bcrypt, jwt, mail
 
 
