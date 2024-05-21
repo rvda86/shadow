@@ -6,20 +6,21 @@ from app.db_mysql import db_pool
 from app.config import Config
 
 from app.tests.entry_routes.category.test_create_category import TestCreateCategory
+from app.tests.entry_routes.category.test_delete_category import TestDeleteCategory
 from app.tests.entry_routes.category.test_get_category import TestGetCategory
 from app.tests.entry_routes.category.test_update_category import TestUpdateCategory
 from app.tests.entry_routes.habit.test_create_habit import TestCreateHabit
 from app.tests.entry_routes.journal.test_create_journal import TestCreateJournal
 from app.tests.entry_routes.todo.test_create_todo import TestCreateToDo
 from app.tests.entry_routes.topic.test_create_topic import TestCreateTopic
-# from app.tests.user_routes.test_create_user import TestCreateUser
-# from app.tests.user_routes.test_delete_user import TestDeleteUser
-# from app.tests.user_routes.test_email_verification import TestEmailVerification
-# from app.tests.user_routes.test_get_token import TestGetToken
-# from app.tests.user_routes.test_get_user import TestGetUser
-# from app.tests.user_routes.test_password_reset import TestPasswordReset
-# from app.tests.user_routes.test_update_password import TestUpdatePassword
-# from app.tests.user_routes.test_update_user import TestUpdateUser
+from app.tests.user_routes.test_create_user import TestCreateUser
+from app.tests.user_routes.test_delete_user import TestDeleteUser
+from app.tests.user_routes.test_email_verification import TestEmailVerification
+from app.tests.user_routes.test_get_token import TestGetToken
+from app.tests.user_routes.test_get_user import TestGetUser
+from app.tests.user_routes.test_password_reset import TestPasswordReset
+from app.tests.user_routes.test_update_password import TestUpdatePassword
+from app.tests.user_routes.test_update_user import TestUpdateUser
 
 db = db_pool.acquire()
 

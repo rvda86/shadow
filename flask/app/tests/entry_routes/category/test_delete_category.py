@@ -6,8 +6,8 @@ from app.tests.helpers import create_user
 from app.tests.user_routes.UserRequester import UserRequester
 
 
-# /api/entries PUT
-class TestUpdateCategory(unittest.TestCase):
+# /api/entries DELETE
+class TestDeleteCategory(unittest.TestCase):
 
     db = db_pool.acquire()
     user_requester = UserRequester()
@@ -24,13 +24,11 @@ class TestUpdateCategory(unittest.TestCase):
         self.db.reset_database()
 
     def test_success(self):
-        data = {"type": "category", "name": "updated_category1", "id": self.category["entry"]["id"]}
-        data, status_code = self.requester.update_entry(data, self.token_1)
+        data, status_code = self.requester.delete_entry("category", self.category["entry"]["id"], self.token_1)
         self.assertEqual(200, status_code)
 
     def test_combination_category_author_unknown(self):
-        data = {"type": "category", "name": "updated_category1", "id": self.category["entry"]["id"]}
-        data, status_code = self.requester.update_entry(data, self.token_2)
+        data, status_code = self.requester.delete_entry("category", self.category["entry"]["id"], self.token_2)
         self.assertEqual(404, status_code)
 
 
