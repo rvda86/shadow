@@ -7,6 +7,7 @@ from app.config import Config
 
 from app.tests.entry_routes.category.test_create_category import TestCreateCategory
 from app.tests.entry_routes.category.test_get_category import TestGetCategory
+from app.tests.entry_routes.category.test_update_category import TestUpdateCategory
 from app.tests.entry_routes.habit.test_create_habit import TestCreateHabit
 from app.tests.entry_routes.journal.test_create_journal import TestCreateJournal
 from app.tests.entry_routes.todo.test_create_todo import TestCreateToDo
