@@ -12,10 +12,7 @@ from app.tests.user_routes.UserRequester import UserRequester
 class TestEmailVerification(unittest.TestCase):
 
     db = db_pool.acquire()
-    api = Config.API_LINK
-    endpoint_user = f"{api}/users"
-    endpoint_token = f"{api}/users/token"
-    requester = UserRequester(endpoint_user, endpoint_token)
+    requester = UserRequester()
 
     def setUp(self):
         if self.db.name != "shadow_testing":

@@ -1,6 +1,5 @@
 import unittest
 
-from app.config import Config
 from app.constants.ControllerMessages import ControllerMessages
 from app.constants.ExceptionMessages import ExceptionMessages
 from app.db_mysql import db_pool
@@ -13,10 +12,7 @@ from app.tests.user_routes.UserRequester import UserRequester
 class TestUpdatePassword(unittest.TestCase):
 
     db = db_pool.acquire()
-    api = Config.API_LINK
-    endpoint_user = f"{api}/users"
-    endpoint_token = f"{api}/users/token"
-    requester = UserRequester(endpoint_user, endpoint_token)
+    requester = UserRequester()
 
     def setUp(self):
         if self.db.name != "shadow_testing":

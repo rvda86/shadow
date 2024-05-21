@@ -7,7 +7,7 @@ from app.tests.utils import get_response_json_status_code
 
 class UserRequester:
 
-    def __init__(self, endpoint_user: str, endpoint_token: str):
+    def __init__(self):
         if Config.TEST_CLIENT == "httpx":
             self.client = httpx.Client()
         elif Config.TEST_CLIENT == "flask":
@@ -15,8 +15,8 @@ class UserRequester:
         else:
             raise Exception()
 
-        self.endpoint_user = endpoint_user
-        self.endpoint_token = endpoint_token
+        self.endpoint_user = f"{Config.API_LINK}/users"
+        self.endpoint_token = f"{Config.API_LINK}/users/token"
 
     def create_user(self, email: str, password: str, username: str) -> tuple[dict, int]:
         data = {"email": email, "password": password, "username": username}
