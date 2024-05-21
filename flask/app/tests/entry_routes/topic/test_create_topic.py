@@ -17,7 +17,6 @@ class TestCreateTopic(unittest.TestCase):
         if self.db.name != "shadow_testing":
             raise Exception
         self.token_1, _ = create_user(self.user_requester, "user1@example.com", "passwSf2@ord", "user1")
-        self.token_2, _ = create_user(self.user_requester, "user2@example.com", "passwSf2@ord", "user2")
         self.category, _ = self.requester.create_entry({"type": "category", "name": "category1"}, self.token_1)
 
     def tearDown(self):
@@ -25,8 +24,8 @@ class TestCreateTopic(unittest.TestCase):
 
     def test_success(self):
         data = {"type": "topic", "topic_type": "journal", "name": "topic_1", "category_id": self.category["entry"]["id"]}
-        data, status_code = self.requester.create_entry(data, self.token_1)
 
+        data, status_code = self.requester.create_entry(data, self.token_1)
         self.assertEqual(200, status_code)
 
 

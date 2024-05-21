@@ -17,7 +17,6 @@ class TestCreateToDo(unittest.TestCase):
         if self.db.name != "shadow_testing":
             raise Exception
         self.token_1, _ = create_user(self.user_requester, "user1@example.com", "passwSf2@ord", "user1")
-        self.token_2, _ = create_user(self.user_requester, "user2@example.com", "passwSf2@ord", "user2")
         self.category, _ = self.requester.create_entry({"type": "category", "name": "category1"}, self.token_1)
         self.topic, _ = self.requester.create_entry({"type": "topic", "topic_type": "todo", "name": "topic_1",
                                                      "category_id": self.category["entry"]["id"]}, self.token_1)
@@ -27,8 +26,8 @@ class TestCreateToDo(unittest.TestCase):
 
     def test_success(self):
         data = {"type": "todo", "task": "My First Task", "topic_id": self.topic["entry"]["id"]}
-        data, status_code = self.requester.create_entry(data, self.token_1)
 
+        data, status_code = self.requester.create_entry(data, self.token_1)
         self.assertEqual(200, status_code)
 
 

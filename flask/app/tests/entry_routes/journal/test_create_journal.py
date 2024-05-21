@@ -29,7 +29,6 @@ class TestCreateJournal(unittest.TestCase):
                 "topic_id": self.topic["entry"]["id"]}
 
         data, status_code = self.requester.create_entry(data, self.token_1)
-
         self.assertEqual(200, status_code)
 
 
