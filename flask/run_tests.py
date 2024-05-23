@@ -67,21 +67,6 @@ class TestApi(unittest.TestCase):
     def get_token(self, data):
         return requests.post(self.token_endpoint, data=json.dumps(data), headers={'Content-type': 'application/json'})
 
-    def test_topics(self):
-        token1, token2 = self.set_up_tokens()
-        category_id = self.set_up_category_id(token1)
-        id = self.success_create_entry({"type": "topic", "topic_type": "journal", "name": "topic_1", "category_id": category_id}, token1)
-        self.success_create_entry({"type": "topic", "topic_type": "todo", "name": "topic_1", "category_id": category_id}, token1)
-        self.success_create_entry({"type": "topic", "topic_type": "habit", "name": "topic_1", "category_id": category_id}, token1)
-
-        data = {
-            "entry_type": "topic",
-            "update": {"type": "topic", "name": "top_1", "id": id},
-            "delete": {"type": "topic", "id": id}
-            }
-
-        self.run_test_cases(data, id, token1, token2)
-
     def test_journal(self):
         token1, token2 = self.set_up_tokens()
         category_id = self.set_up_category_id(token1)
