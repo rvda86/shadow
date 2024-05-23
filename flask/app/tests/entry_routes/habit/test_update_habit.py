@@ -4,12 +4,10 @@ from app.db_mysql import db_pool
 from app.tests.entry_routes.EntryRequester import EntryRequester
 from app.tests.helpers import create_user
 from app.tests.user_routes.UserRequester import UserRequester
-from app.utils.utils import uuid_generator
 
 
-# /api/entries GET
-class TestGetHabit(unittest.TestCase):
-
+# /api/entries PUT
+class TestUpdateHabit(unittest.TestCase):
     db = db_pool.acquire()
     user_requester = UserRequester()
     requester = EntryRequester()
@@ -29,16 +27,27 @@ class TestGetHabit(unittest.TestCase):
         self.db.reset_database()
 
     def test_success(self):
-        data, status_code = self.requester.get_entry("habit", self.habit["entry"]["id"], self.token_1)
+        data = {"type": "habit", "name": "My First Updated Habit",
+                "days": [{"completed": 0, "date": "Mon-15/08/2022"},
+                         {"completed": 1, "date": "Tue-16/08/2022"},
+                         {"completed": 0, "date": "Wed-17/08/2022"},
+                         {"completed": 1, "date": "Thu-18/08/2022"},
+                         {"completed": 0, "date": "Fri-19/08/2022"}, ],
+                "id": self.habit["entry"]["id"]}
+
+        data, status_code = self.requester.update_entry(data, self.token_1)
         self.assertEqual(200, status_code)
 
     def test_combination_habit_author_unknown(self):
-        data, status_code = self.requester.get_entry("habit", self.habit["entry"]["id"], self.token_2)
-        self.assertEqual(404, status_code)
+        data = {"type": "habit", "name": "My First Updated Habit",
+                "days": [{"completed": 0, "date": "Mon-15/08/2022"},
+                         {"completed": 1, "date": "Tue-16/08/2022"},
+                         {"completed": 0, "date": "Wed-17/08/2022"},
+                         {"completed": 1, "date": "Thu-18/08/2022"},
+                         {"completed": 0, "date": "Fri-19/08/2022"}, ],
+                "id": self.habit["entry"]["id"]}
 
-    def test_journal_does_not_exist(self):
-        habit_id = uuid_generator()
-        data, status_code = self.requester.get_entry("habit", habit_id, self.token_1)
+        data, status_code = self.requester.update_entry(data, self.token_2)
         self.assertEqual(404, status_code)
 
 

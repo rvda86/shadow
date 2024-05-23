@@ -11,6 +11,7 @@ from app.tests.entry_routes.category.test_get_category import TestGetCategory
 from app.tests.entry_routes.category.test_update_category import TestUpdateCategory
 from app.tests.entry_routes.habit.test_create_habit import TestCreateHabit
 from app.tests.entry_routes.habit.test_get_habit import TestGetHabit
+from app.tests.entry_routes.habit.test_update_habit import TestUpdateHabit
 from app.tests.entry_routes.journal.test_create_journal import TestCreateJournal
 from app.tests.entry_routes.journal.test_delete_journal import TestDeleteJournal
 from app.tests.entry_routes.journal.test_get_journal import TestGetJournal
@@ -106,8 +107,8 @@ class TestApi(unittest.TestCase):
         id = self.success_create_entry({"type": "habit", "name": "My First Habit", "topic_id": topic_id}, token1)
         data = {
             "entry_type": "habit",
-            "update": {"type": "habit", \
-                        "name": "My First Updated Habit",
+            "update": {"type": "habit",
+                       "name": "My First Updated Habit",
                         "days": [ { "completed": 0, "date": "Mon-15/08/2022" },
                                 { "completed": 1, "date": "Tue-16/08/2022" },
                                 { "completed": 0, "date": "Wed-17/08/2022" },
