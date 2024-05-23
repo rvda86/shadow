@@ -30,11 +30,11 @@ class TestGetTopic(unittest.TestCase):
         data, status_code = self.requester.get_entry("topic", self.topic["entry"]["id"], self.token_1)
         self.assertEqual(200, status_code)
 
-    def test_combination_category_author_unknown(self):
+    def test_combination_topic_author_unknown(self):
         data, status_code = self.requester.get_entry("topic", self.category["entry"]["id"], self.token_2)
         self.assertEqual(404, status_code)
 
-    def test_category_does_not_exist(self):
+    def test_topic_does_not_exist(self):
         topic_id = uuid_generator()
         data, status_code = self.requester.get_entry("topic", topic_id, self.token_1)
         self.assertEqual(404, status_code)

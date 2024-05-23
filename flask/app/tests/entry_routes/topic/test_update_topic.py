@@ -30,7 +30,7 @@ class TestUpdateTopic(unittest.TestCase):
         data, status_code = self.requester.update_entry(data, self.token_1)
         self.assertEqual(200, status_code)
 
-    def test_combination_category_author_unknown(self):
+    def test_combination_topic_author_unknown(self):
         data = {"type": "topic", "name": "updated_topic1", "id": self.topic["entry"]["id"]}
         data, status_code = self.requester.update_entry(data, self.token_2)
         self.assertEqual(404, status_code)
