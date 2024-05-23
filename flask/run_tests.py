@@ -12,6 +12,7 @@ from app.tests.entry_routes.category.test_update_category import TestUpdateCateg
 from app.tests.entry_routes.habit.test_create_habit import TestCreateHabit
 from app.tests.entry_routes.journal.test_create_journal import TestCreateJournal
 from app.tests.entry_routes.journal.test_get_journal import TestGetJournal
+from app.tests.entry_routes.journal.test_update_journal import TestUpdateJournal
 from app.tests.entry_routes.todo.test_create_todo import TestCreateToDo
 from app.tests.entry_routes.topic.test_create_topic import TestCreateTopic
 from app.tests.entry_routes.topic.test_delete_topic import TestDeleteTopic
