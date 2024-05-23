@@ -14,6 +14,7 @@ from app.tests.entry_routes.journal.test_create_journal import TestCreateJournal
 from app.tests.entry_routes.todo.test_create_todo import TestCreateToDo
 from app.tests.entry_routes.topic.test_create_topic import TestCreateTopic
 from app.tests.entry_routes.topic.test_get_topic import TestGetTopic
+from app.tests.entry_routes.topic.test_update_topic import TestUpdateTopic
 from app.tests.user_routes.test_create_user import TestCreateUser
 from app.tests.user_routes.test_delete_user import TestDeleteUser
 from app.tests.user_routes.test_email_verification import TestEmailVerification
