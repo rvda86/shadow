@@ -31,7 +31,7 @@ class TestGetTopic(unittest.TestCase):
         self.assertEqual(200, status_code)
 
     def test_combination_topic_author_unknown(self):
-        data, status_code = self.requester.get_entry("topic", self.category["entry"]["id"], self.token_2)
+        data, status_code = self.requester.get_entry("topic", self.topic["entry"]["id"], self.token_2)
         self.assertEqual(404, status_code)
 
     def test_topic_does_not_exist(self):
