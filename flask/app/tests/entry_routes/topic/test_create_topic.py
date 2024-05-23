@@ -22,8 +22,20 @@ class TestCreateTopic(unittest.TestCase):
     def tearDown(self):
         self.db.reset_database()
 
-    def test_success(self):
+    def test_success_journal_topic(self):
         data = {"type": "topic", "topic_type": "journal", "name": "topic_1", "category_id": self.category["entry"]["id"]}
+
+        data, status_code = self.requester.create_entry(data, self.token_1)
+        self.assertEqual(200, status_code)
+
+    def test_success_todo_topic(self):
+        data = {"type": "topic", "topic_type": "todo", "name": "topic_1", "category_id": self.category["entry"]["id"]}
+
+        data, status_code = self.requester.create_entry(data, self.token_1)
+        self.assertEqual(200, status_code)
+
+    def test_success_habit_topic(self):
+        data = {"type": "topic", "topic_type": "habit", "name": "topic_1", "category_id": self.category["entry"]["id"]}
 
         data, status_code = self.requester.create_entry(data, self.token_1)
         self.assertEqual(200, status_code)
