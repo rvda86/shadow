@@ -31,16 +31,16 @@ class TestGetJournal(unittest.TestCase):
 
     def test_success(self):
         data, status_code = self.requester.get_entry("journal", self.journal["entry"]["id"], self.token_1)
-        self.assertEqual(2003, status_code)
+        self.assertEqual(200, status_code)
 
     def test_combination_journal_author_unknown(self):
         data, status_code = self.requester.get_entry("journal", self.journal["entry"]["id"], self.token_2)
-        self.assertEqual(4304, status_code)
+        self.assertEqual(404, status_code)
 
     def test_journal_does_not_exist(self):
         journal_id = uuid_generator()
         data, status_code = self.requester.get_entry("journal", journal_id, self.token_1)
-        self.assertEqual(4304, status_code)
+        self.assertEqual(404, status_code)
 
 
 if __name__ == "__main__":
