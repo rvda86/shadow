@@ -18,6 +18,7 @@ from app.tests.entry_routes.journal.test_delete_journal import TestDeleteJournal
 from app.tests.entry_routes.journal.test_get_journal import TestGetJournal
 from app.tests.entry_routes.journal.test_update_journal import TestUpdateJournal
 from app.tests.entry_routes.todo.test_create_todo import TestCreateToDo
+from app.tests.entry_routes.todo.test_get_todo import TestGetToDo
 from app.tests.entry_routes.topic.test_create_topic import TestCreateTopic
 from app.tests.entry_routes.topic.test_delete_topic import TestDeleteTopic
 from app.tests.entry_routes.topic.test_get_topic import TestGetTopic
