@@ -36,7 +36,7 @@ class TestGetHabit(unittest.TestCase):
         data, status_code = self.requester.get_entry("habit", self.habit["entry"]["id"], self.token_2)
         self.assertEqual(404, status_code)
 
-    def test_journal_does_not_exist(self):
+    def test_habit_does_not_exist(self):
         habit_id = uuid_generator()
         data, status_code = self.requester.get_entry("habit", habit_id, self.token_1)
         self.assertEqual(404, status_code)
