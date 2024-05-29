@@ -24,6 +24,11 @@ class UserRequester:
                                     headers={'Content-type': 'application/json'})
         return get_response_json_status_code(response)
 
+    def create_user_alt(self, data: dict) -> tuple[dict, int]:
+        response = self.client.post(self.endpoint_user, json=data,
+                                    headers={'Content-type': 'application/json'})
+        return get_response_json_status_code(response)
+
     def delete_user(self, password, token) -> tuple[dict, int]:
         data = {"password": password}
         response = self.client.post(f"{self.endpoint_user}/delete", json=data,

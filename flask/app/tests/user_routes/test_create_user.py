@@ -30,6 +30,24 @@ class TestCreateUser(unittest.TestCase):
         self.assertEqual(self.username, data["data"]["username"])
         self.assertEqual(self.email, data["data"]["email"])
 
+    def test_too_few_fields(self):
+        data = {"email": self.email, "password": self.password}
+        data, status_code = self.requester.create_user_alt(data)
+
+        self.assertEqual(200, status_code)
+
+    def test_too_many_fields(self):
+        data = {"email": self.email, "password": self.password, "username": self.username, "phone": "0612345678"}
+        data, status_code = self.requester.create_user_alt(data)
+
+        self.assertEqual(200, status_code)
+
+    def test_wrong_fields(self):
+        data = {"color": self.email, "length": self.password, "width": self.username}
+        data, status_code = self.requester.create_user_alt(data)
+
+        self.assertEqual(200, status_code)
+
     def test_password_entirely_numeric(self):
         password = "1234567891234"
         data, status_code = self.requester.create_user(self.email, password, self.username)
