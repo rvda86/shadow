@@ -35,6 +35,11 @@ class UserRequester:
                                     headers={"Content-type": "application/json", 'Authorization': "Bearer " + token})
         return get_response_json_status_code(response)
 
+    def delete_user_alt(self, data, token) -> tuple[dict, int]:
+        response = self.client.post(f"{self.endpoint_user}/delete", json=data,
+                                    headers={"Content-type": "application/json", 'Authorization': "Bearer " + token})
+        return get_response_json_status_code(response)
+
     def get_token(self, username: str, password: str) -> tuple[dict, int]:
         data = {"username": username, "password": password}
         response = self.client.post(self.endpoint_token, json=data,
