@@ -38,6 +38,27 @@ class TestUpdateUser(unittest.TestCase):
         self.assertEqual(email, data["data"]["email"])
         self.assertEqual(data["msg"], ControllerMessages.ACCOUNT_UPDATED)
 
+    def test_too_few_fields(self):
+        token, _ = create_user(self.requester, self.email, self.password, self.username)
+        data = {"email": self.email, "password": self.password, "username": self.username}
+        data, status_code = self.requester.update_user_alt(data, token)
+
+        self.assertEqual(422, status_code)
+
+    def test_too_many_fields(self):
+        token, _ = create_user(self.requester, self.email, self.password, self.username)
+        data = {"currentPassword": self.password, "email": self.email, "password": self.password, "username": self.username, "phone": "0612345678"}
+        data, status_code = self.requester.update_user_alt(data, token)
+
+        self.assertEqual(422, status_code)
+
+    def test_wrong_fields(self):
+        token, data = create_user(self.requester, self.email, self.password, self.username)
+        data = {"shape": self.password, "animal": self.email, "phone": self.password, "location": self.username}
+        data, status_code = self.requester.update_user_alt(data, token)
+
+        self.assertEqual(422, status_code)
+
     def test_username_not_available(self):
         create_user(self.requester, self.email, self.password, self.username)
         token, data = create_user(self.requester, self.email2, self.password, self.username2)

@@ -74,6 +74,11 @@ class UserRequester:
                                    headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})
         return get_response_json_status_code(response)
 
+    def update_user_alt(self, data: dict, token: str) -> tuple[dict, int]:
+        response = self.client.put(self.endpoint_user, json=data,
+                                   headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})
+        return get_response_json_status_code(response)
+
     def verify_email(self, token: str) -> tuple[dict, int]:
         response = self.client.post(f"{self.endpoint_user}/verify_email",
                                     headers={"Content-type": "application/json", 'Authorization': "Bearer " + token})
