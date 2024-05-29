@@ -5,6 +5,7 @@ from app.controllers.user_controller import UserController
 from app.error_handling import error_handler
 from app.main import app
 from app.routes.schemas.user_schemas.CreateUserSchema import CreateUserSchema
+from app.routes.schemas.user_schemas.DeleteUserSchema import DeleteUserSchema
 from app.routes.schemas.user_schemas.UpdateUserSchema import UpdateUserSchema
 
 
@@ -22,6 +23,7 @@ def create_user():
 def delete_user():
     user_id = get_jwt_identity()
     data = request.get_json()
+    data = DeleteUserSchema(**data)
     return UserController.delete_user(user_id, data)
 
 

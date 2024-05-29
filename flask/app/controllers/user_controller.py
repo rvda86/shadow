@@ -24,12 +24,9 @@ class UserController:
 
     @staticmethod
     def delete_user(user_id, data):
-        if isinstance(data, dict):
-            data["type"] = "user"
-        data = preprocess_incoming_data(data, "DELETE")
         user = User()
         user.load_by_id(user_id)
-        user.authenticate(data["password"])
+        user.authenticate(data.password)
         response = user.delete(user_id)
         return jsonify(response)
 
