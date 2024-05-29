@@ -1,5 +1,4 @@
 import datetime
-import logging
 
 from flask import Flask
 from flask_bcrypt import Bcrypt
@@ -8,6 +7,7 @@ from flask_jwt_extended import JWTManager
 from flask_mail import Mail
 
 from app.config import Config
+from app.logging import get_main_logger
 
 
 def create_app():
@@ -24,10 +24,8 @@ def create_app():
     jwt = JWTManager(app)
     mail = Mail(app)
     CORS(app)
-    logging.basicConfig(filename='./app/logs/main.log', level=logging.DEBUG, format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
-    logger = logging.getLogger()
-    logger.setLevel(logging.CRITICAL)
-    logger.addHandler(logging.StreamHandler())
+
+    get_main_logger()
 
     return app, bcrypt, jwt, mail
 
