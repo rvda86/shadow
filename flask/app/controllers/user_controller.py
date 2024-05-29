@@ -15,9 +15,6 @@ class UserController:
 
     @staticmethod
     def create_user(data):
-        if isinstance(data, dict):
-            data["type"] = "user"
-        data = preprocess_incoming_data(data, "POST")
         user = User()
         user = user.create(data)
         response = {"data": user.as_dict_private_profile(), "msg": ControllerMessages.ACCOUNT_CREATED}

@@ -71,6 +71,8 @@ def error_handler(func):
             return {"msg": "something went wrong"}, 500
         except NotEmptyError as e:
             return {"msg": str(e)}, 409
+        except TypeError as e:
+            return {"msg": str(e)}, 422
         except ValueError as e:
             return {"msg": str(e)}, 422
     return inner

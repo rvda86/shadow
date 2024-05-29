@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.controllers.user_controller import UserController
 from app.error_handling import error_handler
 from app.main import app
+from app.routes.schemas.user_schemas.CreateUserSchema import CreateUserSchema
 
 
 @app.route("/api/users", methods=["GET"])
@@ -18,6 +19,7 @@ def get_user():
 @error_handler
 def create_user():
     data = request.get_json()
+    data = CreateUserSchema(**data)
     return UserController.create_user(data)
 
 

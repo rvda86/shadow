@@ -35,10 +35,10 @@ class User:
         self.email_verified = False
         self.authenticated = False
 
-    def create(self, data: dict) -> "User":
-        self.set_username(data["username"])
-        self.set_email(data["email"])
-        self.set_password(data["password"])
+    def create(self, data) -> "User":
+        self.set_username(data.username)
+        self.set_email(data.email)
+        self.set_password(data.password)
         self.id = uuid_generator()
         db.create_update_delete(db.create_user_sql, (self.id, self.username, self.email, self.password))
         logger.info(f'USER CREATED: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
