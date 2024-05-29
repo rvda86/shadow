@@ -107,14 +107,11 @@ class UserController:
     
     @staticmethod
     def update_user(user_id, data):
-        if isinstance(data, dict): 
-            data["type"] = "user"
-        data = preprocess_incoming_data(data, "PUT")
         user = User()
         user.load_by_id(user_id)
-        user.authenticate(data["currentPassword"])
+        user.authenticate(data.currentPassword)
         response = user.update(user_id, data)
-        if data["email"] != user.get_email():
+        if data.email != user.get_email():
             user.set_email_verified(False)
             user.update_email_verification_status()
             send_email_verification_mail(user)

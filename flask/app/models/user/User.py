@@ -68,11 +68,11 @@ class User:
         if self.email_verified == "1":
             self.email_verified = True
 
-    def update(self, user_id: str, data: dict):
+    def update(self, user_id: str, data):
         if self.authenticated:
-            self.set_username(data["username"])
-            self.set_email(data["email"])
-            self.set_password(data["password"])  
+            self.set_username(data.username)
+            self.set_email(data.email)
+            self.set_password(data.password)
             db.create_update_delete(db.update_user_sql, (self.username, self.email, self.password, user_id))
             logger.info(f'USER UPDATED: {self.id} Username: {self.get_username()} Email: {self.get_email()}')
             return_data = {"username": self.get_username(), "email": self.get_email()}

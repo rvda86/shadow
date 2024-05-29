@@ -5,6 +5,7 @@ from app.controllers.user_controller import UserController
 from app.error_handling import error_handler
 from app.main import app
 from app.routes.schemas.user_schemas.CreateUserSchema import CreateUserSchema
+from app.routes.schemas.user_schemas.UpdateUserSchema import UpdateUserSchema
 
 
 @app.route("/api/users", methods=["POST"])
@@ -79,6 +80,7 @@ def reset_password_send_link():
 def update_user():
     user_id = get_jwt_identity()
     data = request.get_json()
+    data = UpdateUserSchema(**data)
     return UserController.update_user(user_id, data)
 
 
