@@ -5,7 +5,7 @@ max_username_length = 30
 min_username_length = 2
 
 
-def validated_username(username: str) -> str:
+def validate_username(username: str) -> str:
     if not isinstance(username, str):
         raise ValueError("not a string")
     if string_is_not_alphanumeric(username):
