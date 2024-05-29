@@ -10,9 +10,9 @@ from app.error_handling import UsernameTakenError, EmailTakenError, InvalidPassw
 from app.logging import get_user_logger
 from app.main import bcrypt
 from app.utils.utils import uuid_generator
-from app.validators.email import is_valid_email
-from app.validators.password import is_valid_password
-from app.validators.username import is_valid_username
+from app.validators.email import validated_email
+from app.validators.password import validated_password
+from app.validators.username import validated_username
 
 logger = get_user_logger()
 db = db_pool.acquire()
@@ -102,7 +102,7 @@ class User:
         return self.id
 
     def set_username(self, username: str):
-        is_valid_username(username)
+        validated_username(username)
         username = username.lower()
         existing_usernames = [record[0] for record in db.retrieve_all(db.retrieve_all_usernames_sql)]
         if username in existing_usernames:
@@ -114,7 +114,7 @@ class User:
         self.username = username
 
     def set_email(self, email: str):
-        is_valid_email(email)
+        validated_email(email)
         existing_emails = [record[0] for record in db.retrieve_all(db.retrieve_all_emails_sql)]
         if email in existing_emails:
             if self.email is None:
@@ -125,7 +125,7 @@ class User:
         self.email = email
 
     def set_password(self, password: str):
-        is_valid_password(password)
+        validated_password(password)
         self.password = bcrypt.generate_password_hash(password)
 
     def set_email_verified(self, verified: bool):

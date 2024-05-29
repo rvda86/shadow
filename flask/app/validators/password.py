@@ -9,7 +9,7 @@ max_password_length = 128
 min_password_length = 8
 
 
-def is_valid_password(password: str) -> bool:
+def validated_password(password: str) -> str:
     if not isinstance(password, str):
         raise ValueError("not a string")
     if string_is_too_short(min_password_length, password):
@@ -20,8 +20,7 @@ def is_valid_password(password: str) -> bool:
         raise ValueError(ExceptionMessages.PASSWORD_TOO_COMMON)
     if password_is_entirely_numeric(password):
         raise ValueError(ExceptionMessages.PASSWORD_NUMERIC)
-    password_valid = True
-    return password_valid
+    return password
 
 
 def password_is_entirely_numeric(password: str) -> bool:
