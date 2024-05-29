@@ -1,13 +1,25 @@
-docs
-.env
-.idea
+# cache
 __pycache__
-venv
-node_modules
-dist
+
+# docs
+docs
+
+# IDE
+.idea
+
+# env variables
+.env
 env.js
+
+# logs
+flask/app/logs/*
+
+# node modules
+node_modules
+
+# static files
 static
 templates
-*.log
 
-docs
+# virtual environment
+venv
