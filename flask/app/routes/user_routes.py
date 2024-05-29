@@ -7,29 +7,12 @@ from app.main import app
 from app.routes.schemas.user_schemas.CreateUserSchema import CreateUserSchema
 
 
-@app.route("/api/users", methods=["GET"])
-@error_handler
-@jwt_required()
-def get_user(): 
-    user_id = get_jwt_identity()
-    return UserController.get_user(user_id)
-
-
 @app.route("/api/users", methods=["POST"])
 @error_handler
 def create_user():
     data = request.get_json()
     data = CreateUserSchema(**data)
     return UserController.create_user(data)
-
-
-@app.route("/api/users", methods=["PUT"])
-@error_handler
-@jwt_required()
-def update_user():
-    user_id = get_jwt_identity()
-    data = request.get_json()
-    return UserController.update_user(user_id, data)
 
 
 @app.route("/api/users/delete", methods=["POST"])
@@ -39,6 +22,14 @@ def delete_user():
     user_id = get_jwt_identity()
     data = request.get_json()
     return UserController.delete_user(user_id, data)
+
+
+@app.route("/api/data", methods=["GET"])
+@error_handler
+@jwt_required()
+def get_all_data_by_user():
+    user_id = get_jwt_identity()
+    return UserController.get_all_data_by_user(user_id)
 
 
 @app.route("/api/users/token", methods=["POST"])
@@ -57,28 +48,12 @@ def get_token_email():
     return UserController.get_token_email(user_id)
 
 
-@app.route("/api/data", methods=["GET"])
+@app.route("/api/users", methods=["GET"])
 @error_handler
 @jwt_required()
-def get_all_data_by_user():
+def get_user(): 
     user_id = get_jwt_identity()
-    return UserController.get_all_data_by_user(user_id)
-
-
-@app.route("/api/users/verify_email", methods=["POST"])
-@error_handler
-@jwt_required()
-def verify_email():
-    email = get_jwt_identity()
-    return UserController.email_verification(email)
-
-
-@app.route("/api/users/verify_email_send_link", methods=["GET"])
-@error_handler
-@jwt_required()
-def verify_email_send_link():
-    user_id = get_jwt_identity()
-    return UserController.email_verification_send_link(user_id)
+    return UserController.get_user(user_id)
 
 
 @app.route("/api/users/reset_password", methods=["POST"])
@@ -96,3 +71,28 @@ def reset_password():
 def reset_password_send_link():
     data = request.get_json()
     return UserController.password_reset_send_link(data)
+
+
+@app.route("/api/users", methods=["PUT"])
+@error_handler
+@jwt_required()
+def update_user():
+    user_id = get_jwt_identity()
+    data = request.get_json()
+    return UserController.update_user(user_id, data)
+
+
+@app.route("/api/users/verify_email", methods=["POST"])
+@error_handler
+@jwt_required()
+def verify_email():
+    email = get_jwt_identity()
+    return UserController.email_verification(email)
+
+
+@app.route("/api/users/verify_email_send_link", methods=["GET"])
+@error_handler
+@jwt_required()
+def verify_email_send_link():
+    user_id = get_jwt_identity()
+    return UserController.email_verification_send_link(user_id)
