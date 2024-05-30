@@ -34,21 +34,21 @@ class TestDeleteUser(unittest.TestCase):
         token, _ = create_user(self.requester, self.email, self.password, self.username)
         data = {}
 
-        data, status_code = self.requester.delete_user_alt(data, token)
+        data, status_code = self.requester.post_request(data, "user", token)
         self.assertEqual(422, status_code)
 
     def test_too_many_fields(self):
         token, _ = create_user(self.requester, self.email, self.password, self.username)
         data = {"email": self.email, "password": self.password}
 
-        data, status_code = self.requester.delete_user_alt(data, token)
+        data, status_code = self.requester.post_request(data, "user", token)
         self.assertEqual(422, status_code)
 
     def test_wrong_field(self):
         token, data = create_user(self.requester, self.email, self.password, self.username)
         data = {"wrong_field": self.password}
 
-        data, status_code = self.requester.delete_user_alt(data, token)
+        data, status_code = self.requester.post_request(data, "user", token)
         self.assertEqual(422, status_code)
 
     def test_unknown_user(self):

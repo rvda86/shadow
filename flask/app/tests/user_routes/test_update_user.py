@@ -10,7 +10,6 @@ from app.tests.user_routes.UserRequester import UserRequester
 # /api/users PUT
 # update username or email
 class TestUpdateUser(unittest.TestCase):
-
     db = db_pool.acquire()
     requester = UserRequester()
 
@@ -41,21 +40,22 @@ class TestUpdateUser(unittest.TestCase):
     def test_too_few_fields(self):
         token, _ = create_user(self.requester, self.email, self.password, self.username)
         data = {"email": self.email, "password": self.password, "username": self.username}
-        data, status_code = self.requester.update_user_alt(data, token)
+        data, status_code = self.requester.put_request(data, "user", token)
 
         self.assertEqual(422, status_code)
 
     def test_too_many_fields(self):
         token, _ = create_user(self.requester, self.email, self.password, self.username)
-        data = {"currentPassword": self.password, "email": self.email, "password": self.password, "username": self.username, "phone": "0612345678"}
-        data, status_code = self.requester.update_user_alt(data, token)
+        data = {"currentPassword": self.password, "email": self.email, "password": self.password,
+                "username": self.username, "phone": "0612345678"}
+        data, status_code = self.requester.put_request(data, "user", token)
 
         self.assertEqual(422, status_code)
 
     def test_wrong_fields(self):
         token, data = create_user(self.requester, self.email, self.password, self.username)
         data = {"shape": self.password, "animal": self.email, "phone": self.password, "location": self.username}
-        data, status_code = self.requester.update_user_alt(data, token)
+        data, status_code = self.requester.put_request(data, "user", token)
 
         self.assertEqual(422, status_code)
 
@@ -78,7 +78,7 @@ class TestUpdateUser(unittest.TestCase):
     def test_username_too_long(self):
         token, data = create_user(self.requester, self.email2, self.password, self.username2)
 
-        username = "a"*31
+        username = "a" * 31
         data, status_code = self.requester.update_user(self.password, self.email2, self.password, username, token)
 
         self.assertEqual(422, status_code)
