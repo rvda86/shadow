@@ -43,6 +43,21 @@ class TestGetToken(unittest.TestCase):
         self.assertEqual(401, status_code)
         self.assertEqual(ExceptionMessages.PASSWORD_WRONG, data["msg"])
 
+    def test_too_few_fields(self):
+        data = {"username": self.username}
+        data, status_code = self.requester.post_request(data, "token")
+        self.assertEqual(422, status_code)
+
+    def test_too_many_fields(self):
+        data = {"email": self.email, "password": self.password, "username": self.username}
+        data, status_code = self.requester.post_request(data, "token")
+        self.assertEqual(422, status_code)
+
+    def test_wrong_fields(self):
+        data = {"color": self.email, "length": self.password}
+        data, status_code = self.requester.post_request(data, "token")
+        self.assertEqual(422, status_code)
+
 
 if __name__ == "__main__":
     unittest.main()
