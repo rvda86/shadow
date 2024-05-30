@@ -66,12 +66,9 @@ class UserController:
 
     @staticmethod
     def get_token(data):
-        if isinstance(data, dict):
-            data["type"] = "token"
-        data = preprocess_incoming_data(data, "POST")
         user = User()
-        user.load_by_username(data["username"])
-        user.authenticate(data["password"])
+        user.load_by_username(data.username)
+        user.authenticate(data.password)
         response = user.get_token()
         return jsonify(response)
 

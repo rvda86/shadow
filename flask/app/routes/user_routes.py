@@ -6,6 +6,7 @@ from app.error_handling import error_handler
 from app.main import app
 from app.routes.schemas.user_schemas.CreateUserSchema import CreateUserSchema
 from app.routes.schemas.user_schemas.DeleteUserSchema import DeleteUserSchema
+from app.routes.schemas.user_schemas.GetTokenSchema import GetTokenSchema
 from app.routes.schemas.user_schemas.UpdateUserSchema import UpdateUserSchema
 
 
@@ -39,6 +40,7 @@ def get_all_data_by_user():
 @error_handler
 def get_token():
     data = request.get_json()
+    data = GetTokenSchema(**data)
     return UserController.get_token(data)
 
 
