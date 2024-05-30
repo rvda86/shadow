@@ -1,22 +1,8 @@
-import httpx
-
-from app.config import Config
-from app.main import app
+from app.tests.Requester import Requester
 from app.tests.utils import get_response_json_status_code
 
 
-class UserRequester:
-
-    def __init__(self):
-        if Config.TEST_CLIENT == "httpx":
-            self.client = httpx.Client()
-        elif Config.TEST_CLIENT == "flask":
-            self.client = app.test_client()
-        else:
-            raise Exception()
-
-        self.endpoint_user = f"{Config.API_LINK}/users"
-        self.endpoint_token = f"{Config.API_LINK}/users/token"
+class UserRequester(Requester):
 
     def create_user(self, email: str, password: str, username: str) -> tuple[dict, int]:
         data = {"email": email, "password": password, "username": username}
@@ -24,18 +10,8 @@ class UserRequester:
                                     headers={'Content-type': 'application/json'})
         return get_response_json_status_code(response)
 
-    def create_user_alt(self, data: dict) -> tuple[dict, int]:
-        response = self.client.post(self.endpoint_user, json=data,
-                                    headers={'Content-type': 'application/json'})
-        return get_response_json_status_code(response)
-
     def delete_user(self, password, token) -> tuple[dict, int]:
         data = {"password": password}
-        response = self.client.post(f"{self.endpoint_user}/delete", json=data,
-                                    headers={"Content-type": "application/json", 'Authorization': "Bearer " + token})
-        return get_response_json_status_code(response)
-
-    def delete_user_alt(self, data, token) -> tuple[dict, int]:
         response = self.client.post(f"{self.endpoint_user}/delete", json=data,
                                     headers={"Content-type": "application/json", 'Authorization': "Bearer " + token})
         return get_response_json_status_code(response)
@@ -75,11 +51,6 @@ class UserRequester:
     def update_user(self, currentPassword: str, email: str, password: str, username: str, token: str) -> tuple[
         dict, int]:
         data = {"currentPassword": currentPassword, "email": email, "password": password, "username": username}
-        response = self.client.put(self.endpoint_user, json=data,
-                                   headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})
-        return get_response_json_status_code(response)
-
-    def update_user_alt(self, data: dict, token: str) -> tuple[dict, int]:
         response = self.client.put(self.endpoint_user, json=data,
                                    headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})
         return get_response_json_status_code(response)
