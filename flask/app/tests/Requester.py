@@ -2,7 +2,7 @@ import httpx
 
 from app.config import Config
 from app.main import app
-from app.tests.utils import get_response_json_status_code
+from app.tests.utils import get_json_and_response_code_from_response
 
 
 class Requester:
@@ -23,11 +23,11 @@ class Requester:
         headers = {'Content-type': 'application/json'} if token is None else {"Content-type": "application/json",
                                                                               'Authorization': "Bearer " + token}
         response = self.client.post(self.endpoints[endpoint], json=data, headers=headers)
-        return get_response_json_status_code(response)
+        return get_json_and_response_code_from_response(response)
 
     def put_request(self, data: dict, endpoint: str, token: str = None) -> tuple[dict, int]:
         headers = {'Content-type': 'application/json'} if token is None else {"Content-type": "application/json",
                                                                               'Authorization': "Bearer " + token}
         response = self.client.put(self.endpoints[endpoint], json=data, headers=headers)
-        return get_response_json_status_code(response)
+        return get_json_and_response_code_from_response(response)
 
