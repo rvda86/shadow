@@ -8,7 +8,7 @@ from app.tests.helpers import create_user
 from app.tests.user_routes.UserRequester import UserRequester
 
 
-# /users/reset_password POST`
+# /users/reset_password POST
 # /users/reset_password_send_link POST
 class TestPasswordReset(unittest.TestCase):
 
@@ -28,6 +28,15 @@ class TestPasswordReset(unittest.TestCase):
     def tearDown(self):
         self.db.reset_database()
 
+    def test_success_reset_password(self):
+        new_password = "passwSf2@ord"
+        self.requester.verify_email(self.token_based_on_email)
+
+        data, status_code = self.requester.password_reset(new_password, self.token_based_on_email)
+
+        self.assertEqual(200, status_code)
+        self.assertEqual(ControllerMessages.PASSWORD_RESET, data["msg"])
+
     def test_success_send_password_reset_link(self):
         self.requester.verify_email(self.token_based_on_email)
 
@@ -38,14 +47,23 @@ class TestPasswordReset(unittest.TestCase):
         else:
             self.assertEqual(ControllerMessages.PASSWORD_RESET_MAIL_DISABLED, data["msg"])
 
-    def test_success_reset_password(self):
-        new_password = "passwSf2@ord"
-        self.requester.verify_email(self.token_based_on_email)
+    def test_email_missing(self):
+        data = {}
+        data, status_code = self.requester.post_request(data, "password_reset_request")
 
-        data, status_code = self.requester.password_reset(new_password, self.token_based_on_email)
+        self.assertEqual(4222, status_code)
 
-        self.assertEqual(200, status_code)
-        self.assertEqual(ControllerMessages.PASSWORD_RESET, data["msg"])
+    def test_too_many_fields(self):
+        data = {"email": self.email, "username": self.username}
+        data, status_code = self.requester.post_request(data, "password_reset_request")
+
+        self.assertEqual(4222, status_code)
+
+    def test_wrong_field(self):
+        data = {"color": self.email}
+        data, status_code = self.requester.post_request(data, "password_reset_request")
+
+        self.assertEqual(4222, status_code)
 
     def test_send_password_reset_link_email_not_verified(self):
         data, status_code = self.requester.send_password_reset_link(self.email)
