@@ -20,7 +20,7 @@ class Requester:
         self.endpoint_user = f"{Config.API_LINK}/users"
         self.endpoint_token = f"{Config.API_LINK}/users/token"
 
-        self.endpoints = {"password_request": self.endpoint_password_reset,
+        self.endpoints = {"password_reset": self.endpoint_password_reset,
                           "password_reset_request": self.endpoint_password_reset_request,
                           "user": self.endpoint_user,
                           "token": self.endpoint_token}

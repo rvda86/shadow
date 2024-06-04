@@ -39,19 +39,19 @@ class TestPasswordReset(unittest.TestCase):
 
     def test_password_missing(self):
         data = {}
-        data, status_code = self.requester.post_request(data, "password_reset_request")
+        data, status_code = self.requester.post_request(data, "password_reset", self.token_based_on_email)
 
         self.assertEqual(422, status_code)
 
     def test_too_many_fields(self):
         data = {"email": self.email, "password": self.password}
-        data, status_code = self.requester.post_request(data, "password_reset_request")
+        data, status_code = self.requester.post_request(data, "password_reset", self.token_based_on_email)
 
         self.assertEqual(422, status_code)
 
     def test_wrong_field(self):
         data = {"color": self.password}
-        data, status_code = self.requester.post_request(data, "password_reset_request")
+        data, status_code = self.requester.post_request(data, "password_reset", self.token_based_on_email)
 
         self.assertEqual(422, status_code)
 

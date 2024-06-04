@@ -7,6 +7,8 @@ from app.main import app
 from app.routes.schemas.user_schemas.CreateUserSchema import CreateUserSchema
 from app.routes.schemas.user_schemas.DeleteUserSchema import DeleteUserSchema
 from app.routes.schemas.user_schemas.GetTokenSchema import GetTokenSchema
+from app.routes.schemas.user_schemas.PasswordResetRequestSchema import PasswordResetRequestSchema
+from app.routes.schemas.user_schemas.PasswordResetSchema import PasswordResetSchema
 from app.routes.schemas.user_schemas.UpdateUserSchema import UpdateUserSchema
 
 
@@ -67,14 +69,15 @@ def get_user():
 def reset_password():
     email = get_jwt_identity()
     data = request.get_json()
-    data["email"] = email
-    return UserController.reset_password(data)
+    data = PasswordResetSchema(**data)
+    return UserController.reset_password(data, email)
 
 
 @app.route("/api/users/reset_password_send_link", methods=["POST"])
 @error_handler
 def reset_password_send_link():
     data = request.get_json()
+    data = PasswordResetRequestSchema(**data)
     return UserController.password_reset_send_link(data)
 
 

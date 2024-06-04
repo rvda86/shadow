@@ -8,7 +8,6 @@ from app.models.entry.Category import get_all_categories_by_user
 from app.models.entry.Entry import to_dict
 from app.models.user.User import User
 from app.utils.utils import send_email_verification_mail, send_password_reset_mail
-from app.validation import preprocess_incoming_data
 
 
 class UserController:
@@ -82,7 +81,7 @@ class UserController:
     @staticmethod
     def password_reset_send_link(data):
         user = User()
-        user.load_by_email(data["email"])
+        user.load_by_email(data.email)
         if not user.email_verified:
             raise PasswordResetNotPossible()
         if Config.MAIL_ENABLED:
@@ -92,10 +91,10 @@ class UserController:
         return jsonify({"msg": response})
 
     @staticmethod 
-    def reset_password(data):
+    def reset_password(data, email):
         user = User()
-        user.load_by_email(data["email"])
-        user.set_password(data["password"])
+        user.load_by_email(email)
+        user.set_password(data.password)
         response = user.update_password_password_reset()
         return jsonify(response)
     

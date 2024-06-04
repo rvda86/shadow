@@ -1,7 +1,6 @@
 import bleach
 import re
 
-from app.constants.ExceptionMessages import ExceptionMessages
 from app.error_handling import InvalidDataError
 
 
@@ -33,15 +32,10 @@ required_keys = {
                     "POST": ["type", "name", "topic_id"],
                     "PUT": ["type", "name", "days", "id"],
                     "DELETE": ["type", "id"]},
-        "user": {   "GET": ["type", "id"],
-                    "POST": ["type", "username", "email", "password"], 
-                    "PUT": ["type", "username", "email", "password", "currentPassword"], 
-                    "DELETE": ["type", "password"]},
         "tag": {    "GET": ["type", "id"],
                     "POST": ["type", "name"], 
                     "PUT": ["type", "name", "id"], 
                     "DELETE": ["type", "id"]},
-        "token": {  "POST": ["type", "username", "password"]},       
         }
 
 
