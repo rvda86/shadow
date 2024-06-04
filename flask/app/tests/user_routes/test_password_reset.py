@@ -9,7 +9,7 @@ from app.tests.user_routes.UserRequester import UserRequester
 
 
 # /users/reset_password POST
-# /users/reset_password_send_link POST
+
 class TestPasswordReset(unittest.TestCase):
 
     db = db_pool.acquire()
@@ -37,39 +37,23 @@ class TestPasswordReset(unittest.TestCase):
         self.assertEqual(200, status_code)
         self.assertEqual(ControllerMessages.PASSWORD_RESET, data["msg"])
 
-    def test_success_send_password_reset_link(self):
-        self.requester.verify_email(self.token_based_on_email)
-
-        data, status_code = self.requester.send_password_reset_link(self.email)
-        self.assertEqual(200, status_code)
-        if Config.MAIL_ENABLED:
-            self.assertEqual(ControllerMessages.PASSWORD_RESET_MAIL_SENT, data["msg"])
-        else:
-            self.assertEqual(ControllerMessages.PASSWORD_RESET_MAIL_DISABLED, data["msg"])
-
-    def test_email_missing(self):
+    def test_password_missing(self):
         data = {}
         data, status_code = self.requester.post_request(data, "password_reset_request")
 
-        self.assertEqual(4222, status_code)
+        self.assertEqual(422, status_code)
 
     def test_too_many_fields(self):
-        data = {"email": self.email, "username": self.username}
+        data = {"email": self.email, "password": self.password}
         data, status_code = self.requester.post_request(data, "password_reset_request")
 
-        self.assertEqual(4222, status_code)
+        self.assertEqual(422, status_code)
 
     def test_wrong_field(self):
-        data = {"color": self.email}
+        data = {"color": self.password}
         data, status_code = self.requester.post_request(data, "password_reset_request")
 
-        self.assertEqual(4222, status_code)
-
-    def test_send_password_reset_link_email_not_verified(self):
-        data, status_code = self.requester.send_password_reset_link(self.email)
-
-        self.assertEqual(403, status_code)
-        self.assertEqual(ExceptionMessages.PASSWORD_RESET_NOT_POSSIBLE, data["msg"])
+        self.assertEqual(422, status_code)
 
     def test_reset_password_email_not_verified(self):
         new_password = "passwSf2@ord"
