@@ -26,6 +26,7 @@ from app.tests.user_routes.test_email_verification import TestEmailVerification
 from app.tests.user_routes.test_get_token import TestGetToken
 from app.tests.user_routes.test_get_user import TestGetUser
 from app.tests.user_routes.test_password_reset import TestPasswordReset
+from app.tests.user_routes.test_password_reset_request import TestPasswordResetRequest
 from app.tests.user_routes.test_update_password import TestUpdatePassword
 from app.tests.user_routes.test_update_user import TestUpdateUser
 
