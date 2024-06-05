@@ -1,10 +1,17 @@
 class ExceptionMessages:
 
+    COMPLETED_NOT_VALID = "You provided an invalid value."
+    DATE_NOT_VALID = "This date is not valid."
     EMAIL_NOT_AVAILABLE = "This email is not available."
     EMAIL_NOT_VALID = "This email is not a valid email address."
+    ID_NOT_VALID = "You provided an invalid ID."
+    TOPIC_TYPE_NOT_VALID = "You provided an invalid topic type."
     ITEM_NOT_FOUND = "Item not found."
+    NAME_ILLEGAL_CHARACTERS = "This name contains illegal characters. Use alphanumerical characters only."
+    NAME_TOO_LONG = "This name is too long."
+    NAME_TOO_SHORT = "This name is too short."
     PASSWORD_NUMERIC = "This password cannot be entirely numeric."
-    PASSWORD_RESET_NOT_POSSIBLE = "You cannot reset your password because your email account is not verified"
+    PASSWORD_RESET_NOT_POSSIBLE = "You cannot reset your password because your email account is not verified."
     PASSWORD_TOO_COMMON = "This password is too common."
     PASSWORD_TOO_LONG = "This password is too long, use at most 128 characters."
     PASSWORD_TOO_SHORT = "This password is too short, use at least 8 characters."
