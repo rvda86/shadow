@@ -1,7 +1,10 @@
-from app.validators.name import validate_name
+from app.constants.ValidationConstants import ValidationConstants
+from app.validators.id import validate_id
+from app.validators.string import validate_string
 
 
-class CreateCategorySchema:
+class UpdateCategorySchema:
 
-    def __init__(self, name):
-        self.name = validate_name(name, 1, 30)
+    def __init__(self, id: str, name: str):
+        self.id = validate_id(id)
+        self.name = validate_string(name, ValidationConstants.MIN_TITLE_LENGTH, ValidationConstants.MAX_TITLE_LENGTH)
