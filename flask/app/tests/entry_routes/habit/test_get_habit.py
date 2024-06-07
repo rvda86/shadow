@@ -7,7 +7,7 @@ from app.tests.user_routes.UserRequester import UserRequester
 from app.utils.utils import uuid_generator
 
 
-# /api/entries GET
+# /api/entry/get GET
 class TestGetHabit(unittest.TestCase):
 
     db = db_pool.acquire()
@@ -19,11 +19,11 @@ class TestGetHabit(unittest.TestCase):
             raise Exception
         self.token_1, _ = create_user(self.user_requester, "user1@example.com", "passwSf2@ord", "user1")
         self.token_2, _ = create_user(self.user_requester, "user2@example.com", "passwSf2@ord", "user2")
-        self.category, _ = self.requester.create_entry({"type": "category", "name": "category1"}, self.token_1)
-        self.topic, _ = self.requester.create_entry({"type": "topic", "topic_type": "habit", "name": "topic_1",
-                                                     "category_id": self.category["entry"]["id"]}, self.token_1)
-        self.habit, _ = self.requester.create_entry({"type": "habit", "name": "My First Habit",
-                                                     "topic_id": self.topic["entry"]["id"]}, self.token_1)
+        self.category, _ = self.requester.create_entry({"name": "category1"}, "category", self.token_1)
+        self.topic, _ = self.requester.create_entry({"topic_type": "habit", "name": "topic_1",
+                                                     "category_id": self.category["entry"]["id"]}, "topic", self.token_1)
+        self.habit, _ = self.requester.create_entry({"name": "My First Habit", "topic_id": self.topic["entry"]["id"]},
+                                                    "habit", self.token_1)
 
     def tearDown(self):
         self.db.reset_database()

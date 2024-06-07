@@ -6,7 +6,7 @@ from app.tests.helpers import create_user
 from app.tests.user_routes.UserRequester import UserRequester
 
 
-# /api/entries POST
+# /api/entry/category POST
 class TestCreateCategory(unittest.TestCase):
 
     db = db_pool.acquire()
@@ -23,8 +23,8 @@ class TestCreateCategory(unittest.TestCase):
         self.db.reset_database()
 
     def test_success(self):
-        data = {"type": "category", "name": "category1"}
-        data, status_code = self.requester.create_entry(data, self.token_1)
+        data = {"name": "category1"}
+        data, status_code = self.requester.create_entry(data, "category", self.token_1)
 
         self.assertEqual(200, status_code)
 

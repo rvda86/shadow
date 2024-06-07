@@ -15,24 +15,34 @@ class EntryRequester:
         else:
             raise Exception()
 
-        self.endpoint_entry = f"{Config.API_LINK}/entries"
+        self.endpoint_category = f"{Config.API_LINK}/entry/category"
+        self.endpoint_habit = f"{Config.API_LINK}/entry/habit"
+        self.endpoint_journal = f"{Config.API_LINK}/entry/journal"
+        self.endpoint_todo = f"{Config.API_LINK}/entry/todo"
+        self.endpoint_topic = f"{Config.API_LINK}/entry/topic"
 
-    def create_entry(self, data, token):
-        response = self.client.post(self.endpoint_entry, json=data, headers={'Content-type': 'application/json',
-                                                                             'Authorization': "Bearer " + token})
+        self.endpoints = {"category": self.endpoint_category,
+                          "habit": self.endpoint_habit,
+                          "journal": self.endpoint_journal,
+                          "todo": self.endpoint_todo,
+                          "topic": self.endpoint_topic}
+
+    def create_entry(self, data, endpoint, token):
+        response = self.client.post(self.endpoints[endpoint], json=data, headers={'Content-type': 'application/json',
+                                                                                  'Authorization': "Bearer " + token})
         return get_json_and_response_code_from_response(response)
 
-    def delete_entry(self, entry_type, entry_id, token):
-        response = self.client.delete(f'{self.endpoint_entry}?type={entry_type}&id={entry_id}',
+    def delete_entry(self, endpoint, entry_id, token):
+        response = self.client.delete(f'{self.endpoints[endpoint]}?id={entry_id}',
                                       headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})
         return get_json_and_response_code_from_response(response)
 
-    def get_entry(self, entry_type, entry_id, token):
-        response = self.client.get(f'{self.endpoint_entry}?type={entry_type}&id={entry_id}',
+    def get_entry(self, endpoint, entry_id, token):
+        response = self.client.get(f'{self.endpoints[endpoint]}?id={entry_id}',
                                    headers={'Content-type': 'application/json', 'Authorization': "Bearer " + token})
         return get_json_and_response_code_from_response(response)
 
-    def update_entry(self, data, token):
-        response = self.client.put(self.endpoint_entry, json=data, headers={'Content-type': 'application/json',
-                                                                            'Authorization': "Bearer " + token})
+    def update_entry(self, data, endpoint, token):
+        response = self.client.put(self.endpoints[endpoint], json=data, headers={'Content-type': 'application/json',
+                                                                                 'Authorization': "Bearer " + token})
         return get_json_and_response_code_from_response(response)

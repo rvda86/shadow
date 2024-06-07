@@ -6,7 +6,7 @@ from app.tests.helpers import create_user
 from app.tests.user_routes.UserRequester import UserRequester
 
 
-# /api/entries DELETE
+# /api/entry/category DELETE
 class TestDeleteCategory(unittest.TestCase):
 
     db = db_pool.acquire()
@@ -18,7 +18,7 @@ class TestDeleteCategory(unittest.TestCase):
             raise Exception
         self.token_1, _ = create_user(self.user_requester, "user1@example.com", "passwSf2@ord", "user1")
         self.token_2, _ = create_user(self.user_requester, "user2@example.com", "passwSf2@ord", "user2")
-        self.category, _ = self.requester.create_entry({"type": "category", "name": "category1"}, self.token_1)
+        self.category, _ = self.requester.create_entry({"name": "category1"}, "category", self.token_1)
 
     def tearDown(self):
         self.db.reset_database()

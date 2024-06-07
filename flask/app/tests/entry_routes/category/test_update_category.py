@@ -6,7 +6,7 @@ from app.tests.helpers import create_user
 from app.tests.user_routes.UserRequester import UserRequester
 
 
-# /api/entries PUT
+# /api/entry/category PUT
 class TestUpdateCategory(unittest.TestCase):
 
     db = db_pool.acquire()
@@ -18,19 +18,19 @@ class TestUpdateCategory(unittest.TestCase):
             raise Exception
         self.token_1, _ = create_user(self.user_requester, "user1@example.com", "passwSf2@ord", "user1")
         self.token_2, _ = create_user(self.user_requester, "user2@example.com", "passwSf2@ord", "user2")
-        self.category, _ = self.requester.create_entry({"type": "category", "name": "category1"}, self.token_1)
+        self.category, _ = self.requester.create_entry({"name": "category1"}, "category", self.token_1)
 
     def tearDown(self):
         self.db.reset_database()
 
     def test_success(self):
-        data = {"type": "category", "name": "updated_category1", "id": self.category["entry"]["id"]}
-        data, status_code = self.requester.update_entry(data, self.token_1)
+        data = {"name": "updated_category1", "id": self.category["entry"]["id"]}
+        data, status_code = self.requester.update_entry(data, "category", self.token_1)
         self.assertEqual(200, status_code)
 
     def test_combination_category_author_unknown(self):
-        data = {"type": "category", "name": "updated_category1", "id": self.category["entry"]["id"]}
-        data, status_code = self.requester.update_entry(data, self.token_2)
+        data = {"name": "updated_category1", "id": self.category["entry"]["id"]}
+        data, status_code = self.requester.update_entry(data, "category", self.token_2)
         self.assertEqual(404, status_code)
 
 

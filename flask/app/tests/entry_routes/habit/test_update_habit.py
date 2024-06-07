@@ -6,7 +6,7 @@ from app.tests.helpers import create_user
 from app.tests.user_routes.UserRequester import UserRequester
 
 
-# /api/entries PUT
+# /api/entry/habit PUT
 class TestUpdateHabit(unittest.TestCase):
     db = db_pool.acquire()
     user_requester = UserRequester()
@@ -17,17 +17,17 @@ class TestUpdateHabit(unittest.TestCase):
             raise Exception
         self.token_1, _ = create_user(self.user_requester, "user1@example.com", "passwSf2@ord", "user1")
         self.token_2, _ = create_user(self.user_requester, "user2@example.com", "passwSf2@ord", "user2")
-        self.category, _ = self.requester.create_entry({"type": "category", "name": "category1"}, self.token_1)
-        self.topic, _ = self.requester.create_entry({"type": "topic", "topic_type": "habit", "name": "topic_1",
-                                                     "category_id": self.category["entry"]["id"]}, self.token_1)
-        self.habit, _ = self.requester.create_entry({"type": "habit", "name": "My First Habit",
-                                                     "topic_id": self.topic["entry"]["id"]}, self.token_1)
+        self.category, _ = self.requester.create_entry({"name": "category1"}, "category", self.token_1)
+        self.topic, _ = self.requester.create_entry({"topic_type": "habit", "name": "topic_1",
+                                                     "category_id": self.category["entry"]["id"]}, "topic", self.token_1)
+        self.habit, _ = self.requester.create_entry({"name": "My First Habit",
+                                                     "topic_id": self.topic["entry"]["id"]}, "habit", self.token_1)
 
     def tearDown(self):
         self.db.reset_database()
 
     def test_success(self):
-        data = {"type": "habit", "name": "My First Updated Habit",
+        data = {"name": "My First Updated Habit",
                 "days": [{"completed": 0, "date": "Mon-15/08/2022"},
                          {"completed": 1, "date": "Tue-16/08/2022"},
                          {"completed": 0, "date": "Wed-17/08/2022"},
@@ -35,11 +35,11 @@ class TestUpdateHabit(unittest.TestCase):
                          {"completed": 0, "date": "Fri-19/08/2022"}, ],
                 "id": self.habit["entry"]["id"]}
 
-        data, status_code = self.requester.update_entry(data, self.token_1)
+        data, status_code = self.requester.update_entry(data, "habit", self.token_1)
         self.assertEqual(200, status_code)
 
     def test_combination_habit_author_unknown(self):
-        data = {"type": "habit", "name": "My First Updated Habit",
+        data = {"name": "My First Updated Habit",
                 "days": [{"completed": 0, "date": "Mon-15/08/2022"},
                          {"completed": 1, "date": "Tue-16/08/2022"},
                          {"completed": 0, "date": "Wed-17/08/2022"},
@@ -47,7 +47,7 @@ class TestUpdateHabit(unittest.TestCase):
                          {"completed": 0, "date": "Fri-19/08/2022"}, ],
                 "id": self.habit["entry"]["id"]}
 
-        data, status_code = self.requester.update_entry(data, self.token_2)
+        data, status_code = self.requester.update_entry(data, "habit", self.token_2)
         self.assertEqual(404, status_code)
 
 
