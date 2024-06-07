@@ -1,41 +1,35 @@
 from flask import jsonify
 
-from app.factory import get_entry
+from app.models.entry.Habit import Habit
 from app.models.entry.Entry import to_dict
-from app.validation import preprocess_incoming_data
+from app.routes.schemas.habit_schemas.CreateHabitSchema import CreateHabitSchema
+from app.routes.schemas.category_schemas.UpdateCategorySchema import UpdateCategorySchema
 
 
-class EntryController:
-
-    @staticmethod
-    def create_entry(user_id: str, data: dict):
-        data = preprocess_incoming_data(data, "POST")
-        entry = get_entry(data["type"])
-        created_entry, msg = entry.create(user_id, data)
-        created_entry = to_dict(created_entry)
-        return jsonify({"entry": created_entry, "msg": msg})
+class CategoryController:
 
     @staticmethod
-    def delete_entry(user_id: str, data: dict):
-        data = preprocess_incoming_data(data, "DELETE")
-        entry = get_entry(data["type"])
-        entry.load_by_id(data["id"], user_id)
-        msg = entry.delete(user_id)
+    def create(user_id: str, data: CreateCategorySchema):
+        habit = Habit()
+        habit, msg = habit.create(user_id, data)
+        return jsonify({"entry": to_dict(habit), "msg": msg})
+
+    @staticmethod
+    def delete(user_id: str, category_id: str):
+        habit = Habit()
+        habit.load_by_id(category_id, user_id)
+        msg = habit.delete(user_id)
         return jsonify({"msg": msg})
 
     @staticmethod
-    def get_entry(user_id: str, data: dict):
-        data = preprocess_incoming_data(data, "GET")        
-        entry = get_entry(data["type"])
-        entry.load_by_id(data["id"], user_id)       
-        entry = to_dict(entry)
-        return jsonify({"data": entry})  
+    def get(user_id: str, category_id: str):
+        category = Habit()
+        category.load_by_id(category_id, user_id)
+        return jsonify({"data": to_dict(category)})
 
     @staticmethod
-    def update_entry(user_id: str, data: dict):
-        data = preprocess_incoming_data(data, "PUT")      
-        entry = get_entry(data["type"])
-        entry.load_by_id(data["id"], user_id)
-        created_entry, msg = entry.update(user_id, data)
-        created_entry = to_dict(created_entry)
-        return jsonify({"entry": created_entry, "msg": msg})
+    def update(user_id: str, data: UpdateCategorySchema):
+        category = Habit()
+        category.load_by_id(data.id, user_id)
+        created_entry, msg = category.update(user_id, data)
+        return jsonify({"entry": to_dict(created_entry), "msg": msg})
