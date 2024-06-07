@@ -4,6 +4,8 @@ from app.db_mysql import db_pool
 from app.error_handling import InvalidDataError, NotFoundException
 from app.models.entry.Entry import Entry
 from app.models.entry.Tag import Tag
+from app.routes.schemas.journal_schemas.CreateJournalSchema import CreateJournalSchema
+from app.routes.schemas.journal_schemas.UpdateJournalSchema import UpdateJournalSchema
 from app.validation import validate_id, validate_title
 from app.utils.utils import uuid_generator
 
@@ -36,21 +38,21 @@ class Journal(Entry):
             tag.load_by_id(id[0], user_id)
             tags.append(tag)
 
-    def create(self, user_id: str, data: dict):
+    def create(self, user_id: str, data: CreateJournalSchema):
         self.id = uuid_generator()
         self.date_posted = datetime.utcnow()
-        self.set_topic(data["topic_id"])
-        self.set_title(data["title"])
-        self.set_content(data["content"])
+        self.set_topic(data.topic_id)
+        self.set_title(data.title)
+        self.set_content(data.content)
         db.create_update_delete(db.create_journal_entry_sql,
                                 (self.id, user_id, self.topic_id, self.date_posted, self.title, self.content))
         self.load_by_id(self.id, user_id)
         return self, "journal entry created"
 
-    def update(self, user_id: str, data: dict):
+    def update(self, user_id: str, data: UpdateJournalSchema):
         self.date_edited = datetime.utcnow()
-        self.set_title(data["title"])
-        self.set_content(data["content"])
+        self.set_title(data.title)
+        self.set_content(data.content)
         db.create_update_delete(db.update_journal_entry_sql,
                                 (self.date_edited, self.title, self.content, self.id, user_id))
         return self, "journal entry updated"

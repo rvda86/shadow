@@ -2,6 +2,8 @@ from app.db_mysql import db_pool
 from app.error_handling import NotFoundException, NotEmptyError
 from app.models.entry.Entry import Entry
 from app.models.entry.Topic import Topic
+from app.routes.schemas.category_schemas.CreateCategorySchema import CreateCategorySchema
+from app.routes.schemas.category_schemas.UpdateCategorySchema import UpdateCategorySchema
 from app.validation import validate_name
 from app.utils.utils import uuid_generator
 
@@ -24,8 +26,8 @@ class Category(Entry):
     entry_type: str
     topics: list
 
-    def create(self, user_id: str, data: dict):
-        self.set_name(data["name"])
+    def create(self, user_id: str, data: CreateCategorySchema):
+        self.set_name(data.name)
         self.id = uuid_generator()
         db.create_update_delete(db.create_category_sql, (self.id, user_id, self.name))
         self.entry_type = "category"
@@ -46,8 +48,8 @@ class Category(Entry):
         self.entry_type = "category"
         self.topics = self.load_topics(user_id)
 
-    def update(self, user_id: str, data: dict):
-        self.set_name(data["name"])
+    def update(self, user_id: str, data: UpdateCategorySchema):
+        self.set_name(data.name)
         db.create_update_delete(db.update_category_sql, (self.name, self.id, user_id))
         return self, "category updated"
 

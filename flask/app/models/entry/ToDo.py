@@ -3,6 +3,8 @@ from datetime import datetime
 from app.db_mysql import db_pool
 from app.error_handling import InvalidDataError, NotFoundException
 from app.models.entry.Entry import Entry
+from app.routes.schemas.todo_schemas.CreateToDoSchema import CreateToDoSchema
+from app.routes.schemas.todo_schemas.UpdateToDoSchema import UpdateToDoSchema
 from app.validation import validate_id, validate_name
 from app.utils.utils import uuid_generator
 
@@ -25,20 +27,20 @@ class ToDo(Entry):
         self.id, self.topic_id, self.date_posted, self.date_edited, self.task, self.completed = result
         self.entry_type = "todo"
 
-    def create(self, user_id: str, data: dict):
+    def create(self, user_id: str, data: CreateToDoSchema):
         self.id = uuid_generator()
         self.date_posted = datetime.utcnow()
-        self.set_topic(data["topic_id"])
-        self.set_task(data["task"])
+        self.set_topic(data.topic_id)
+        self.set_task(data.task)
         db.create_update_delete(db.create_todo_entry_sql,
                                 (self.id, user_id, self.topic_id, self.date_posted, self.task))
         self.load_by_id(self.id, user_id)
         return self, "todo entry created"
 
-    def update(self, user_id: str, data: dict):
+    def update(self, user_id: str, data: UpdateToDoSchema):
         self.date_edited = datetime.utcnow()
-        self.set_task(data["task"])
-        self.set_completed(data["completed"])
+        self.set_task(data.task)
+        self.set_completed(data.completed)
         db.create_update_delete(db.update_todo_entry_sql,
                                 (self.date_edited, self.task, self.completed, self.id, user_id))
         return self, "todo entry updated"

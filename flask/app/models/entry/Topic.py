@@ -4,6 +4,8 @@ from app.models.entry.Entry import Entry
 from app.models.entry.Habit import Habit
 from app.models.entry.Journal import Journal
 from app.models.entry.ToDo import ToDo
+from app.routes.schemas.topic_schemas.CreateTopicSchema import CreateTopicSchema
+from app.routes.schemas.topic_schemas.UpdateTopicSchema import UpdateTopicSchema
 from app.validation import validate_id, validate_name
 from app.utils.utils import uuid_generator
 
@@ -27,17 +29,17 @@ class Topic(Entry):
         self.entry_type = "topic"    
         self.entries = self.load_entries(user_id)
 
-    def create(self, user_id: str, data: dict):
+    def create(self, user_id: str, data: CreateTopicSchema):
         self.id = uuid_generator()
-        self.set_category(data["category_id"])
-        self.set_name(data["name"])
-        self.set_topic_type(data["topic_type"])
+        self.set_category(data.category_id)
+        self.set_name(data.name)
+        self.set_topic_type(data.topic_type)
         db.create_update_delete(db.create_topic_sql, (self.id, user_id, self.category_id, self.name, self.topic_type))
         self.load_by_id(self.id, user_id)
         return self, "topic created"
             
-    def update(self, user_id: str, data: dict):
-        self.set_name(data["name"])
+    def update(self, user_id: str, data: UpdateTopicSchema):
+        self.set_name(data.name)
         db.create_update_delete(db.update_topic_sql, (self.name, self.id, user_id))
         return self, "topic updated"
     

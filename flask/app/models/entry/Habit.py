@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 from app.db_mysql import db_pool
 from app.error_handling import NotFoundException
 from app.models.entry.Entry import Entry
+from app.routes.schemas.habit_schemas.CreateHabitSchema import CreateHabitSchema
+from app.routes.schemas.habit_schemas.UpdateHabitSchema import UpdateHabitSchema
 from app.validation import validate_date, validate_id, validate_name
 from app.utils.utils import uuid_generator
 
@@ -26,31 +28,31 @@ class Habit(Entry):
         self.entry_type = "habit"
         self.days = self.load_days(user_id)
 
-    def create(self, user_id: str, data: dict):
+    def create(self, user_id: str, data: CreateHabitSchema):
         self.id = uuid_generator()
         self.date_posted = datetime.utcnow()
-        self.set_topic(data["topic_id"])
-        self.set_name(data["name"])
+        self.set_topic(data.topic_id)
+        self.set_name(data.name)
         db.create_update_delete(db.create_habit_entry_sql,
                                 (self.id, user_id, self.topic_id, self.date_posted, self.name))
         self.load_by_id(self.id, user_id)
         return self, "habit tracker created"
 
-    def update(self, user_id: str, data: dict):
+    def update(self, user_id: str, data: UpdateHabitSchema):
         self.date_edited = datetime.utcnow()
-        self.set_name(data["name"])
+        self.set_name(data.name)
         db.create_update_delete(db.update_habit_entry_sql, (self.date_edited, self.name, self.id, user_id))
 
         days_completed = self.load_days_completed(user_id)
 
-        for day in data["days"]:
+        for day in data.days:
             validate_date(day["date"])
             if day["completed"] == 1:
                 if day["date"] not in days_completed:
                     db.create_update_delete(db.create_habit_days_completed_sql, (user_id, self.id, day["date"]))
 
         for d in days_completed:
-            for day in data["days"]:
+            for day in data.days:
                 if day["date"] == d:
                     if day["completed"] == 0:
                         db.create_update_delete(db.delete_habit_days_completed_sql, (self.id, user_id, day["date"]))
