@@ -32,4 +32,5 @@ def create_app():
 
 app, bcrypt, jwt, mail = create_app()
 
-from app.routes import entry_routes, user_routes, frontend_routes
+from app.routes import user_routes, frontend_routes
+from app.routes.entry_routes import category_routes, habit_routes, journal_routes, todo_routes, topic_routes
