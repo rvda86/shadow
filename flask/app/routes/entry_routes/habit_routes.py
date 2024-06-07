@@ -3,45 +3,45 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.main import app
 from app.error_handling import error_handler
-from app.controllers.category_controller import CategoryController
-from app.routes.schemas.category_schemas.CreateCategorySchema import CreateCategorySchema
-from app.routes.schemas.category_schemas.UpdateCategorySchema import UpdateCategorySchema
+from app.controllers.entry_controller import EntryController
+from app.routes.schemas.habit_schemas.CreateHabitSchema import CreateHabitSchema
+from app.routes.schemas.habit_schemas.UpdateHabitSchema import UpdateHabitSchema
 from app.validators.id import validate_id
 
 
-@app.route("/api/entry/category", methods=["POST"])
+@app.route("/api/entry/habit", methods=["POST"])
 @error_handler
 @jwt_required()
-def create_category():
+def create_habit():
     user_id = get_jwt_identity()
     data = request.get_json()
-    data = CreateCategorySchema(**data)
-    return CategoryController.create(user_id, data)
+    data = CreateHabitSchema(**data)
+    return EntryController.create(user_id, data, "habit")
 
 
-@app.route("/api/entry/category", methods=["DELETE"])
+@app.route("/api/entry/habit", methods=["DELETE"])
 @error_handler
 @jwt_required()
-def delete_category():
+def delete_habit():
     user_id = get_jwt_identity()
     category_id = validate_id(request.args.get('id'))
-    return CategoryController.delete(user_id, category_id)
+    return EntryController.delete(user_id, category_id, "habit")
 
 
-@app.route("/api/entry/category", methods=["GET"])
+@app.route("/api/entry/habit", methods=["GET"])
 @error_handler
 @jwt_required()
-def get_category():
+def get_habit():
     user_id = get_jwt_identity()
     category_id = validate_id(request.args.get('id'))
-    return CategoryController.get(user_id, category_id)
+    return EntryController.get(user_id, category_id, "habit")
 
 
-@app.route("/api/entry/category", methods=["PUT"])
+@app.route("/api/entry/habit", methods=["PUT"])
 @error_handler
 @jwt_required()
-def update_entry():
+def update_habit():
     user_id = get_jwt_identity()
     data = request.get_json()
-    data = UpdateCategorySchema(**data)
-    return CategoryController.update(user_id, data)
+    data = UpdateHabitSchema(**data)
+    return EntryController.update(user_id, data, "habit")

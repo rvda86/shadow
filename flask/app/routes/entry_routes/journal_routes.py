@@ -4,44 +4,44 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.main import app
 from app.error_handling import error_handler
 from app.controllers.entry_controller import EntryController
-from app.routes.schemas.habit_schemas.CreateHabitSchema import CreateHabitSchema
-from app.routes.schemas.habit_schemas.UpdateHabitSchema import UpdateHabitSchema
+from app.routes.schemas.journal_schemas.CreateJournalSchema import CreateJournalSchema
+from app.routes.schemas.journal_schemas.UpdateJournalSchema import UpdateJournalSchema
 from app.validators.id import validate_id
 
 
-@app.route("/api/entry/habit", methods=["POST"])
+@app.route("/api/entry/journal", methods=["POST"])
 @error_handler
 @jwt_required()
-def create_habit():
+def create_journal():
     user_id = get_jwt_identity()
     data = request.get_json()
-    data = CreateHabitSchema(**data)
-    return EntryController.create(user_id, data, "habit")
+    data = CreateJournalSchema(**data)
+    return EntryController.create(user_id, data, "journal")
 
 
-@app.route("/api/entry/habit", methods=["DELETE"])
+@app.route("/api/entry/journal", methods=["DELETE"])
 @error_handler
 @jwt_required()
-def delete_habit():
+def delete_journal():
     user_id = get_jwt_identity()
     category_id = validate_id(request.args.get('id'))
-    return EntryController.delete(user_id, category_id, "habit")
+    return EntryController.delete(user_id, category_id, "journal")
 
 
-@app.route("/api/entry/habit", methods=["GET"])
+@app.route("/api/entry/journal", methods=["GET"])
 @error_handler
 @jwt_required()
-def get_habit():
+def get_journal():
     user_id = get_jwt_identity()
     category_id = validate_id(request.args.get('id'))
-    return EntryController.get(user_id, category_id, "habit")
+    return EntryController.get(user_id, category_id, "journal")
 
 
-@app.route("/api/entry/habit", methods=["PUT"])
+@app.route("/api/entry/journal", methods=["PUT"])
 @error_handler
 @jwt_required()
-def update_entry():
+def update_journal():
     user_id = get_jwt_identity()
     data = request.get_json()
-    data = UpdateHabitSchema(**data)
-    return EntryController.update(user_id, data, "habit")
+    data = UpdateJournalSchema(**data)
+    return EntryController.update(user_id, data, "journal")
