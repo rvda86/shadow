@@ -35,6 +35,21 @@ class TestUpdateTopic(unittest.TestCase):
         data, status_code = self.requester.update_entry(data, "topic", self.token_2)
         self.assertEqual(404, status_code)
 
+    def test_missing_field(self):
+        data = {"id": self.topic["entry"]["id"]}
+        data, status_code = self.requester.update_entry(data, "topic", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_extra_field(self):
+        data = {"name": "updated_topic1", "id": self.topic["entry"]["id"], "animal": "cat"}
+        data, status_code = self.requester.update_entry(data, "topic", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_unexpected_field(self):
+        data = {"color": "updated_topic1", "id": self.topic["entry"]["id"]}
+        data, status_code = self.requester.update_entry(data, "topic", self.token_1)
+        self.assertEqual(422, status_code)
+
 
 if __name__ == "__main__":
     unittest.main()

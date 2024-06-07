@@ -30,6 +30,24 @@ class TestCreateHabit(unittest.TestCase):
         data, status_code = self.requester.create_entry(data, "habit", self.token_1)
         self.assertEqual(200, status_code)
 
+    def test_missing_field(self):
+        data = {"name": "My First Habit"}
+
+        data, status_code = self.requester.create_entry(data, "habit", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_extra_field(self):
+        data = {"name": "My First Habit", "topic_id": self.topic["entry"]["id"], "city": "stockholm"}
+
+        data, status_code = self.requester.create_entry(data, "habit", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_unexpected_field(self):
+        data = {"city": "My First Habit", "topic_id": self.topic["entry"]["id"]}
+
+        data, status_code = self.requester.create_entry(data, "habit", self.token_1)
+        self.assertEqual(422, status_code)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -33,6 +33,21 @@ class TestUpdateCategory(unittest.TestCase):
         data, status_code = self.requester.update_entry(data, "category", self.token_2)
         self.assertEqual(404, status_code)
 
+    def test_missing_field(self):
+        data = {"name": "updated_category1"}
+        data, status_code = self.requester.update_entry(data, "category", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_extra_field(self):
+        data = {"name": "updated_category1", "color": "red", "id": self.category["entry"]["id"]}
+        data, status_code = self.requester.update_entry(data, "category", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_unexpected_field(self):
+        data = {"color": "updated_category1", "id": self.category["entry"]["id"]}
+        data, status_code = self.requester.update_entry(data, "category", self.token_1)
+        self.assertEqual(422, status_code)
+
 
 if __name__ == "__main__":
     unittest.main()

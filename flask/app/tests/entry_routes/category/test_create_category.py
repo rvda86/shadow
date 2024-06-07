@@ -28,6 +28,24 @@ class TestCreateCategory(unittest.TestCase):
 
         self.assertEqual(200, status_code)
 
+    def test_missing_field(self):
+        data = {}
+        data, status_code = self.requester.create_entry(data, "category", self.token_1)
+
+        self.assertEqual(422, status_code)
+
+    def test_extra_field(self):
+        data = {"name": "category1", "date": "today"}
+        data, status_code = self.requester.create_entry(data, "category", self.token_1)
+
+        self.assertEqual(422, status_code)
+
+    def test_unexpected_field(self):
+        data = {"title": "category1"}
+        data, status_code = self.requester.create_entry(data, "category", self.token_1)
+
+        self.assertEqual(422, status_code)
+
 
 if __name__ == "__main__":
     unittest.main()

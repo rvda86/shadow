@@ -38,6 +38,24 @@ class TestUpdateToDo(unittest.TestCase):
         data, status_code = self.requester.update_entry(data, "todo", self.token_2)
         self.assertEqual(404, status_code)
 
+    def test_missing_field(self):
+        data = {"task": "My First Updated Task", "id": self.todo["entry"]["id"]}
+
+        data, status_code = self.requester.update_entry(data, "todo", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_extra_field(self):
+        data = {"task": "My First Updated Task", "completed": "0", "id": self.todo["entry"]["id"], "animal": "penguin"}
+
+        data, status_code = self.requester.update_entry(data, "todo", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_unexpected_field(self):
+        data = {"task": "My First Updated Task", "done": "0", "id": self.todo["entry"]["id"]}
+
+        data, status_code = self.requester.update_entry(data, "todo", self.token_1)
+        self.assertEqual(422, status_code)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -31,6 +31,26 @@ class TestCreateJournal(unittest.TestCase):
         data, status_code = self.requester.create_entry(data, "journal", self.token_1)
         self.assertEqual(200, status_code)
 
+    def test_missing_field(self):
+        data = {"title": "My First Post", "topic_id": self.topic["entry"]["id"]}
+
+        data, status_code = self.requester.create_entry(data, "journal", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_extra_field(self):
+        data = {"title": "My First Post", "content": "This is my first post",
+                "topic_id": self.topic["entry"]["id"], "city": "oslo"}
+
+        data, status_code = self.requester.create_entry(data, "journal", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_unexpected_field(self):
+        data = {"title": "My First Post", "text": "This is my first post",
+                "topic_id": self.topic["entry"]["id"]}
+
+        data, status_code = self.requester.create_entry(data, "journal", self.token_1)
+        self.assertEqual(422, status_code)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -30,6 +30,24 @@ class TestCreateToDo(unittest.TestCase):
         data, status_code = self.requester.create_entry(data, "todo", self.token_1)
         self.assertEqual(200, status_code)
 
+    def test_missing_field(self):
+        data = {"topic_id": self.topic["entry"]["id"]}
+
+        data, status_code = self.requester.create_entry(data, "todo", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_extra_field(self):
+        data = {"task": "My First Task", "topic_id": self.topic["entry"]["id"], "city": "hamburg"}
+
+        data, status_code = self.requester.create_entry(data, "todo", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_unexpected_field(self):
+        data = {"title": "My First Task", "topic_id": self.topic["entry"]["id"]}
+
+        data, status_code = self.requester.create_entry(data, "todo", self.token_1)
+        self.assertEqual(422, status_code)
+
 
 if __name__ == "__main__":
     unittest.main()

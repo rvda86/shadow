@@ -1,5 +1,6 @@
 import unittest
 
+from app.constants.ExceptionMessages import ExceptionMessages
 from app.db_mysql import db_pool
 from app.tests.entry_routes.EntryRequester import EntryRequester
 from app.tests.helpers import create_user
@@ -38,6 +39,12 @@ class TestGetTopic(unittest.TestCase):
         topic_id = uuid_generator()
         data, status_code = self.requester.get_entry("topic", topic_id, self.token_1)
         self.assertEqual(404, status_code)
+
+    def test_invalid_id(self):
+        invalid_id = "invalidID"
+        data, status_code = self.requester.get_entry("topic", invalid_id, self.token_1)
+        self.assertEqual(422, status_code)
+        self.assertEqual(ExceptionMessages.ID_NOT_VALID, data["msg"])
 
 
 if __name__ == "__main__":

@@ -39,6 +39,24 @@ class TestUpdateJournal(unittest.TestCase):
         data, status_code = self.requester.update_entry(data, "journal", self.token_2)
         self.assertEqual(404, status_code)
 
+    def test_missing_field(self):
+        data = {"content": "This is my first updated content",
+                "id": self.journal["entry"]["id"]}
+        data, status_code = self.requester.update_entry(data, "journal", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_extra_field(self):
+        data = {"title": "My First Updated Post", "content": "This is my first updated content",
+                "id": self.journal["entry"]["id"], "animal": "cat"}
+        data, status_code = self.requester.update_entry(data, "journal", self.token_1)
+        self.assertEqual(422, status_code)
+
+    def test_unexpected_field(self):
+        data = {"name": "My First Updated Post", "content": "This is my first updated content",
+                "id": self.journal["entry"]["id"]}
+        data, status_code = self.requester.update_entry(data, "journal", self.token_1)
+        self.assertEqual(422, status_code)
+
 
 if __name__ == "__main__":
     unittest.main()
