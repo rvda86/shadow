@@ -1,35 +1,34 @@
 from flask import jsonify
 
-from app.models.entry.Habit import Habit
+from app.factory import get_entry
 from app.models.entry.Entry import to_dict
-from app.routes.schemas.habit_schemas.CreateHabitSchema import CreateHabitSchema
-from app.routes.schemas.category_schemas.UpdateCategorySchema import UpdateCategorySchema
+from app.routes.schemas.EntrySchema import EntrySchema
 
 
-class CategoryController:
-
-    @staticmethod
-    def create(user_id: str, data: CreateCategorySchema):
-        habit = Habit()
-        habit, msg = habit.create(user_id, data)
-        return jsonify({"entry": to_dict(habit), "msg": msg})
+class EntryController:
 
     @staticmethod
-    def delete(user_id: str, category_id: str):
-        habit = Habit()
-        habit.load_by_id(category_id, user_id)
-        msg = habit.delete(user_id)
+    def create(user_id: str, data: EntrySchema, entry_type: str):
+        entry = get_entry(entry_type)
+        entry, msg = entry.create(user_id, data)
+        return jsonify({"entry": to_dict(entry), "msg": msg})
+
+    @staticmethod
+    def delete(user_id: str, entry_id: str, entry_type: str):
+        entry = get_entry(entry_type)
+        entry.load_by_id(entry_id, user_id)
+        msg = entry.delete(user_id)
         return jsonify({"msg": msg})
 
     @staticmethod
-    def get(user_id: str, category_id: str):
-        category = Habit()
-        category.load_by_id(category_id, user_id)
-        return jsonify({"data": to_dict(category)})
+    def get(user_id: str, entry_id: str, entry_type: str):
+        entry = get_entry(entry_type)
+        entry.load_by_id(entry_id, user_id)
+        return jsonify({"data": to_dict(entry)})
 
     @staticmethod
-    def update(user_id: str, data: UpdateCategorySchema):
-        category = Habit()
-        category.load_by_id(data.id, user_id)
-        created_entry, msg = category.update(user_id, data)
-        return jsonify({"entry": to_dict(created_entry), "msg": msg})
+    def update(user_id: str, data: EntrySchema, entry_type: str):
+        entry = get_entry(entry_type)
+        entry.load_by_id(data.id, user_id)
+        entry, msg = entry.update(user_id, data)
+        return jsonify({"entry": to_dict(entry), "msg": msg})
