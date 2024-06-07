@@ -1,10 +1,11 @@
 from app.constants.ExceptionMessages import ExceptionMessages
 from app.constants.ValidationConstants import ValidationConstants
+from app.routes.schemas.EntrySchema import EntrySchema
 from app.validators.id import validate_id
 from app.validators.string import validate_string
 
 
-class CreateTopicSchema:
+class CreateTopicSchema(EntrySchema):
 
     def __init__(self, category_id: str, name: str, topic_type: str):
         self.category_id = validate_id(category_id)
